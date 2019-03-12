@@ -117,7 +117,7 @@ countdown <- function(
       stylesheet = "countdown.css"
     )
 
-  x
+  htmltools::browsable(x)
 }
 
 
