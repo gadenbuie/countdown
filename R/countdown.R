@@ -80,7 +80,7 @@ countdown <- function(
   stopifnot(minutes < 100)
 
   if (is.null(id)) {
-    uid <- system('Rscript -e "countdown:::make_unique_id()"', intern = TRUE)
+    uid <- make_unique_id()
     id <- paste0("timer_", uid)
   }
 
@@ -122,5 +122,9 @@ countdown <- function(
 
 
 make_unique_id <- function() {
-  cat(sample(c(letters[1:6], 0:9), 8, replace = TRUE), sep = "")
+  callr::r_safe(
+    function() {
+      paste(sample(c(letters[1:6], 0:9), 8, replace = TRUE), collapse = "")
+    }
+  )
 }
