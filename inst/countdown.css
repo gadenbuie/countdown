@@ -1,0 +1,38 @@
+.countdown {
+  background: inherit;
+  position: absolute;
+  {{#top}}top: {{top}};{{/top}}
+  {{#right}}right: {{right}};{{/right}}
+  {{#bottom}}bottom: {{bottom}};{{/bottom}}
+  {{#left}}left: {{left}};{{/left}}
+  font-size: {{font_size}};
+  border-color: {{border_color}};
+  border-width: {{border_width}};
+  border-style: solid;
+  border-radius: {{border_radius}};
+  {{#box_shadow}}
+  /* default: box-shadow:         0px 4px 10px 0px rgba(50, 50, 50, 0.4); */
+  box-shadow {{box_shadow}};
+  -webkite-box-shadow {{box_shadow}};
+  -moz-box-shadow {{box_shadow}};
+  {{/box_shadow}}
+  margin: {{margin}};
+  padding: {{padding}};
+  text-align: center;
+}
+
+.countdown.running {
+  border-color: {{color_running_border}};
+  background-color: {{color_running_background}};
+}
+.countdown.running code, .countdown.running span {
+  color: {{color_running_text}};
+}
+
+.countdown.finished {
+  border-color: {{color_finished_border}};
+  background-color: {{color_finished_background}};
+}
+.countdown.finished code, .countdown.finished span {
+  color: {{color_finished_text}};
+}

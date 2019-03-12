@@ -1,0 +1,17 @@
+Package: countdown
+Title: A Vanilla JS, HTML and CSS Counter for Presentations
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Garrick",
+           family = "Aden-Buie",
+           role = c("aut", "cre"),
+           email = "garrick@adenbuie.com")
+Description: Countdown to something amazing.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
+Imports: 
+    htmltools,
+    whisker
