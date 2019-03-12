@@ -1,0 +1,32 @@
+.countdown {
+  background: inherit;
+  position: absolute;
+  
+  right: 0;
+  bottom: 0;
+  
+  font-size: 3em;
+  border-color: #ddd;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 15px;
+  margin: 0.5em;
+  padding: 0 15px;
+  text-align: center;
+}
+
+.countdown.running {
+  border-color: #3C9A5F;
+  background-color: #43ac6a;
+}
+.countdown.running code, .countdown.running span {
+  color: #000000;
+}
+
+.countdown.finished {
+  border-color: #D83A20;
+  background-color: #F04124;
+}
+.countdown.finished code, .countdown.finished span {
+  color: #000000;
+}
