@@ -13,7 +13,8 @@ choose_dark_or_light <- function(x, black = "#000000", white = "#FFFFFF") {
   color_rgb[color_rgb <= 0.03928] <- color_rgb[color_rgb <= 0.03928]/12.92
   color_rgb[color_rgb > 0.03928] <- ((color_rgb[color_rgb > 0.03928] + 0.055)/1.055)^2.4
   lum <- t(c(0.2126, 0.7152, 0.0722)) %*% color_rgb
-  if (lum[1, 1] > 0.179) black else white
+  chosen_color <- if (lum[1, 1] > 0.179) black else white
+  rgb2hex(col2rgb(chosen_color))
 }
 
 col2rgb <- function(x) {
