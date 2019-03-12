@@ -32,5 +32,8 @@ col2rgb <- function(x) {
 }
 
 rgb2hex <- function(x) {
-  paste0("#", paste(as.hexmode(x), collapse = ""))
+  hex <- paste(as.hexmode(x))
+  hex[nchar(hex) != 2] <- strrep(hex[nchar(hex) != 2], 2)
+  hex <- paste(hex, collapse = "")
+  paste0("#", toupper(hex))
 }
