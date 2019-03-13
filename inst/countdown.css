@@ -1,12 +1,8 @@
 .countdown {
-  background: inherit;
+  background: {{color_background}};
   position: absolute;
-  {{#top}}top: {{top}};{{/top}}
-  {{#right}}right: {{right}};{{/right}}
-  {{#bottom}}bottom: {{bottom}};{{/bottom}}
-  {{#left}}left: {{left}};{{/left}}
   font-size: {{font_size}};
-  border-color: {{border_color}};
+  border-color: {{color_border}};
   border-width: {{border_width}};
   border-style: solid;
   border-radius: {{border_radius}};
@@ -20,7 +16,9 @@
   padding: {{padding}};
   text-align: center;
 }
-
+.countdown .digits {
+  color: {{color_text}};
+}
 .countdown.running {
   border-color: {{color_running_border}};
   background-color: {{color_running_background}};
@@ -28,7 +26,6 @@
 .countdown.running code, .countdown.running span {
   color: {{color_running_text}};
 }
-
 .countdown.finished {
   border-color: {{color_finished_border}};
   background-color: {{color_finished_background}};

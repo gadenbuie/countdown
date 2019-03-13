@@ -25,9 +25,9 @@ test_that("countdown css template", {
   test_template_file(countdown(), "countdown_default.css")
   test_template_file(countdown(top = 0, left = 0), "countdown_top-left.css")
   test_template_file(countdown(font_size = "1em",
-                             border_color = "#123abc",
-                             border_width = "2px",
-                             border_radius = "5px"),
+                               color_border = "#123abc",
+                               border_width = "2px",
+                               border_radius = "5px"),
                      "countdown_font-and-border.css")
   test_template_file(countdown(box_shadow = NULL), "countdown_no-shadow.css")
   test_template_file(countdown(margin = 0, padding = "12px"), "countdown_margin-padding.css")

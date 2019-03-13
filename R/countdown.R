@@ -31,11 +31,12 @@
 #'   unset (`NULL`).
 #' @param bottom Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
-#' @param border_color Color of the timer border when not yet activated.
-#' @param border_width Width of the timer border (all states).
-#' @param border_radius Radius of timer border corners (all states).
 #' @param box_shadow Shadow specification for the timer, set to `NULL` to remove
 #'   the shadow.
+#' @param border_width Width of the timer border (all states).
+#' @param border_radius Radius of timer border corners (all states).
+#' @param color_border Color of the timer border when not yet activated.
+#' @param color_background Color of the timer background when not yet activated.
 #' @param color_running_background Color of the timer background when running.
 #'   Colors are automatically chosen for the running timer border and text
 #'   (`color_running_border` and `color_running_text`, respectively) from the
@@ -57,16 +58,18 @@ countdown <- function(
   id = NULL,
   class = NULL,
   font_size = "3em",
-  margin = "0.5em",
+  margin = "0.6em",
   padding = "0 15px",
   bottom = if (is.null(top)) "0",
   right = if (is.null(left)) "0",
   top = NULL,
   left = NULL,
-  border_color = "#ddd",
+  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
-  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
+  color_border = "#ddd",
+  color_background = "inherit",
+  color_text = "inherit",
   color_running_background = "#43ac6a",
   color_running_border = darken_color(color_running_background, 0.1),
   color_running_text = choose_dark_or_light(color_running_background),
@@ -87,8 +90,18 @@ countdown <- function(
 
   class <- unique(c("countdown", class))
 
+  `%+?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
+
   x <- div(
-    class = paste(class, collapse = " "), id = id,
+    class = paste(class, collapse = " "),
+    id = id,
+    style = paste0(top %+?% "top",
+                   right %+?% "right",
+                   bottom %+?% "bottom",
+                   left %+?% "left",
+                   if (!missing(margin)) margin %+?% "margin",
+                   if (!missing(padding)) padding %+?% "padding",
+                   if (!missing(font_size)) font_size %+?% "font-size"),
     code(
       HTML(
         paste0(
