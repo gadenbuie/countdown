@@ -83,6 +83,7 @@ countdown <- function(
     uid <- make_unique_id()
     id <- paste0("timer_", uid)
   }
+  id <- validate_html_id(id)
 
   class <- unique(c("countdown", class))
 
@@ -127,4 +128,23 @@ make_unique_id <- function() {
       paste(sample(c(letters[1:6], 0:9), 8, replace = TRUE), collapse = "")
     }
   )
+}
+
+validate_html_id <- function(id) {
+  stop_because <- function(...) {
+    stop(paste0('"', id, '" is not a valid HTML ID: ', ...))
+  }
+  if (!grepl("^[a-zA-Z]", id)) {
+    stop_because("Must start with a letter")
+  }
+  if (grepl("[^0-9a-zA-Z_:.-]", id)) {
+    invalid <- gsub("[0-9a-zA-Z_:.-]", "", id)
+    invalid <- strsplit(invalid, character(0))[[1]]
+    invalid <- unique(invalid)
+    invalid[invalid == " "] <- "' '"
+    invalid <- paste(invalid, collapse = ", ")
+    stop_because('Cannot contain the character',
+                 if (nchar(invalid) > 1) "s: ", invalid)
+  }
+  id
 }

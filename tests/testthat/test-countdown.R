@@ -78,3 +78,10 @@ test_that("make_unique_id is always unique", {
 
   expect_true(id1 != id2)
 })
+
+test_that("validates HTML ids", {
+  expect_equal(validate_html_id("timer_001"), "timer_001")
+  expect_error(validate_html_id("001"), "letter")
+  expect_error(validate_html_id("timer&%$&1"), "characters")
+  expect_error(validate_html_id("timer#1"), "character")
+})
