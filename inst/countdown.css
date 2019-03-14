@@ -8,9 +8,9 @@
   border-radius: {{border_radius}};
   {{#box_shadow}}
   /* default: box-shadow:         0px 4px 10px 0px rgba(50, 50, 50, 0.4); */
-  box-shadow {{box_shadow}};
-  -webkite-box-shadow {{box_shadow}};
-  -moz-box-shadow {{box_shadow}};
+  box-shadow: {{box_shadow}};
+  -webkite-box-shadow: {{box_shadow}};
+  -moz-box-shadow: {{box_shadow}};
   {{/box_shadow}}
   margin: {{margin}};
   padding: {{padding}};
