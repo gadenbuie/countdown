@@ -1,6 +1,6 @@
 Package: countdown
 Title: A Countdown Timer for R Markdown HTML Presentations and Documents
-Version: 0.0.0.9000
+Version: 0.0.1.9000
 Authors@R: 
     person(given = "Garrick",
            family = "Aden-Buie",

@@ -17,6 +17,8 @@
 #'   containing the timer. The `"countdown"` class is added automatically. If
 #'   you want to modify the style of the timer, you can modify the `"countdown"`
 #'   class or specify addtional styles here that extend the base CSS.
+#' @param play_sound Play a sound at the end of the timer? If `TRUE`, plays the
+#'   "stage complete" sound courtesy of [beepr].
 #' @param font_size The font size of the time displayed in the timer.
 #' @param margin The margin applied to the timer container, default is
 #'   `"0.5em"`.
@@ -58,6 +60,7 @@ countdown <- function(
   ...,
   id = NULL,
   class = NULL,
+  play_sound = FALSE,
   font_size = "3em",
   margin = "0.6em",
   padding = "0 15px",
@@ -114,10 +117,14 @@ countdown <- function(
     )
   )
 
+  if (play_sound) x$attribs$`data-audio` <- "true"
+
   tmpdir <- tempfile("countdown")
   dir.create(tmpdir)
   file.copy(system.file("countdown.js", package = "countdown"),
             file.path(tmpdir, "countdown.js"))
+  file.copy(system.file("smb_stage_clear.mp3", package = "countdown"),
+            file.path(tmpdir, "smb_stage_clear.mp3"))
 
   css_template <- readLines(system.file("countdown.css", package = "countdown"))
   css <- whisker::whisker.render(css_template)
@@ -129,7 +136,8 @@ countdown <- function(
       version = utils::packageVersion("countdown"),
       src = gsub("//", "/", dirname(css_file)),
       script = "countdown.js",
-      stylesheet = "countdown.css"
+      stylesheet = "countdown.css",
+      all_files = TRUE
     )
 
   htmltools::browsable(x)
