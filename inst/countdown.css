@@ -24,13 +24,13 @@
   border-color: {{color_running_border}};
   background-color: {{color_running_background}};
 }
-.countdown.running code, .countdown.running span {
+.countdown.running .digits {
   color: {{color_running_text}};
 }
 .countdown.finished {
   border-color: {{color_finished_border}};
   background-color: {{color_finished_background}};
 }
-.countdown.finished code, .countdown.finished span {
+.countdown.finished .digits {
   color: {{color_finished_text}};
 }

@@ -18,13 +18,13 @@
   border-color: #3C9A5F;
   background-color: #43ac6a;
 }
-.countdown.running code, .countdown.running span {
+.countdown.running .digits {
   color: #000000;
 }
 .countdown.finished {
   border-color: #D83A20;
   background-color: #F04124;
 }
-.countdown.finished code, .countdown.finished span {
+.countdown.finished .digits {
   color: #000000;
 }

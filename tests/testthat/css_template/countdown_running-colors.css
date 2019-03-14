@@ -22,13 +22,13 @@
   border-color: #B82222;
   background-color: firebrick3;
 }
-.countdown.running code, .countdown.running span {
+.countdown.running .digits {
   color: #FFFFFF;
 }
 .countdown.finished {
   border-color: #D83A20;
   background-color: #F04124;
 }
-.countdown.finished code, .countdown.finished span {
+.countdown.finished .digits {
   color: #000000;
 }
