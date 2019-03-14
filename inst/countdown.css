@@ -1,6 +1,7 @@
 .countdown {
   background: {{color_background}};
   position: absolute;
+  cursor: pointer;
   font-size: {{font_size}};
   border-color: {{color_border}};
   border-width: {{border_width}};

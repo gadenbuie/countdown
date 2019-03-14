@@ -1,6 +1,7 @@
 .countdown {
   background: inherit;
   position: absolute;
+  cursor: pointer;
   font-size: 1em;
   border-color: #123abc;
   border-width: 2px;
