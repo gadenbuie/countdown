@@ -11,7 +11,8 @@ output:
       titleSlideClass: ["middle", "left"]
       highlightStyle: solarized-dark
       highlightLines: true
-      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+      countIncrementalSlides: true
 ---
 
 ```{r setup, include=FALSE}
@@ -31,18 +32,37 @@ solarized_light(
       "margin-top" = "2em",
       "margin-bottom" = "2em"
     ),
-    .big = list("font-size" = "150%")
+    .big = list("font-size" = "150%"),
+    .subtle = list(opacity = "0.6"),
+    ".countdown-has-style h3, .countdown-has-style h3 ~ p, .countdown-has-style h3 ~ ul" = list(
+      "margin" = "0"
+    ),
+    ".countdown-has-style pre" = list(
+      "margin-top" = "-10px"
+    ),
+    "p .remark-inline-code" = list(
+      "background-color" = "#6c71c41a"
+    )
   )
 )
 ```
 
-# Easily add a timer to your slides!
+class: center middle
 
-```{r}
+[xaringan]: https://github.com/yihui/xaringan#readme
+[rmarkdown]: https://rmarkdown.rstudio.com
+
+# Hey look, it's a timer!
+
+<p style="margin: 11em 0;"></p>
+
+```{r first-timer, echo=FALSE}
 library(countdown)
 solarized <- xaringanthemer:::solarized
 countdown(
   minutes = 0, seconds = 42,
+  top = "26%", right = "33%",
+  play_sound = TRUE,
   color_border              = solarized$magenta,
   color_text                = solarized$magenta,
   color_running_background  = solarized$cyan,
@@ -52,23 +72,151 @@ countdown(
 )
 ```
 
---
 
-### How to use your new timer...
+### How to use your new countdown timer
 
-- Click on the timer to **start** it.
+Click on the timer to **start** it.
 
-- Click while running to **reset** it.
+Click while running to **bump** it up.
 
-- Click when complete to **restart** it.
+Click when complete to **restart** it.
 
 ---
 
-# Um, that didn't look so easy...
+# Easily add a timer to your slides!
 
-That's because I changed the appearance of the timer  &#x1F468;&#x200D;&#x1F3A8;
+Just call on `countdown`
+
+```r
+library(countdown)
+```
+
+and then add
+
+````markdown
+```{r}`r ''`
+countdown(minutes = 0, seconds = 42)
+```
+````
+
+or
+
+```markdown
+``r 'r'` countdown(minutes = 0, seconds = 42)`
+```
+
+to your [xaringan] slides or [R Markdown][rmarkdown] document.
+
+---
+
+# What's so cool about a timer?
+
+.pull-left[
+If your slides support your teaching materials, on-screen timers are a great way to bracket group activities.
+
+Put your prompt on the screen and ask the group: 
+
+> _Take 4 minutes to discuss with your partner_
+
+Then click on your timer to keep everyone on track!
+]
 
 --
+
+.pull-right[
+.center[
+I learned this from [&commat;StatGarrett](https://twitter.com/StatGarrett)'s  
+rad `rstudio::conf` workshop!
+
+<img src="img/teach-tidyverse-timer.png" style="border:3px solid #002b36;border-radius:10px;"/>
+
+Here's an example from his  
+[Master the Tidyverse materials](https://github.com/rstudio-education/master-the-tidyverse/).
+]
+]
+
+---
+
+class: countdown-has-style
+
+# `countdown` has style
+
+.center[
+```r
+countdown(...)
+```
+]
+
+.pull-left[
+### All timers
+
+Applied to each timer
+
+- **`minutes`**
+- **`seconds`**
+- `play_sound`
+- `top`
+- `right`
+- `bottom`
+- `left`
+- .subtle[`font_size`]
+- .subtle[`margin`]
+- .subtle[`padding`]
+]
+
+.pull-right[
+### The first-time timer
+
+Sets defaults for all other timers
+
+- `font_size`
+- `margin`
+- `padding`
+- `box_shadow`
+- `border_width`
+- `border_radius`
+- `color_border`
+- `color_background`
+- `color_text`
+- `color_running_background`
+- .subtle[`color_running_border`]
+- .subtle[`color_running_text`]
+- `color_finished_background`
+- .subtle[`color_finished_border`]
+- .subtle[`color_finished_text`]
+]
+
+---
+layout: true
+
+# The first-time timer
+
+---
+
+Here's how I created the first timer and set this presentation's timer styles.
+
+``` r
+library(countdown)
+
+# Get the solarized color palette
+solarized <- xaringanthemer:::solarized
+
+countdown(
+  minutes = 0, 
+  seconds = 42,
+  # Fanfare when it's over
+  play_sound = TRUE,
+  # Set timer theme to match solarized colors
+  color_border              = solarized$magenta,
+  color_text                = solarized$magenta,
+  color_running_background  = solarized$cyan,
+  color_running_text        = solarized$base02,
+  color_finished_background = solarized$red,
+  color_finished_text       = solarized$base3
+)
+```
+
+---
 
 If you change your timer's styles, **you only have to do it once**.  
 Your first timer sets the theme for all the timers.  
@@ -83,20 +231,18 @@ After that, you only _need_ to specify `minutes` and `seconds`<sup>&#x2731;</sup
 
 --
 
-The default timer looks pretty good, so try it first
+The default timer looks pretty good, so try it first!
 
 ```r
 countdown(minutes = 0, seconds = 15)
 ```
 
 .center[
-<!--<img src="countdown.gif" width="200px">-->
 <iframe src="default-timer/index.html" width="220px" height="125px" style="border:3px solid #002b36;"></iframe>
 ]
 
-
-
 ---
+layout: false
 
 # Moar timers!
 
@@ -113,21 +259,15 @@ Use `top`, `bottom`, `left` and `right` to place the timers.
 countdown(minutes = 0, seconds = 7, bottom = 0)
 ```
 
---
-
 <p style="margin-bottom: -10px">This timer is <strong>top</strong>, <strong>right</strong>.</p>
 ```{r}
 countdown(minutes = 0, seconds = 13, top = 0)
 ```
 
---
-
 <p style="margin-bottom: -10px">This timer is <strong>bottom</strong>, <strong>left</strong>.</p>
 ```{r}
 countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
-
---
 
 .center.big[
 &#x1F446;&#x1F3FC;  
@@ -136,7 +276,7 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 
 ---
 
-# Crazy timers
+# Customize your timers
 
 `top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
 
@@ -152,7 +292,7 @@ countdown(minutes = 1, seconds = 30,
 
 ---
 
-# Full-Screen Timers
+# Full-screen timers
 
 Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer.
 
@@ -183,12 +323,12 @@ countdown(minutes = 0, seconds = 90,
 
 ---
 
-# Behind the Scenes
+# Behind the scenes
 
-Behind the scenes, `countdown` is a very small amount of HTML and CSS   
-and just a little bit more of Javascript.
+Behind the scenes, `countdown` is a little R wrapper around  
+a very small amount of HTML and CSS and bit more of Javascript.
 
-Each timer element looks something like this:
+Each countdown timer element looks something like this:
 
 ````html
 ```{r echo=FALSE, results="asis"}
@@ -215,11 +355,11 @@ Just give each timer a unique `id` that you can use in your CSS.
 ```{css}
 #special_timer.running {
   background-color: black;
-  background-image: url(bg-stars.gif);
+  background-image: url(img/bg-stars.gif);
 }
 #special_timer.finished {
   background-color: black;
-  background-image: url(bg-sqfw.gif);
+  background-image: url(img/bg-sqfw.gif);
   background-size: cover;
 }
 #special_timer.running .digits {
@@ -230,4 +370,23 @@ Just give each timer a unique `id` that you can use in your CSS.
 ```{r}
 countdown::countdown(0, 9, id = "special_timer")
 ```
+
+---
+
+# Make a joyful noise!
+
+`countdown` timers are quiet by default, but it can be nice to have a noisy timer that gets everyone's attention.
+
+Set `play_sound = TRUE` to be alerted to the end of the timer with fanfare!
+
+```{r}
+countdown(0, 10, play_sound = TRUE)
+```
+
+Check out [beepr](https://github.com/rasmusab/beepr) if you want awesome sound alerts in your R session!
+
+---
+
+background-image: url(https://media.giphy.com/media/xT5LMRClPgWMjpEmbe/giphy.gif)
+background-size: cover
 

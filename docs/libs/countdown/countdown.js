@@ -42,41 +42,75 @@ var countdown = function (e) {
       counters.timer[target.id].running = true;
 
       if (!counters.ticker) {
-        counters.ticker = setInterval(function(){
-          // Iterate over all running timers
-          for (var i in counters.timer) {
-            // Stop if passed end time
-            console.log(counters.timer[i].id)
-            counters.timer[i].value--;
-            if (counters.timer[i].value <= 0) {
-              counters.timer[i].min.innerHTML = "00";
-              counters.timer[i].sec.innerHTML = "00";
-              counters.timer[i].div.className = "countdown finished";
-              counters.timer[i].running = false;
-            } else {
-              // Update
-              update_timer(counters.timer[i]);
-            }
-          }
-
-          // If no more running timers, then clear ticker
-          var timerIsRunning = false;
-          for (var t in counters.timer) {
-            timerIsRunning = timerIsRunning || counters.timer[t].running
-          }
-          if (!timerIsRunning) {
-            clearInterval(counters.ticker);
-            counters.ticker = null;
-          }
-        }, 1000);
+        counters.ticker = setInterval(counter_update_all, 1000);
       }
     }
   } else {
-    counters.timer[target.id].value = counters.timer[target.id].end;
+    // Bump timer value if running & clicked
+    counters.timer[target.id].value += counter_bump_increment(counters.timer[target.id].end);
     update_timer(counters.timer[target.id]);
     counters.timer[target.id].value += 1;
   }
 };
+
+var counter_bump_increment = function(val) {
+  if (val <= 30) {
+    return 5;
+  } else if (val <= 300) {
+    return 15;
+  } else if (val <= 3000) {
+    return 30;
+  } else {
+    return 60;
+  }
+}
+
+var counter_update_all = function() {
+  // Iterate over all running timers
+  for (var i in counters.timer) {
+    // Stop if passed end time
+    console.log(counters.timer[i].id)
+    counters.timer[i].value--;
+    if (counters.timer[i].value <= 0) {
+      counters.timer[i].min.innerHTML = "00";
+      counters.timer[i].sec.innerHTML = "00";
+      counters.timer[i].div.className = "countdown finished";
+      counters.timer[i].running = false;
+    } else {
+      // Update
+      update_timer(counters.timer[i]);
+
+      // Play countdown sound if data-audio=true on container div
+      if (counters.timer[i].div.dataset.audio && counters.timer[i].value == 5) {
+        counter_play_sound();
+      }
+    }
+  }
+
+  // If no more running timers, then clear ticker
+  var timerIsRunning = false;
+  for (var t in counters.timer) {
+    timerIsRunning = timerIsRunning || counters.timer[t].running
+  }
+  if (!timerIsRunning) {
+    clearInterval(counters.ticker);
+    counters.ticker = null;
+  }
+}
+
+var counter_play_sound = function() {
+  try {
+    var finished_sound = new Audio('libs/countdown/smb_stage_clear.mp3');
+    finished_sound.play();
+  } catch (e) {
+    try {
+      var finished_sound = new Audio('smb_stage_clear.mp3');
+      finished_sound.play();
+    } catch (e) {
+      console.log("Unable to locate sound file smb_stage_clear.mp3.")
+    }
+  }
+}
 
 var counter_addEventListener = function() {
   if (!document.getElementsByClassName("countdown").length) {

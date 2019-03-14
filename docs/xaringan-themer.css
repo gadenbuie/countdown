@@ -186,3 +186,15 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .big {
   font-size: 150%;
 }
+.subtle {
+  opacity: 0.6;
+}
+.countdown-has-style h3, .countdown-has-style h3 ~ p, .countdown-has-style h3 ~ ul {
+  margin: 0;
+}
+.countdown-has-style pre {
+  margin-top: -10px;
+}
+p .remark-inline-code {
+  background-color: #6c71c41a;
+}

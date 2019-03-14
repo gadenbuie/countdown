@@ -15,7 +15,7 @@ class: middle, left, title-slide
 # <code style='font-size: 200%'>countdown</code>
 ## ⏲ :: 💭 💬 👩‍💻 :: ⏰
 ### <a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>
-### <span style="color: #b58900;">0.0.0.9000</span><br/><span style="color: #2aa198">2019-03-13</span>
+### <span style="color: #b58900;">0.0.2.9000</span><br/><span style="color: #2aa198">2019-03-14</span>
 
 ---
 
@@ -24,14 +24,154 @@ class: middle, left, title-slide
 
 
 
+class: center middle
+
+[xaringan]: https://github.com/yihui/xaringan#readme
+[rmarkdown]: https://rmarkdown.rstudio.com
+
+# Hey look, it's a timer!
+
+&lt;p style="margin: 11em 0;"&gt;&lt;/p&gt;
+
+<div class="countdown" id="timer_0564df9c" style="top:26%;right:33%;" data-audio="true">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">42</span></code>
+</div>
+
+
+### How to use your new countdown timer
+
+Click on the timer to **start** it.
+
+Click while running to **bump** it up.
+
+Click when complete to **restart** it.
+
+---
+
 # Easily add a timer to your slides!
 
+Just call on `countdown`
 
 ```r
 library(countdown)
+```
+
+and then add
+
+````markdown
+```{r}
+countdown(minutes = 0, seconds = 42)
+```
+````
+
+or
+
+```markdown
+`r countdown(minutes = 0, seconds = 42)`
+```
+
+to your [xaringan] slides or [R Markdown][rmarkdown] document.
+
+---
+
+# What's so cool about a timer?
+
+.pull-left[
+If your slides support your teaching materials, on-screen timers are a great way to bracket group activities.
+
+Put your prompt on the screen and ask the group: 
+
+&gt; _Take 4 minutes to discuss with your partner_
+
+Then click on your timer to keep everyone on track!
+]
+
+--
+
+.pull-right[
+.center[
+I learned this from [&amp;commat;StatGarrett](https://twitter.com/StatGarrett)'s  
+rad `rstudio::conf` workshop!
+
+&lt;img src="img/teach-tidyverse-timer.png" style="border:3px solid #002b36;border-radius:10px;"/&gt;
+
+Here's an example from his  
+[Master the Tidyverse materials](https://github.com/rstudio-education/master-the-tidyverse/).
+]
+]
+
+---
+
+class: countdown-has-style
+
+# `countdown` has style
+
+.center[
+```r
+countdown(...)
+```
+]
+
+.pull-left[
+### All timers
+
+Applied to each timer
+
+- **`minutes`**
+- **`seconds`**
+- `play_sound`
+- `top`
+- `right`
+- `bottom`
+- `left`
+- .subtle[`font_size`]
+- .subtle[`margin`]
+- .subtle[`padding`]
+]
+
+.pull-right[
+### The first-time timer
+
+Sets defaults for all other timers
+
+- `font_size`
+- `margin`
+- `padding`
+- `box_shadow`
+- `border_width`
+- `border_radius`
+- `color_border`
+- `color_background`
+- `color_text`
+- `color_running_background`
+- .subtle[`color_running_border`]
+- .subtle[`color_running_text`]
+- `color_finished_background`
+- .subtle[`color_finished_border`]
+- .subtle[`color_finished_text`]
+]
+
+---
+layout: true
+
+# The first-time timer
+
+---
+
+Here's how I created the first timer and set this presentation's timer styles.
+
+``` r
+library(countdown)
+
+# Get the solarized color palette
 solarized &lt;- xaringanthemer:::solarized
+
 countdown(
-  minutes = 0, seconds = 42,
+  minutes = 0, 
+  seconds = 42,
+  # Fanfare when it's over
+  play_sound = TRUE,
+  # Set timer theme to match solarized colors
   color_border              = solarized$magenta,
   color_text                = solarized$magenta,
   color_running_background  = solarized$cyan,
@@ -41,27 +181,7 @@ countdown(
 )
 ```
 
-<div class="countdown" id="timer_80aef7b4" style="right:0;bottom:0;">
-<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">42</span></code>
-</div>
-
---
-
-### How to use your new timer...
-
-- Click on the timer to **start** it.
-
-- Click while running to **reset** it.
-
-- Click when complete to **restart** it.
-
 ---
-
-# Um, that didn't look so easy...
-
-That's because I changed the appearance of the timer  &amp;#x1F468;&amp;#x200D;&amp;#x1F3A8;
-
---
 
 If you change your timer's styles, **you only have to do it once**.  
 Your first timer sets the theme for all the timers.  
@@ -76,20 +196,18 @@ After that, you only _need_ to specify `minutes` and `seconds`&lt;sup&gt;&amp;#x
 
 --
 
-The default timer looks pretty good, so try it first
+The default timer looks pretty good, so try it first!
 
 ```r
 countdown(minutes = 0, seconds = 15)
 ```
 
 .center[
-&lt;!--&lt;img src="countdown.gif" width="200px"&gt;--&gt;
 &lt;iframe src="default-timer/index.html" width="220px" height="125px" style="border:3px solid #002b36;"&gt;&lt;/iframe&gt;
 ]
 
-
-
 ---
+layout: false
 
 # Moar timers!
 
@@ -107,11 +225,9 @@ Use `top`, `bottom`, `left` and `right` to place the timers.
 countdown(minutes = 0, seconds = 7, bottom = 0)
 ```
 
-<div class="countdown" id="timer_2928dd64" style="right:0;bottom:0;">
+<div class="countdown" id="timer_749ff984" style="right:0;bottom:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">07</span></code>
 </div>
-
---
 
 &lt;p style="margin-bottom: -10px"&gt;This timer is &lt;strong&gt;top&lt;/strong&gt;, &lt;strong&gt;right&lt;/strong&gt;.&lt;/p&gt;
 
@@ -119,11 +235,9 @@ countdown(minutes = 0, seconds = 7, bottom = 0)
 countdown(minutes = 0, seconds = 13, top = 0)
 ```
 
-<div class="countdown" id="timer_fbddd281" style="top:0;right:0;">
+<div class="countdown" id="timer_2f0d9cfc" style="top:0;right:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">13</span></code>
 </div>
-
---
 
 &lt;p style="margin-bottom: -10px"&gt;This timer is &lt;strong&gt;bottom&lt;/strong&gt;, &lt;strong&gt;left&lt;/strong&gt;.&lt;/p&gt;
 
@@ -131,11 +245,9 @@ countdown(minutes = 0, seconds = 13, top = 0)
 countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
 
-<div class="countdown" id="timer_4eeb4716" style="bottom:0;left:0;">
+<div class="countdown" id="timer_c76b4d72" style="bottom:0;left:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">21</span></code>
 </div>
-
---
 
 .center.big[
 &amp;#x1F446;&amp;#x1F3FC;  
@@ -144,7 +256,7 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 
 ---
 
-# Crazy timers
+# Customize your timers
 
 `top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
 
@@ -159,13 +271,13 @@ countdown(minutes = 1, seconds = 30,
           font_size = "6em")
 ```
 
-<div class="countdown" id="timer_80dc7c0a" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
+<div class="countdown" id="timer_95924e94" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
 ---
 
-# Full-Screen Timers
+# Full-screen timers
 
 Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer.
 
@@ -191,21 +303,21 @@ countdown(minutes = 0, seconds = 90,
 
 --
 
-<div class="countdown" id="timer_5543ac83" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
+<div class="countdown" id="timer_df6af9a2" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
 ---
 
-# Behind the Scenes
+# Behind the scenes
 
-Behind the scenes, `countdown` is a very small amount of HTML and CSS   
-and just a little bit more of Javascript.
+Behind the scenes, `countdown` is a little R wrapper around  
+a very small amount of HTML and CSS and bit more of Javascript.
 
-Each timer element looks something like this:
+Each countdown timer element looks something like this:
 
 ````html
-&lt;div class="countdown" id="timer_6305095a" style="right:0;bottom:0;"&gt;
+&lt;div class="countdown" id="timer_efb68dc6" style="right:0;bottom:0;"&gt;
   &lt;code&gt;
     &lt;span class="digits minutes"&gt;03&lt;/span&gt;
     &lt;span class="digits colon"&gt;:&lt;/span&gt;
@@ -231,11 +343,11 @@ Just give each timer a unique `id` that you can use in your CSS.
 ```css
 #special_timer.running {
   background-color: black;
-  background-image: url(bg-stars.gif);
+  background-image: url(img/bg-stars.gif);
 }
 #special_timer.finished {
   background-color: black;
-  background-image: url(bg-sqfw.gif);
+  background-image: url(img/bg-sqfw.gif);
   background-size: cover;
 }
 #special_timer.running .digits {
@@ -247,11 +359,11 @@ Just give each timer a unique `id` that you can use in your CSS.
 &lt;style type="text/css"&gt;
 #special_timer.running {
   background-color: black;
-  background-image: url(bg-stars.gif);
+  background-image: url(img/bg-stars.gif);
 }
 #special_timer.finished {
   background-color: black;
-  background-image: url(bg-sqfw.gif);
+  background-image: url(img/bg-sqfw.gif);
   background-size: cover;
 }
 #special_timer.running .digits {
@@ -267,13 +379,38 @@ countdown::countdown(0, 9, id = "special_timer")
 <div class="countdown" id="special_timer" style="right:0;bottom:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">09</span></code>
 </div>
+
+---
+
+# Make a joyful noise!
+
+`countdown` timers are quiet by default, but it can be nice to have a noisy timer that gets everyone's attention.
+
+Set `play_sound = TRUE` to be alerted to the end of the timer with fanfare!
+
+
+```r
+countdown(0, 10, play_sound = TRUE)
+```
+
+<div class="countdown" id="timer_1c692bbc" style="right:0;bottom:0;" data-audio="true">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">10</span></code>
+</div>
+
+Check out [beepr](https://github.com/rasmusab/beepr) if you want awesome sound alerts in your R session!
+
+---
+
+background-image: url(https://media.giphy.com/media/xT5LMRClPgWMjpEmbe/giphy.gif)
+background-size: cover
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "solarized-dark",
 "highlightLines": true,
-"countIncrementalSlides": false
+"slideNumberFormat": "%current%",
+"countIncrementalSlides": true
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
