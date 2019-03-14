@@ -8,12 +8,14 @@ Authors@R:
            email = "garrick@adenbuie.com")
 Description: Countdown to something amazing.
 License: MIT + file LICENSE
+URL: https://github.com/gadenbuie/countdown
+BugReports: https://github.com/gadenbuie/countdown/issues
 Imports: 
     callr,
     grDevices,
     htmltools,
-    whisker,
-    utils
+    utils,
+    whisker
 Suggests: 
     testthat
 Encoding: UTF-8
