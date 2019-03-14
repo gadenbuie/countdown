@@ -1,4 +1,5 @@
 
+#' @importFrom grDevices rgb
 darken_color <- function(x, strength = 0.8) {
   stopifnot(strength >= 0 && strength <= 1)
   color_rgb <- col2rgb(x)

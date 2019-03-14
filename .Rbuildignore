@@ -1,3 +1,5 @@
+^LICENSE\.md$
+^docs$
 ^countdown\.Rproj$
 ^\.Rproj\.user$
 ^\.Rhistory$

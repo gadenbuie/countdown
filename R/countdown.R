@@ -29,7 +29,7 @@
 #'   defaults to `NULL`.
 #' @param left Position of the timer within its container. By default `left` is
 #'   unset (`NULL`).
-#' @param bottom Position of the timer within its container. By default `top` is
+#' @param top Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
 #' @param box_shadow Shadow specification for the timer, set to `NULL` to remove
 #'   the shadow.
@@ -37,6 +37,7 @@
 #' @param border_radius Radius of timer border corners (all states).
 #' @param color_border Color of the timer border when not yet activated.
 #' @param color_background Color of the timer background when not yet activated.
+#' @param color_text Color of the timer text when not yet activated.
 #' @param color_running_background Color of the timer background when running.
 #'   Colors are automatically chosen for the running timer border and text
 #'   (`color_running_border` and `color_running_text`, respectively) from the
@@ -125,7 +126,7 @@ countdown <- function(
 
   htmltools::htmlDependencies(x) <- htmlDependency(
       "countdown",
-      version = packageVersion("countdown"),
+      version = utils::packageVersion("countdown"),
       src = gsub("//", "/", dirname(css_file)),
       script = "countdown.js",
       stylesheet = "countdown.css"

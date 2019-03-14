@@ -1,0 +1,233 @@
+---
+title: "<code style='font-size: 200%'>countdown</code>"
+subtitle: "&#x23F2; :: &#x1F4AD; &#x1F4AC; &#x1F469;&#x200D;&#x1F4BB; :: &#x23F0;"
+author: "<a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>"
+date: '<span style="color: #b58900;">`r packageVersion("countdown")`</span><br/><span style="color: #2aa198">`r Sys.Date()`</span>'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      titleSlideClass: ["middle", "left"]
+      highlightStyle: solarized-dark
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+```{r xaringan-themer, include=FALSE}
+library(xaringanthemer)
+solarized_light(
+  header_font_google = google_font("Arvo"),
+  header_h1_font_size = "45px",
+  text_font_google = google_font("Cabin"),
+  text_font_size = "22px",
+  code_font_google = google_font("Share Tech Mono"),
+  extra_css = list(
+    ".remark-slide-content h2" = list(
+      "margin-top" = "2em",
+      "margin-bottom" = "2em"
+    ),
+    .big = list("font-size" = "150%")
+  )
+)
+```
+
+# Easily add a timer to your slides!
+
+```{r}
+library(countdown)
+solarized <- xaringanthemer:::solarized
+countdown(
+  minutes = 0, seconds = 42,
+  color_border              = solarized$magenta,
+  color_text                = solarized$magenta,
+  color_running_background  = solarized$cyan,
+  color_running_text        = solarized$base02,
+  color_finished_background = solarized$red,
+  color_finished_text       = solarized$base3
+)
+```
+
+--
+
+### How to use your new timer...
+
+- Click on the timer to **start** it.
+
+- Click while running to **reset** it.
+
+- Click when complete to **restart** it.
+
+---
+
+# Um, that didn't look so easy...
+
+That's because I changed the appearance of the timer  &#x1F468;&#x200D;&#x1F3A8;
+
+--
+
+If you change your timer's styles, **you only have to do it once**.  
+Your first timer sets the theme for all the timers.  
+
+--
+
+After that, you only _need_ to specify `minutes` and `seconds`<sup>&#x2731;</sup>.
+
+.footnote[
+<sup>&#x2731;</sup> Feeling lazy? Just set `minutes`. No need for pesky `seconds`.
+]
+
+--
+
+The default timer looks pretty good, so try it first
+
+```r
+countdown(minutes = 0, seconds = 15)
+```
+
+.center[
+<!--<img src="countdown.gif" width="200px">-->
+<iframe src="default-timer/index.html" width="220px" height="125px" style="border:3px solid #002b36;"></iframe>
+]
+
+
+
+---
+
+# Moar timers!
+
+
+You can have as many timers as you want, even on the same screen.  
+--
+
+Use `top`, `bottom`, `left` and `right` to place the timers.
+
+--
+
+<p style="margin-bottom: -10px">The default is <strong>bottom</strong>, <strong>right</strong>.</p>
+```{r}
+countdown(minutes = 0, seconds = 7, bottom = 0)
+```
+
+--
+
+<p style="margin-bottom: -10px">This timer is <strong>top</strong>, <strong>right</strong>.</p>
+```{r}
+countdown(minutes = 0, seconds = 13, top = 0)
+```
+
+--
+
+<p style="margin-bottom: -10px">This timer is <strong>bottom</strong>, <strong>left</strong>.</p>
+```{r}
+countdown::countdown(minutes = 0, seconds = 21, left = 0)
+```
+
+--
+
+.center.big[
+&#x1F446;&#x1F3FC;  
+&#x1F448;&#x1F3FC; Go ahead, click them! &#x1F449;&#x1F3FC;
+]
+
+---
+
+# Crazy timers
+
+`top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
+
+You can also override `font_size`, `padding`, and `margin`.
+
+```{r}
+countdown(minutes = 1, seconds = 30, 
+          left = 0, right = 0,
+          padding = "15px",
+          margin = "5%",
+          font_size = "6em")
+```
+
+---
+
+# Full-Screen Timers
+
+Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer.
+
+--
+
+Very helpful for hiding content while the activity is going on.
+
+--
+
+Here's the code<sup>&#x2731;</sup>:
+
+```{r full-screen, eval=FALSE}
+countdown(minutes = 0, seconds = 90, 
+          top = 0, bottom = 0,
+          left = 0, right = 0,
+          padding = "20%",
+          margin = "5%",
+          font_size = "8em")
+```
+
+.footnote[<sup>&#x2731;</sup>_some fiddling with `padding`, `margin` and `font_size` may be required_]
+
+--
+
+```{r echo=FALSE}
+<<full-screen>>
+```
+
+---
+
+# Behind the Scenes
+
+Behind the scenes, `countdown` is a very small amount of HTML and CSS   
+and just a little bit more of Javascript.
+
+Each timer element looks something like this:
+
+````html
+```{r echo=FALSE, results="asis"}
+x <- countdown(3, 30)
+x <- gsub("((code|span)>)(<span)", "\\1\n    \\3", x)
+x <- sub("(span>)(</code)", "\\1\n  \\2", x)
+cat(paste(x), sep = "\n")
+```
+````
+
+---
+
+# Customized CSS
+
+Want to completely customize the CSS of each timer?  
+--
+
+No problem!
+
+--
+
+Just give each timer a unique `id` that you can use in your CSS.
+
+```{css}
+#special_timer.running {
+  background-color: black;
+  background-image: url(bg-stars.gif);
+}
+#special_timer.finished {
+  background-color: black;
+  background-image: url(bg-sqfw.gif);
+  background-size: cover;
+}
+#special_timer.running .digits {
+  color: #fdf6e3;
+}
+```
+
+```{r}
+countdown::countdown(0, 9, id = "special_timer")
+```
+

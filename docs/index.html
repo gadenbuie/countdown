@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>countdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="github.com/gadenbuie/countdown" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: middle, left, title-slide
+
+# <code style='font-size: 200%'>countdown</code>
+## ⏲ :: 💭 💬 👩‍💻 :: ⏰
+### <a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>
+### <span style="color: #b58900;">0.0.0.9000</span><br/><span style="color: #2aa198">2019-03-13</span>
+
+---
+
+
+
+
+
+
+# Easily add a timer to your slides!
+
+
+```r
+library(countdown)
+solarized &lt;- xaringanthemer:::solarized
+countdown(
+  minutes = 0, seconds = 42,
+  color_border              = solarized$magenta,
+  color_text                = solarized$magenta,
+  color_running_background  = solarized$cyan,
+  color_running_text        = solarized$base02,
+  color_finished_background = solarized$red,
+  color_finished_text       = solarized$base3
+)
+```
+
+<div class="countdown" id="timer_80aef7b4" style="right:0;bottom:0;">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">42</span></code>
+</div>
+
+--
+
+### How to use your new timer...
+
+- Click on the timer to **start** it.
+
+- Click while running to **reset** it.
+
+- Click when complete to **restart** it.
+
+---
+
+# Um, that didn't look so easy...
+
+That's because I changed the appearance of the timer  &amp;#x1F468;&amp;#x200D;&amp;#x1F3A8;
+
+--
+
+If you change your timer's styles, **you only have to do it once**.  
+Your first timer sets the theme for all the timers.  
+
+--
+
+After that, you only _need_ to specify `minutes` and `seconds`&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;.
+
+.footnote[
+&lt;sup&gt;&amp;#x2731;&lt;/sup&gt; Feeling lazy? Just set `minutes`. No need for pesky `seconds`.
+]
+
+--
+
+The default timer looks pretty good, so try it first
+
+```r
+countdown(minutes = 0, seconds = 15)
+```
+
+.center[
+&lt;!--&lt;img src="countdown.gif" width="200px"&gt;--&gt;
+&lt;iframe src="default-timer/index.html" width="220px" height="125px" style="border:3px solid #002b36;"&gt;&lt;/iframe&gt;
+]
+
+
+
+---
+
+# Moar timers!
+
+
+You can have as many timers as you want, even on the same screen.  
+--
+
+Use `top`, `bottom`, `left` and `right` to place the timers.
+
+--
+
+&lt;p style="margin-bottom: -10px"&gt;The default is &lt;strong&gt;bottom&lt;/strong&gt;, &lt;strong&gt;right&lt;/strong&gt;.&lt;/p&gt;
+
+```r
+countdown(minutes = 0, seconds = 7, bottom = 0)
+```
+
+<div class="countdown" id="timer_2928dd64" style="right:0;bottom:0;">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">07</span></code>
+</div>
+
+--
+
+&lt;p style="margin-bottom: -10px"&gt;This timer is &lt;strong&gt;top&lt;/strong&gt;, &lt;strong&gt;right&lt;/strong&gt;.&lt;/p&gt;
+
+```r
+countdown(minutes = 0, seconds = 13, top = 0)
+```
+
+<div class="countdown" id="timer_fbddd281" style="top:0;right:0;">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">13</span></code>
+</div>
+
+--
+
+&lt;p style="margin-bottom: -10px"&gt;This timer is &lt;strong&gt;bottom&lt;/strong&gt;, &lt;strong&gt;left&lt;/strong&gt;.&lt;/p&gt;
+
+```r
+countdown::countdown(minutes = 0, seconds = 21, left = 0)
+```
+
+<div class="countdown" id="timer_4eeb4716" style="bottom:0;left:0;">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">21</span></code>
+</div>
+
+--
+
+.center.big[
+&amp;#x1F446;&amp;#x1F3FC;  
+&amp;#x1F448;&amp;#x1F3FC; Go ahead, click them! &amp;#x1F449;&amp;#x1F3FC;
+]
+
+---
+
+# Crazy timers
+
+`top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
+
+You can also override `font_size`, `padding`, and `margin`.
+
+
+```r
+countdown(minutes = 1, seconds = 30, 
+          left = 0, right = 0,
+          padding = "15px",
+          margin = "5%",
+          font_size = "6em")
+```
+
+<div class="countdown" id="timer_80dc7c0a" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
+<code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
+</div>
+
+---
+
+# Full-Screen Timers
+
+Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer.
+
+--
+
+Very helpful for hiding content while the activity is going on.
+
+--
+
+Here's the code&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;:
+
+
+```r
+countdown(minutes = 0, seconds = 90, 
+          top = 0, bottom = 0,
+          left = 0, right = 0,
+          padding = "20%",
+          margin = "5%",
+          font_size = "8em")
+```
+
+.footnote[&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;_some fiddling with `padding`, `margin` and `font_size` may be required_]
+
+--
+
+<div class="countdown" id="timer_5543ac83" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
+<code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
+</div>
+
+---
+
+# Behind the Scenes
+
+Behind the scenes, `countdown` is a very small amount of HTML and CSS   
+and just a little bit more of Javascript.
+
+Each timer element looks something like this:
+
+````html
+&lt;div class="countdown" id="timer_6305095a" style="right:0;bottom:0;"&gt;
+  &lt;code&gt;
+    &lt;span class="digits minutes"&gt;03&lt;/span&gt;
+    &lt;span class="digits colon"&gt;:&lt;/span&gt;
+    &lt;span class="digits seconds"&gt;30&lt;/span&gt;
+  &lt;/code&gt;
+&lt;/div&gt;
+````
+
+---
+
+# Customized CSS
+
+Want to completely customize the CSS of each timer?  
+--
+
+No problem!
+
+--
+
+Just give each timer a unique `id` that you can use in your CSS.
+
+
+```css
+#special_timer.running {
+  background-color: black;
+  background-image: url(bg-stars.gif);
+}
+#special_timer.finished {
+  background-color: black;
+  background-image: url(bg-sqfw.gif);
+  background-size: cover;
+}
+#special_timer.running .digits {
+  color: #fdf6e3;
+}
+```
+
+
+&lt;style type="text/css"&gt;
+#special_timer.running {
+  background-color: black;
+  background-image: url(bg-stars.gif);
+}
+#special_timer.finished {
+  background-color: black;
+  background-image: url(bg-sqfw.gif);
+  background-size: cover;
+}
+#special_timer.running .digits {
+  color: #fdf6e3;
+}
+&lt;/style&gt;
+
+
+```r
+countdown::countdown(0, 9, id = "special_timer")
+```
+
+<div class="countdown" id="special_timer" style="right:0;bottom:0;">
+<code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">09</span></code>
+</div>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "solarized-dark",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

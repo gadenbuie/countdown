@@ -5,12 +5,13 @@
 \title{Countdown Timer}
 \usage{
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
-  font_size = "3em", margin = "0.5em", padding = "0 15px",
-  right = if (is.null(top)) "0", bottom = if (is.null(left)) "0",
-  top = NULL, left = NULL, border_color = "#ddd",
-  border_width = "3px", border_radius = "15px",
+  font_size = "3em", margin = "0.6em", padding = "0 15px",
+  bottom = if (is.null(top)) "0", right = if (is.null(left)) "0",
+  top = NULL, left = NULL,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  color_running_background = "#43ac6a",
+  border_width = "3px", border_radius = "15px",
+  color_border = "#ddd", color_background = "inherit",
+  color_text = "inherit", color_running_background = "#43ac6a",
   color_running_border = darken_color(color_running_background, 0.1),
   color_running_text = choose_dark_or_light(color_running_background),
   color_finished_background = "#F04124",
@@ -43,25 +44,32 @@ class or specify addtional styles here that extend the base CSS.}
 
 \item{padding}{The padding within the timer container, default is \code{"0 15px"}.}
 
-\item{right}{Position of the timer within its container. By default the timer
-is right-aligned using \code{right = "0"}. If \code{left} is set, \code{right} defaults to
-\code{NULL}.}
-
 \item{bottom}{Position of the timer within its container. By default the
 timer is bottom-aligned using \code{bottom = "0"}. If \code{top} is set, \code{bottom}
 defaults to \code{NULL}.}
 
+\item{right}{Position of the timer within its container. By default the timer
+is right-aligned using \code{right = "0"}. If \code{left} is set, \code{right} defaults to
+\code{NULL}.}
+
+\item{top}{Position of the timer within its container. By default \code{top} is
+unset (\code{NULL}).}
+
 \item{left}{Position of the timer within its container. By default \code{left} is
 unset (\code{NULL}).}
 
-\item{border_color}{Color of the timer border when not yet activated.}
+\item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
+the shadow.}
 
 \item{border_width}{Width of the timer border (all states).}
 
 \item{border_radius}{Radius of timer border corners (all states).}
 
-\item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
-the shadow.}
+\item{color_border}{Color of the timer border when not yet activated.}
+
+\item{color_background}{Color of the timer background when not yet activated.}
+
+\item{color_text}{Color of the timer text when not yet activated.}
 
 \item{color_running_background}{Color of the timer background when running.
 Colors are automatically chosen for the running timer border and text
@@ -80,9 +88,6 @@ finished background color.}
 \item{color_finished_border}{Color of the timer border when finished.}
 
 \item{color_finished_text}{Color of the timer text when finished.}
-
-\item{bottom}{Position of the timer within its container. By default \code{top} is
-unset (\code{NULL}).}
 }
 \description{
 Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable
