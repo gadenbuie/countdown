@@ -46,11 +46,24 @@ var countdown = function (e) {
       }
     }
   } else {
-    counters.timer[target.id].value = counters.timer[target.id].end;
+    // Bump timer value if running & clicked
+    counters.timer[target.id].value += counter_bump_increment(counters.timer[target.id].end);
     update_timer(counters.timer[target.id]);
     counters.timer[target.id].value += 1;
   }
 };
+
+var counter_bump_increment = function(val) {
+  if (val <= 30) {
+    return 5;
+  } else if (val <= 300) {
+    return 15;
+  } else if (val <= 3000) {
+    return 30;
+  } else {
+    return 60;
+  }
+}
 
 var counter_update_all = function() {
   // Iterate over all running timers
