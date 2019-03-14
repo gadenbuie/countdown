@@ -197,4 +197,9 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 }
 p .remark-inline-code {
   background-color: #6c71c41a;
+  padding: 2px 2px;
+  margin: 0 -2px;
+}
+em {
+  color: #2aa198;
 }

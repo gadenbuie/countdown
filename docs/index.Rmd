@@ -41,8 +41,11 @@ solarized_light(
       "margin-top" = "-10px"
     ),
     "p .remark-inline-code" = list(
-      "background-color" = "#6c71c41a"
-    )
+      "background-color" = "#6c71c41a",
+      "padding" = "2px 2px",
+      "margin" = "0 -2px"
+    ),
+    "em" = list(color = "#2aa198")
   )
 )
 ```
@@ -338,6 +341,13 @@ x <- sub("(span>)(</code)", "\\1\n  \\2", x)
 cat(paste(x), sep = "\n")
 ```
 ````
+
+--
+
+Once the timer is activated, `<div class="countdown">` gets one of two classes:
+
+- `running` when the timer is _running_, or
+- `finished` when the timer is _finished_.
 
 ---
 
