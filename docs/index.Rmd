@@ -151,12 +151,12 @@ countdown(...)
 ]
 
 .pull-left[
-### All timers
+### Each Timer
 
-Applied to each timer
+Settings of individual timers
 
-- **`minutes`**
-- **`seconds`**
+- _`minutes`_
+- _`seconds`_
 - `play_sound`
 - `top`
 - `right`
@@ -165,6 +165,8 @@ Applied to each timer
 - .subtle[`font_size`]
 - .subtle[`margin`]
 - .subtle[`padding`]
+
+.footnote[Faded arguments inherit from &#x1F449;]
 ]
 
 .pull-right[
