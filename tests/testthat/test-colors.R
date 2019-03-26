@@ -9,6 +9,7 @@ test_that("col2rgb()", {
   expect_col2rgb("#282828", c(40, 40, 40))
   expect_col2rgb("#fff", c(255, 255, 255))
   expect_col2rgb("#808080", c(128, 128, 128))
+  expect_col2rgb("firebrick3", c(205, 38, 38))
   expect_error(col2rgb("#80"))
   expect_error(col2rgb("#8097"))
 })

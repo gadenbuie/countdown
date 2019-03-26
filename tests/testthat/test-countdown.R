@@ -37,13 +37,14 @@ test_that("countdown css template", {
 })
 
 test_that("countdown()", {
-  x <- countdown(1, 30, id = "timer_1", class = "extra-class")
+  x <- countdown(1, 30, id = "timer_1", class = "extra-class", play_sound = TRUE)
 
   expect_true(attr(x, "browsable_html"))
   expect_true(inherits(x, "shiny.tag"))
   expect_equal(x$name, "div")
   expect_equal(x$attribs$class, "countdown extra-class")
   expect_equal(x$attribs$id, "timer_1")
+  expect_equal(x$attribs$`data-audio`, "true")
   expect_equal(x$children[[1]]$name, "code")
 
   test_inner_html <- function(counter, ...) {
@@ -69,6 +70,34 @@ test_that("countdown()", {
   expect_error(countdown(100), "minutes")
 })
 
+test_that("countdown dependencies are included", {
+  html_doc <- c(
+    "---",
+    "output: html_document",
+    "---\n",
+    "```{r}",
+    "countdown::countdown()",
+    "```"
+  )
+
+  tmpdir <- tempfile("")
+  dir.create(tmpdir)
+  tmp_rmd <- file.path(tmpdir, "countdown_test.Rmd")
+  tmp_html <- sub("Rmd$", "html", tmp_rmd)
+
+  cat(html_doc, file = tmp_rmd, sep = "\n")
+  rmarkdown::render(tmp_rmd, output_options = list(self_contained = FALSE), quiet = TRUE)
+
+  countdown_lib_dir <- dir(file.path(tmpdir, "countdown_test_files"), full.names = TRUE)
+  countdown_lib_dir <- countdown_lib_dir[grepl("countdown-", countdown_lib_dir)]
+
+  expect_true(dir.exists(countdown_lib_dir))
+  expect_true(file.exists(file.path(countdown_lib_dir, "countdown.css")))
+  expect_true(file.exists(file.path(countdown_lib_dir, "countdown.js")))
+  expect_true(file.exists(file.path(countdown_lib_dir, "smb_stage_clear.mp3")))
+
+})
+
 test_that("make_unique_id is always unique", {
   set.seed(4242)
   id1 <- make_unique_id()
@@ -77,6 +106,7 @@ test_that("make_unique_id is always unique", {
   id2 <- make_unique_id()
 
   expect_true(id1 != id2)
+  expect_true(make_unique_id(FALSE) != make_unique_id(FALSE))
 })
 
 test_that("validates HTML ids", {
