@@ -144,11 +144,12 @@ countdown <- function(
 }
 
 
-make_unique_id <- function() {
+make_unique_id <- function(safe = TRUE) {
+  uniqid <- function() as.hexmode(as.integer(Sys.time() + runif(1) * 1000))
+
+  if (!safe) return(uniqid())
   callr::r_safe(
-    function() {
-      paste(sample(c(letters[1:6], 0:9), 8, replace = TRUE), collapse = "")
-    }
+    function() countdown:::make_unique_id(safe = FALSE)
   )
 }
 
