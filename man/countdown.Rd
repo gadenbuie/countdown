@@ -5,9 +5,9 @@
 \title{Countdown Timer}
 \usage{
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
-  font_size = "3em", margin = "0.6em", padding = "0 15px",
-  bottom = if (is.null(top)) "0", right = if (is.null(left)) "0",
-  top = NULL, left = NULL,
+  play_sound = FALSE, font_size = "3em", margin = "0.6em",
+  padding = "0 15px", bottom = if (is.null(top)) "0", right = if
+  (is.null(left)) "0", top = NULL, left = NULL,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px", border_radius = "15px",
   color_border = "#ddd", color_background = "inherit",
@@ -36,6 +36,9 @@ specific reason, it would probably be best to leave this unset.}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
 class or specify addtional styles here that extend the base CSS.}
+
+\item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
+"stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.}
 
 \item{font_size}{The font size of the time displayed in the timer.}
 
@@ -89,8 +92,24 @@ finished background color.}
 
 \item{color_finished_text}{Color of the timer text when finished.}
 }
+\value{
+An vanilla Javascript countdown timer as HTML, with dependencies.
+}
 \description{
 Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable
 for use in web-based presentations, such as those created by
 \code{\link[xaringan:infinite_moon_reader]{xaringan::infinite_moon_reader()}}.
+}
+\examples{
+
+\dontrun{
+countdown(minutes = 0, seconds = 42)
+
+countdown(minutes = 1, seconds = 30,
+          left = 0, right = 0,
+          padding = "15px",
+          margin = "5\%",
+          font_size = "6em")
+}
+
 }

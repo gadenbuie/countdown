@@ -4,6 +4,20 @@
 #' for use in web-based presentations, such as those created by
 #' [xaringan::infinite_moon_reader()].
 #'
+#' @examples
+#'
+#' \dontrun{
+#' countdown(minutes = 0, seconds = 42)
+#'
+#' countdown(minutes = 1, seconds = 30,
+#'           left = 0, right = 0,
+#'           padding = "15px",
+#'           margin = "5%",
+#'           font_size = "6em")
+#' }
+#'
+#' @return An vanilla Javascript countdown timer as HTML, with dependencies.
+#'
 #' @param minutes The number of minutes for which the timer should run. This
 #'   value is added to `seconds`.
 #' @param seconds The number of seconds for which the timer should run. This
@@ -18,7 +32,7 @@
 #'   you want to modify the style of the timer, you can modify the `"countdown"`
 #'   class or specify addtional styles here that extend the base CSS.
 #' @param play_sound Play a sound at the end of the timer? If `TRUE`, plays the
-#'   "stage complete" sound courtesy of [beepr].
+#'   "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 #' @param font_size The font size of the time displayed in the timer.
 #' @param margin The margin applied to the timer container, default is
 #'   `"0.5em"`.
@@ -145,7 +159,7 @@ countdown <- function(
 
 
 make_unique_id <- function(safe = TRUE) {
-  uniqid <- function() as.hexmode(as.integer(Sys.time() + runif(1) * 1000))
+  uniqid <- function() as.hexmode(as.integer(Sys.time() + stats::runif(1) * 1000))
 
   if (!safe) return(uniqid())
   callr::r_safe(
