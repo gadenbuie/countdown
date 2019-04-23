@@ -21,7 +21,7 @@ options(htmltools.dir.version = FALSE)
 
 ```{r xaringan-themer, include=FALSE}
 library(xaringanthemer)
-solarized_light(
+style_solarized_light(
   header_font_google = google_font("Arvo"),
   header_h1_font_size = "45px",
   text_font_google = google_font("Cabin"),
@@ -33,6 +33,7 @@ solarized_light(
       "margin-bottom" = "2em"
     ),
     .big = list("font-size" = "150%"),
+    .small = list("font-size" = "75%"),
     .subtle = list(opacity = "0.6"),
     ".countdown-has-style h3, .countdown-has-style h3 ~ p, .countdown-has-style h3 ~ ul" = list(
       "margin" = "0"
@@ -45,6 +46,7 @@ solarized_light(
       "padding" = "2px 2px",
       "margin" = "0 -2px"
     ),
+    blockquote = list("margin-left" = 0),
     "em" = list(color = "#2aa198")
   )
 )
@@ -54,6 +56,7 @@ class: center middle
 
 [xaringan]: https://github.com/yihui/xaringan#readme
 [rmarkdown]: https://rmarkdown.rstudio.com
+[countdown]: https://github.com/gadenbuie/countdown
 
 # Hey look, it's a timer!
 
@@ -84,31 +87,40 @@ Click while running to **bump** it up.
 
 Click when complete to **restart** it.
 
----
+.small.subtle[&#x1F4F5; Timers don't work on mobile]
 
+---
 # Easily add a timer to your slides!
 
-Just call on `countdown`
+First, install `countdown` from [GitHub][countdown]
+
+```r
+remotes::install_github("gadenbuie/countdown")
+```
+
+--
+
+Then call on `countdown`
 
 ```r
 library(countdown)
 ```
 
-and then add
+--
+
+and in your [xaringan] slides or [R Markdown][rmarkdown] document add
+
+```markdown
+``r 'r'` countdown(minutes = 0, seconds = 42)`
+```
+
+or
 
 ````markdown
 ```{r}`r ''`
 countdown(minutes = 0, seconds = 42)
 ```
 ````
-
-or
-
-```markdown
-``r 'r'` countdown(minutes = 0, seconds = 42)`
-```
-
-to your [xaringan] slides or [R Markdown][rmarkdown] document.
 
 ---
 
@@ -223,12 +235,12 @@ countdown(
 
 ---
 
-If you change your timer's styles, **you only have to do it once**.  
-Your first timer sets the theme for all the timers.  
+If you customize your timer's styles, **you only have to do it the first time**.  
+The theme of your first timer sets the theme for all timers.  
 
 --
 
-After that, you only _need_ to specify `minutes` and `seconds`<sup>&#x2731;</sup>.
+After that, you only ever _need_ to specify `minutes` and `seconds`<sup>&#x2731;</sup>.
 
 .footnote[
 <sup>&#x2731;</sup> Feeling lazy? Just set `minutes`. No need for pesky `seconds`.
@@ -243,7 +255,7 @@ countdown(minutes = 0, seconds = 15)
 ```
 
 .center[
-<iframe src="default-timer/index.html" width="220px" height="125px" style="border:3px solid #002b36;"></iframe>
+<iframe src="default-timer/index.html" width="210px" height="125px" style="border:3px solid #002b36;"></iframe>
 ]
 
 ---
@@ -255,7 +267,7 @@ layout: false
 You can have as many timers as you want, even on the same screen.  
 --
 
-Use `top`, `bottom`, `left` and `right` to place the timers.
+Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
 
 --
 
@@ -285,7 +297,7 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 
 `top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
 
-You can also override `font_size`, `padding`, and `margin`.
+You can also override the global timer `font_size`, `padding`, and `margin`.
 
 ```{r}
 countdown(minutes = 1, seconds = 30, 
@@ -346,7 +358,7 @@ cat(paste(x), sep = "\n")
 
 --
 
-Once the timer is activated, `<div class="countdown">` gets one of two classes:
+Once the timer is activated, `<div class="countdown">` gets an added class:
 
 - `running` when the timer is _running_, or
 - `finished` when the timer is _finished_.
@@ -358,7 +370,7 @@ Once the timer is activated, `<div class="countdown">` gets one of two classes:
 Want to completely customize the CSS of each timer?  
 --
 
-No problem!
+No problem! 
 
 --
 
@@ -382,6 +394,8 @@ Just give each timer a unique `id` that you can use in your CSS.
 ```{r}
 countdown::countdown(0, 9, id = "special_timer")
 ```
+
+<div style="position: absolute; bottom: 2%; right: 27%; font-size: 80%">Try this one, it's cool!<span style="display: inline-block; transform: rotate(236deg);font-size: 125%;">⤹</span></div>
 
 ---
 

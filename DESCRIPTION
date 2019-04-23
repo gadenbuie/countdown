@@ -1,13 +1,15 @@
 Package: countdown
-Title: A Countdown Timer for R Markdown HTML Presentations and Documents
-Version: 0.0.2.9000
+Title: A Countdown Timer for R Markdown HTML Presentations and
+    Documents
+Version: 0.1.0
 Authors@R: 
     person(given = "Garrick",
            family = "Aden-Buie",
            role = c("aut", "cre"),
            email = "garrick@adenbuie.com")
-Description: Countdown to something amazing. countdown makes it easy to drop in 
-    a simple countdown timer in slides and HTML documents written in R Markdown.
+Description: Countdown to something amazing. countdown makes it
+    easy to drop in a simple countdown timer in slides and HTML documents
+    written in R Markdown.
 License: MIT + file LICENSE
 URL: https://github.com/gadenbuie/countdown
 BugReports: https://github.com/gadenbuie/countdown/issues
@@ -15,6 +17,7 @@ Imports:
     callr,
     grDevices,
     htmltools,
+    stats,
     utils,
     whisker
 Suggests: 

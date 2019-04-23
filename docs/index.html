@@ -15,7 +15,7 @@ class: middle, left, title-slide
 # <code style='font-size: 200%'>countdown</code>
 ## ⏲ :: 💭 💬 👩‍💻 :: ⏰
 ### <a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>
-### <span style="color: #b58900;">0.0.2.9000</span><br/><span style="color: #2aa198">2019-03-20</span>
+### <span style="color: #b58900;">0.1.0</span><br/><span style="color: #2aa198">2019-04-22</span>
 
 ---
 
@@ -28,12 +28,13 @@ class: center middle
 
 [xaringan]: https://github.com/yihui/xaringan#readme
 [rmarkdown]: https://rmarkdown.rstudio.com
+[countdown]: https://github.com/gadenbuie/countdown
 
 # Hey look, it's a timer!
 
 &lt;p style="margin: 11em 0;"&gt;&lt;/p&gt;
 
-<div class="countdown" id="timer_e1f1855e" style="top:26%;right:33%;" data-audio="true">
+<div class="countdown" id="timer_5cbe7d43" style="top:26%;right:33%;" data-audio="true">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">42</span></code>
 </div>
 
@@ -46,31 +47,40 @@ Click while running to **bump** it up.
 
 Click when complete to **restart** it.
 
----
+.small.subtle[&amp;#x1F4F5; Timers don't work on mobile]
 
+---
 # Easily add a timer to your slides!
 
-Just call on `countdown`
+First, install `countdown` from [GitHub][countdown]
+
+```r
+remotes::install_github("gadenbuie/countdown")
+```
+
+--
+
+Then call on `countdown`
 
 ```r
 library(countdown)
 ```
 
-and then add
+--
+
+and in your [xaringan] slides or [R Markdown][rmarkdown] document add
+
+```markdown
+`r countdown(minutes = 0, seconds = 42)`
+```
+
+or
 
 ````markdown
 ```{r}
 countdown(minutes = 0, seconds = 42)
 ```
 ````
-
-or
-
-```markdown
-`r countdown(minutes = 0, seconds = 42)`
-```
-
-to your [xaringan] slides or [R Markdown][rmarkdown] document.
 
 ---
 
@@ -185,12 +195,12 @@ countdown(
 
 ---
 
-If you change your timer's styles, **you only have to do it once**.  
-Your first timer sets the theme for all the timers.  
+If you customize your timer's styles, **you only have to do it the first time**.  
+The theme of your first timer sets the theme for all timers.  
 
 --
 
-After that, you only _need_ to specify `minutes` and `seconds`&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;.
+After that, you only ever _need_ to specify `minutes` and `seconds`&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;.
 
 .footnote[
 &lt;sup&gt;&amp;#x2731;&lt;/sup&gt; Feeling lazy? Just set `minutes`. No need for pesky `seconds`.
@@ -205,7 +215,7 @@ countdown(minutes = 0, seconds = 15)
 ```
 
 .center[
-&lt;iframe src="default-timer/index.html" width="220px" height="125px" style="border:3px solid #002b36;"&gt;&lt;/iframe&gt;
+&lt;iframe src="default-timer/index.html" width="210px" height="125px" style="border:3px solid #002b36;"&gt;&lt;/iframe&gt;
 ]
 
 ---
@@ -217,7 +227,7 @@ layout: false
 You can have as many timers as you want, even on the same screen.  
 --
 
-Use `top`, `bottom`, `left` and `right` to place the timers.
+Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
 
 --
 
@@ -227,7 +237,7 @@ Use `top`, `bottom`, `left` and `right` to place the timers.
 countdown(minutes = 0, seconds = 7, bottom = 0)
 ```
 
-<div class="countdown" id="timer_aca1c6fb" style="right:0;bottom:0;">
+<div class="countdown" id="timer_5cbe7bc8" style="right:0;bottom:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">07</span></code>
 </div>
 
@@ -237,7 +247,7 @@ countdown(minutes = 0, seconds = 7, bottom = 0)
 countdown(minutes = 0, seconds = 13, top = 0)
 ```
 
-<div class="countdown" id="timer_ae0c4473" style="top:0;right:0;">
+<div class="countdown" id="timer_5cbe7e2f" style="top:0;right:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">13</span></code>
 </div>
 
@@ -247,7 +257,7 @@ countdown(minutes = 0, seconds = 13, top = 0)
 countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
 
-<div class="countdown" id="timer_2cbeacbc" style="bottom:0;left:0;">
+<div class="countdown" id="timer_5cbe7ca8" style="bottom:0;left:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">21</span></code>
 </div>
 
@@ -262,7 +272,7 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 
 `top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
 
-You can also override `font_size`, `padding`, and `margin`.
+You can also override the global timer `font_size`, `padding`, and `margin`.
 
 
 ```r
@@ -273,7 +283,7 @@ countdown(minutes = 1, seconds = 30,
           font_size = "6em")
 ```
 
-<div class="countdown" id="timer_31995aad" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
+<div class="countdown" id="timer_5cbe7ade" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
@@ -305,7 +315,7 @@ countdown(minutes = 0, seconds = 90,
 
 --
 
-<div class="countdown" id="timer_9de311c6" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
+<div class="countdown" id="timer_5cbe7b20" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
@@ -319,7 +329,7 @@ a very small amount of HTML and CSS and bit more of Javascript.
 Each countdown timer element looks something like this:
 
 ````html
-&lt;div class="countdown" id="timer_6e68c066" style="right:0;bottom:0;"&gt;
+&lt;div class="countdown" id="timer_5cbe7d5e" style="right:0;bottom:0;"&gt;
   &lt;code&gt;
     &lt;span class="digits minutes"&gt;03&lt;/span&gt;
     &lt;span class="digits colon"&gt;:&lt;/span&gt;
@@ -330,7 +340,7 @@ Each countdown timer element looks something like this:
 
 --
 
-Once the timer is activated, `&lt;div class="countdown"&gt;` gets one of two classes:
+Once the timer is activated, `&lt;div class="countdown"&gt;` gets an added class:
 
 - `running` when the timer is _running_, or
 - `finished` when the timer is _finished_.
@@ -342,7 +352,7 @@ Once the timer is activated, `&lt;div class="countdown"&gt;` gets one of two cla
 Want to completely customize the CSS of each timer?  
 --
 
-No problem!
+No problem! 
 
 --
 
@@ -389,6 +399,8 @@ countdown::countdown(0, 9, id = "special_timer")
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">09</span></code>
 </div>
 
+&lt;div style="position: absolute; bottom: 2%; right: 27%; font-size: 80%"&gt;Try this one, it's cool!&lt;span style="display: inline-block; transform: rotate(236deg);font-size: 125%;"&gt;⤹&lt;/span&gt;&lt;/div&gt;
+
 ---
 
 # Make a joyful noise!
@@ -402,7 +414,7 @@ Set `play_sound = TRUE` to be alerted to the end of the timer with fanfare!
 countdown(0, 10, play_sound = TRUE)
 ```
 
-<div class="countdown" id="timer_80e07acb" style="right:0;bottom:0;" data-audio="true">
+<div class="countdown" id="timer_5cbe7dde" style="right:0;bottom:0;" data-audio="true">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">10</span></code>
 </div>
 

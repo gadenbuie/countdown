@@ -166,6 +166,23 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   color: #657b83 !important;
 }
 
+/* Slide Header Background for h1 elements */
+.remark-slide-content.header_background > h1 {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #dc322f;
+  color: #fdf6e3;
+  padding: 2rem 4rem 1.5rem 4rem;
+  margin-top: 0;
+  box-sizing: border-box;
+}
+.remark-slide-content.header_background {
+  padding-top: 7rem;
+}
+
 @page { margin: 0; }
 @media print {
   .remark-slide-scaler {
@@ -186,6 +203,9 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .big {
   font-size: 150%;
 }
+.small {
+  font-size: 75%;
+}
 .subtle {
   opacity: 0.6;
 }
@@ -199,6 +219,9 @@ p .remark-inline-code {
   background-color: #6c71c41a;
   padding: 2px 2px;
   margin: 0 -2px;
+}
+blockquote {
+  margin-left: 0;
 }
 em {
   color: #2aa198;
