@@ -23,5 +23,5 @@ You can install countdown from GitHub with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("gadenbuie/remotes")
+remotes::install_github("gadenbuie/countdown")
 ```
