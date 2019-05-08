@@ -7,7 +7,7 @@
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   play_sound = FALSE, font_size = "3em", margin = "0.6em",
   padding = "0 15px", bottom = if (is.null(top)) "0", right = if
-  (is.null(left)) "0", top = NULL, left = NULL,
+  (is.null(left)) "0", top = NULL, left = NULL, update_every = 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px", border_radius = "15px",
   color_border = "#ddd", color_background = "inherit",
@@ -60,6 +60,11 @@ unset (\code{NULL}).}
 
 \item{left}{Position of the timer within its container. By default \code{left} is
 unset (\code{NULL}).}
+
+\item{update_every}{Update interval for the timer, in seconds. When this
+argument is greater than \code{1}, the timer run but the display will only
+update, once every \code{update_every} seconds. The timer will switch to normal
+second-by-second updating for the last two \code{update_every} periods.}
 
 \item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
 the shadow.}

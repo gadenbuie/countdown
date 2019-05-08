@@ -47,6 +47,10 @@
 #'   unset (`NULL`).
 #' @param top Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
+#' @param update_every Update interval for the timer, in seconds. When this
+#'   argument is greater than `1`, the timer run but the display will only
+#'   update, once every `update_every` seconds. The timer will switch to normal
+#'   second-by-second updating for the last two `update_every` periods.
 #' @param box_shadow Shadow specification for the timer, set to `NULL` to remove
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
@@ -82,6 +86,7 @@ countdown <- function(
   right = if (is.null(left)) "0",
   top = NULL,
   left = NULL,
+  update_every = 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
@@ -106,12 +111,17 @@ countdown <- function(
   }
   id <- validate_html_id(id)
 
-  class <- unique(c("countdown", class))
+  class <- paste(unique(c("countdown", class)), collapse = " ")
+
+  update_every <- as.integer(update_every)
+  if (update_every > 1L) {
+    class <- paste0(class, " noupdate-", update_every)
+  }
 
   `%:?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
 
   x <- div(
-    class = paste(class, collapse = " "),
+    class = class,
     id = id,
     style = paste0(top %:?% "top",
                    right %:?% "right",

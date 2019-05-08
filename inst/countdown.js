@@ -1,6 +1,14 @@
 var counters = {timer: {}};
-var update_timer = function(timer) {
+var update_timer = function(timer, force = false) {
 	var secs = timer.value;
+
+	// check if we should update timer or not
+	noup = timer.div.className.match(/noupdate-\d+/);
+	if (!force && noup != null) {
+	  noup = parseInt(noup[0].match(/\d+$/));
+	  if (secs > noup * 2 && secs % noup > 0) { return; }
+	}
+
   var mins = Math.floor(secs / 60); // 1 min = 60 secs
   secs -= mins * 60;
 
@@ -38,7 +46,8 @@ var countdown = function (e) {
 
     // Start if not past end date
     if (counters.timer[target.id].value > 0) {
-      target.className = "countdown running";
+      base_class = target.className.replace(/\s?(running|finished)/, "")
+      target.className = base_class + " running";
       counters.timer[target.id].running = true;
 
       if (!counters.ticker) {
@@ -48,7 +57,7 @@ var countdown = function (e) {
   } else {
     // Bump timer value if running & clicked
     counters.timer[target.id].value += counter_bump_increment(counters.timer[target.id].end);
-    update_timer(counters.timer[target.id]);
+    update_timer(counters.timer[target.id], force = true);
     counters.timer[target.id].value += 1;
   }
 };
@@ -74,7 +83,7 @@ var counter_update_all = function() {
     if (counters.timer[i].value <= 0) {
       counters.timer[i].min.innerHTML = "00";
       counters.timer[i].sec.innerHTML = "00";
-      counters.timer[i].div.className = "countdown finished";
+      counters.timer[i].div.className = counters.timer[i].div.className.replace("running", "finished");
       counters.timer[i].running = false;
     } else {
       // Update
