@@ -93,7 +93,7 @@ finished background color.}
 \item{color_finished_text}{Color of the timer text when finished.}
 }
 \value{
-An vanilla Javascript countdown timer as HTML, with dependencies.
+A vanilla Javascript countdown timer as HTML, with dependencies.
 }
 \description{
 Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable

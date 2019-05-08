@@ -16,7 +16,7 @@
 #'           font_size = "6em")
 #' }
 #'
-#' @return An vanilla Javascript countdown timer as HTML, with dependencies.
+#' @return A vanilla Javascript countdown timer as HTML, with dependencies.
 #'
 #' @param minutes The number of minutes for which the timer should run. This
 #'   value is added to `seconds`.
@@ -108,18 +108,18 @@ countdown <- function(
 
   class <- unique(c("countdown", class))
 
-  `%+?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
+  `%:?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
 
   x <- div(
     class = paste(class, collapse = " "),
     id = id,
-    style = paste0(top %+?% "top",
-                   right %+?% "right",
-                   bottom %+?% "bottom",
-                   left %+?% "left",
-                   if (!missing(margin)) margin %+?% "margin",
-                   if (!missing(padding)) padding %+?% "padding",
-                   if (!missing(font_size)) font_size %+?% "font-size"),
+    style = paste0(top %:?% "top",
+                   right %:?% "right",
+                   bottom %:?% "bottom",
+                   left %:?% "left",
+                   if (!missing(margin)) margin %:?% "margin",
+                   if (!missing(padding)) padding %:?% "padding",
+                   if (!missing(font_size)) font_size %:?% "font-size"),
     code(
       HTML(
         paste0(
