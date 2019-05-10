@@ -36,7 +36,7 @@ specific reason, it would probably be best to leave this unset.}
 \item{class}{Optional additional classes to be added to the \code{<div>}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
-class or specify addtional styles here that extend the base CSS.}
+class or specify additional styles here that extend the base CSS.}
 
 \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
 "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.}
@@ -106,10 +106,10 @@ finished background color.}
 \item{color_finished_text}{Color of the timer text when finished.}
 }
 \value{
-A vanilla Javascript countdown timer as HTML, with dependencies.
+A vanilla JavaScript countdown timer as HTML, with dependencies.
 }
 \description{
-Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable
+Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 for use in web-based presentations, such as those created by
 \code{\link[xaringan:infinite_moon_reader]{xaringan::infinite_moon_reader()}}.
 }

@@ -1,6 +1,6 @@
 #' Countdown Timer
 #'
-#' Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable
+#' Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 #' for use in web-based presentations, such as those created by
 #' [xaringan::infinite_moon_reader()].
 #'
@@ -16,7 +16,7 @@
 #'           font_size = "6em")
 #' }
 #'
-#' @return A vanilla Javascript countdown timer as HTML, with dependencies.
+#' @return A vanilla JavaScript countdown timer as HTML, with dependencies.
 #'
 #' @param minutes The number of minutes for which the timer should run. This
 #'   value is added to `seconds`.
@@ -30,7 +30,7 @@
 #' @param class Optional additional classes to be added to the `<div>`
 #'   containing the timer. The `"countdown"` class is added automatically. If
 #'   you want to modify the style of the timer, you can modify the `"countdown"`
-#'   class or specify addtional styles here that extend the base CSS.
+#'   class or specify additional styles here that extend the base CSS.
 #' @param play_sound Play a sound at the end of the timer? If `TRUE`, plays the
 #'   "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 #' @param font_size The font size of the time displayed in the timer.
@@ -119,6 +119,8 @@ countdown <- function(
   id <- validate_html_id(id)
 
   class <- paste(unique(c("countdown", class)), collapse = " ")
+
+  if (blink_colon) class <- paste(class, "blink-colon")
 
   update_every <- as.integer(update_every)
   if (update_every > 1L) {

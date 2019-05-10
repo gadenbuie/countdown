@@ -8,7 +8,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "garrick@adenbuie.com")
 Description: Countdown to something amazing. countdown makes it
-    easy to drop in a simple countdown timer in slides and HTML documents
+    easy to drop a simple countdown timer into slides and HTML documents
     written in R Markdown.
 License: MIT + file LICENSE
 URL: https://github.com/gadenbuie/countdown
