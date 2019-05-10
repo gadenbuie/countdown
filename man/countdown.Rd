@@ -7,7 +7,8 @@
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   play_sound = FALSE, font_size = "3em", margin = "0.6em",
   padding = "0 15px", bottom = if (is.null(top)) "0", right = if
-  (is.null(left)) "0", top = NULL, left = NULL,
+  (is.null(left)) "0", top = NULL, left = NULL, update_every = 1L,
+  blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px", border_radius = "15px",
   color_border = "#ddd", color_background = "inherit",
@@ -35,7 +36,7 @@ specific reason, it would probably be best to leave this unset.}
 \item{class}{Optional additional classes to be added to the \code{<div>}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
-class or specify addtional styles here that extend the base CSS.}
+class or specify additional styles here that extend the base CSS.}
 
 \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
 "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.}
@@ -60,6 +61,18 @@ unset (\code{NULL}).}
 
 \item{left}{Position of the timer within its container. By default \code{left} is
 unset (\code{NULL}).}
+
+\item{update_every}{Update interval for the timer, in seconds. When this
+argument is greater than \code{1}, the timer run but the display will only
+update, once every \code{update_every} seconds. The timer will switch to normal
+second-by-second updating for the last two \code{update_every} periods.}
+
+\item{blink_colon}{Adds an animation to the blink the colon of the digital
+timer at each second. Because the blink animation is handled via CSS and
+not by the JavaScript process that decrements the timer, so the animation
+may fall out of sync with the timer. For this reason, the blink animation
+is only shown, by default, when \code{update_every} is greater than 1, i.e. when
+the countdown time is updated periodically rather than each second.}
 
 \item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
 the shadow.}
@@ -93,10 +106,10 @@ finished background color.}
 \item{color_finished_text}{Color of the timer text when finished.}
 }
 \value{
-An vanilla Javascript countdown timer as HTML, with dependencies.
+A vanilla JavaScript countdown timer as HTML, with dependencies.
 }
 \description{
-Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable
+Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 for use in web-based presentations, such as those created by
 \code{\link[xaringan:infinite_moon_reader]{xaringan::infinite_moon_reader()}}.
 }

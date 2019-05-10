@@ -1,6 +1,6 @@
 #' Countdown Timer
 #'
-#' Creates a countdown timer using HTML, CSS, and vanilla Javascript, suitable
+#' Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 #' for use in web-based presentations, such as those created by
 #' [xaringan::infinite_moon_reader()].
 #'
@@ -16,7 +16,7 @@
 #'           font_size = "6em")
 #' }
 #'
-#' @return An vanilla Javascript countdown timer as HTML, with dependencies.
+#' @return A vanilla JavaScript countdown timer as HTML, with dependencies.
 #'
 #' @param minutes The number of minutes for which the timer should run. This
 #'   value is added to `seconds`.
@@ -30,7 +30,7 @@
 #' @param class Optional additional classes to be added to the `<div>`
 #'   containing the timer. The `"countdown"` class is added automatically. If
 #'   you want to modify the style of the timer, you can modify the `"countdown"`
-#'   class or specify addtional styles here that extend the base CSS.
+#'   class or specify additional styles here that extend the base CSS.
 #' @param play_sound Play a sound at the end of the timer? If `TRUE`, plays the
 #'   "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 #' @param font_size The font size of the time displayed in the timer.
@@ -47,6 +47,16 @@
 #'   unset (`NULL`).
 #' @param top Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
+#' @param update_every Update interval for the timer, in seconds. When this
+#'   argument is greater than `1`, the timer run but the display will only
+#'   update, once every `update_every` seconds. The timer will switch to normal
+#'   second-by-second updating for the last two `update_every` periods.
+#' @param blink_colon Adds an animation to the blink the colon of the digital
+#'   timer at each second. Because the blink animation is handled via CSS and
+#'   not by the JavaScript process that decrements the timer, so the animation
+#'   may fall out of sync with the timer. For this reason, the blink animation
+#'   is only shown, by default, when `update_every` is greater than 1, i.e. when
+#'   the countdown time is updated periodically rather than each second.
 #' @param box_shadow Shadow specification for the timer, set to `NULL` to remove
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
@@ -82,6 +92,8 @@ countdown <- function(
   right = if (is.null(left)) "0",
   top = NULL,
   left = NULL,
+  update_every = 1L,
+  blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
@@ -106,20 +118,27 @@ countdown <- function(
   }
   id <- validate_html_id(id)
 
-  class <- unique(c("countdown", class))
+  class <- paste(unique(c("countdown", class)), collapse = " ")
 
-  `%+?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
+  if (blink_colon) class <- paste(class, "blink-colon")
+
+  update_every <- as.integer(update_every)
+  if (update_every > 1L) {
+    class <- paste0(class, " noupdate-", update_every)
+  }
+
+  `%:?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
 
   x <- div(
-    class = paste(class, collapse = " "),
+    class = class,
     id = id,
-    style = paste0(top %+?% "top",
-                   right %+?% "right",
-                   bottom %+?% "bottom",
-                   left %+?% "left",
-                   if (!missing(margin)) margin %+?% "margin",
-                   if (!missing(padding)) padding %+?% "padding",
-                   if (!missing(font_size)) font_size %+?% "font-size"),
+    style = paste0(top %:?% "top",
+                   right %:?% "right",
+                   bottom %:?% "bottom",
+                   left %:?% "left",
+                   if (!missing(margin)) margin %:?% "margin",
+                   if (!missing(padding)) padding %:?% "padding",
+                   if (!missing(font_size)) font_size %:?% "font-size"),
     code(
       HTML(
         paste0(

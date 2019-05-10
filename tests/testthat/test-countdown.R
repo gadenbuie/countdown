@@ -70,6 +70,13 @@ test_that("countdown()", {
   expect_error(countdown(100), "minutes")
 })
 
+test_that("countdown() with update_every", {
+  x <- countdown(1, 30, id = "timer_1", update_every = 15)
+
+  expect_true(grepl("blink-colon", x$attribs$class))
+  expect_true(grepl("noupdate-15", x$attribs$class))
+})
+
 test_that("countdown dependencies are included", {
   html_doc <- c(
     "---",

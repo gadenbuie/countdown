@@ -15,7 +15,7 @@ class: middle, left, title-slide
 # <code style='font-size: 200%'>countdown</code>
 ## ⏲ :: 💭 💬 👩‍💻 :: ⏰
 ### <a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>
-### <span style="color: #b58900;">0.1.0</span><br/><span style="color: #2aa198">2019-04-22</span>
+### <span style="color: #b58900;">0.2.0</span><br/><span style="color: #2aa198">2019-05-09</span>
 
 ---
 
@@ -34,7 +34,7 @@ class: center middle
 
 &lt;p style="margin: 11em 0;"&gt;&lt;/p&gt;
 
-<div class="countdown" id="timer_5cbe7d43" style="top:26%;right:33%;" data-audio="true">
+<div class="countdown" id="timer_5cd4e965" style="top:26%;right:33%;" data-audio="true">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">42</span></code>
 </div>
 
@@ -237,7 +237,7 @@ Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
 countdown(minutes = 0, seconds = 7, bottom = 0)
 ```
 
-<div class="countdown" id="timer_5cbe7bc8" style="right:0;bottom:0;">
+<div class="countdown" id="timer_5cd4e96a" style="right:0;bottom:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">07</span></code>
 </div>
 
@@ -247,7 +247,7 @@ countdown(minutes = 0, seconds = 7, bottom = 0)
 countdown(minutes = 0, seconds = 13, top = 0)
 ```
 
-<div class="countdown" id="timer_5cbe7e2f" style="top:0;right:0;">
+<div class="countdown" id="timer_5cd4e8e6" style="top:0;right:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">13</span></code>
 </div>
 
@@ -257,7 +257,7 @@ countdown(minutes = 0, seconds = 13, top = 0)
 countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
 
-<div class="countdown" id="timer_5cbe7ca8" style="bottom:0;left:0;">
+<div class="countdown" id="timer_5cd4e923" style="bottom:0;left:0;">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">21</span></code>
 </div>
 
@@ -283,7 +283,7 @@ countdown(minutes = 1, seconds = 30,
           font_size = "6em")
 ```
 
-<div class="countdown" id="timer_5cbe7ade" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
+<div class="countdown" id="timer_5cd4e892" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
@@ -315,8 +315,30 @@ countdown(minutes = 0, seconds = 90,
 
 --
 
-<div class="countdown" id="timer_5cbe7b20" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
+<div class="countdown" id="timer_5cd4e8a4" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
+</div>
+
+---
+class: center top
+
+&lt;div style = "padding-top: 3em"&gt;&lt;/div&gt;
+
+# Keep Calm
+
+### and
+
+# Countdown
+
+Avoid countdown panic with a timer&lt;br&gt;that only **update**s once **every** *n* seconds
+
+
+```r
+countdown(minutes = 1, update_every = 15, right = "33%")
+```
+
+<div class="countdown blink-colon noupdate-15" id="timer_5cd4e885" style="right:33%;bottom:0;">
+<code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
 </div>
 
 ---
@@ -329,7 +351,7 @@ a very small amount of HTML and CSS and bit more of Javascript.
 Each countdown timer element looks something like this:
 
 ````html
-&lt;div class="countdown" id="timer_5cbe7d5e" style="right:0;bottom:0;"&gt;
+&lt;div class="countdown" id="timer_5cd4eba8" style="right:0;bottom:0;"&gt;
   &lt;code&gt;
     &lt;span class="digits minutes"&gt;03&lt;/span&gt;
     &lt;span class="digits colon"&gt;:&lt;/span&gt;
@@ -414,7 +436,7 @@ Set `play_sound = TRUE` to be alerted to the end of the timer with fanfare!
 countdown(0, 10, play_sound = TRUE)
 ```
 
-<div class="countdown" id="timer_5cbe7dde" style="right:0;bottom:0;" data-audio="true">
+<div class="countdown" id="timer_5cd4eb5f" style="right:0;bottom:0;" data-audio="true">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">10</span></code>
 </div>
 

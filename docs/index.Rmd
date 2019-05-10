@@ -339,6 +339,23 @@ countdown(minutes = 0, seconds = 90,
 ```
 
 ---
+class: center top
+
+<div style = "padding-top: 3em"></div>
+
+# Keep Calm
+
+### and
+
+# Countdown
+
+Avoid countdown panic with a timer<br>that only **update**s once **every** *n* seconds
+
+```{r}
+countdown(minutes = 1, update_every = 15, right = "33%")
+```
+
+---
 
 # Behind the scenes
 

@@ -28,3 +28,20 @@
 .countdown.finished .digits {
   color: #000000;
 }
+
+@-webkit-keyframes blink {
+	from {opacity: 1}
+	50%  {opacity: 0.1}
+	to   {opacity: 1}
+}
+
+@keyframes blink {
+	from {opacity: 1}
+	50%  {opacity: 0.1}
+	to   {opacity: 1}
+}
+
+.countdown.running.blink-colon .digits.colon{
+  -webkit-animation: blink 2s steps(1, end) 0s infinite;
+          animation: blink 2s steps(1, end) 0s infinite;
+}
