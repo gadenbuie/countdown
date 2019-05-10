@@ -51,6 +51,12 @@
 #'   argument is greater than `1`, the timer run but the display will only
 #'   update, once every `update_every` seconds. The timer will switch to normal
 #'   second-by-second updating for the last two `update_every` periods.
+#' @param blink_colon Adds an animation to the blink the colon of the digital
+#'   timer at each second. Because the blink animation is handled via CSS and
+#'   not by the JavaScript process that decrements the timer, so the animation
+#'   may fall out of sync with the timer. For this reason, the blink animation
+#'   is only shown, by default, when `update_every` is greater than 1, i.e. when
+#'   the countdown time is updated periodically rather than each second.
 #' @param box_shadow Shadow specification for the timer, set to `NULL` to remove
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
@@ -87,6 +93,7 @@ countdown <- function(
   top = NULL,
   left = NULL,
   update_every = 1L,
+  blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",

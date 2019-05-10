@@ -8,6 +8,7 @@ countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   play_sound = FALSE, font_size = "3em", margin = "0.6em",
   padding = "0 15px", bottom = if (is.null(top)) "0", right = if
   (is.null(left)) "0", top = NULL, left = NULL, update_every = 1L,
+  blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px", border_radius = "15px",
   color_border = "#ddd", color_background = "inherit",
@@ -65,6 +66,13 @@ unset (\code{NULL}).}
 argument is greater than \code{1}, the timer run but the display will only
 update, once every \code{update_every} seconds. The timer will switch to normal
 second-by-second updating for the last two \code{update_every} periods.}
+
+\item{blink_colon}{Adds an animation to the blink the colon of the digital
+timer at each second. Because the blink animation is handled via CSS and
+not by the JavaScript process that decrements the timer, so the animation
+may fall out of sync with the timer. For this reason, the blink animation
+is only shown, by default, when \code{update_every} is greater than 1, i.e. when
+the countdown time is updated periodically rather than each second.}
 
 \item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
 the shadow.}
