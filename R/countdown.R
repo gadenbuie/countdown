@@ -47,6 +47,10 @@
 #'   unset (`NULL`).
 #' @param top Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
+#' @param warn_when Change the countdown to "warning" state when `warn_when`
+#'   seconds remain. This is achieved by adding the `warning` class to the
+#'   timer when `warn_when` seconds or less remain. Only applied when greater
+#'   than `0`.
 #' @param update_every Update interval for the timer, in seconds. When this
 #'   argument is greater than `1`, the timer run but the display will only
 #'   update, once every `update_every` seconds. The timer will switch to normal
@@ -76,6 +80,14 @@
 #'   finished background color.
 #' @param color_finished_border Color of the timer border when finished.
 #' @param color_finished_text Color of the timer text when finished.
+#' @param color_warning_background Color of the timer background when the timer
+#'   is below `warn_when` seconds. Colors are automatically chosen for the
+#'   warning timer border and text (`color_warning_border` and
+#'   `color_warning_text`, respectively) from the warning background color.
+#' @param color_warning_border Color of the timer border when the timer
+#'   is below `warn_when` seconds.
+#' @param color_warning_text Color of the timer text when the timer
+#'   is below `warn_when` seconds.
 #' @importFrom htmltools HTML htmlDependency div code span
 #' @export
 countdown <- function(
@@ -92,6 +104,7 @@ countdown <- function(
   right = if (is.null(left)) "0",
   top = NULL,
   left = NULL,
+  warn_when = 0L,
   update_every = 1L,
   blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
@@ -100,17 +113,24 @@ countdown <- function(
   color_border = "#ddd",
   color_background = "inherit",
   color_text = "inherit",
-  color_running_background = "#43ac6a",
+  color_running_background = "#43AC6A",
   color_running_border = darken(color_running_background, 0.1),
   color_running_text = choose_dark_or_light(color_running_background),
   color_finished_background = "#F04124",
   color_finished_border = darken(color_finished_background, 0.1),
-  color_finished_text = choose_dark_or_light(color_finished_background)
+  color_finished_text = choose_dark_or_light(color_finished_background),
+  color_warning_background = "#E6C229",
+  color_warning_border = darken(color_warning_background, 0.1),
+  color_warning_text = choose_dark_or_light(color_warning_background)
 ) {
   time <- minutes * 60 + seconds
   minutes <- as.integer(floor(time / 60))
   seconds <- as.integer(time - minutes * 60)
   stopifnot(minutes < 100)
+  warn_when <- suppressWarnings(as.integer(warn_when))
+  if (is.na(warn_when)) {
+    stop("`warn_when` must be an integer number of seconds")
+  }
 
   if (is.null(id)) {
     uid <- make_unique_id()
@@ -151,6 +171,7 @@ countdown <- function(
   )
 
   if (play_sound) x$attribs$`data-audio` <- "true"
+  x$attribs$`data-warnwhen` <- if (warn_when > 0) warn_when else 0L
 
   tmpdir <- tempfile("countdown")
   dir.create(tmpdir)

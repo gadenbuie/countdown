@@ -19,17 +19,24 @@
 }
 .countdown.running {
   border-color: #3C9A5F;
-  background-color: #43ac6a;
+  background-color: #43AC6A;
 }
 .countdown.running .digits {
-  color: #000000;
+  color: #0D2215;
 }
 .countdown.finished {
   border-color: #D600D6;
   background-color: magenta2;
 }
 .countdown.finished .digits {
-  color: #000000;
+  color: #2F002F;
+}
+.countdown.running.warning {
+  border-color: #CFAE24;
+  background-color: #E6C229;
+}
+.countdown.running.warning .digits {
+  color: #2D2608;
 }
 
 @-webkit-keyframes blink {
