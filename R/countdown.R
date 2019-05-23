@@ -101,10 +101,10 @@ countdown <- function(
   color_background = "inherit",
   color_text = "inherit",
   color_running_background = "#43ac6a",
-  color_running_border = darken_color(color_running_background, 0.1),
+  color_running_border = darken(color_running_background, 0.1),
   color_running_text = choose_dark_or_light(color_running_background),
   color_finished_background = "#F04124",
-  color_finished_border = darken_color(color_finished_background, 0.1),
+  color_finished_border = darken(color_finished_background, 0.1),
   color_finished_text = choose_dark_or_light(color_finished_background)
 ) {
   time <- minutes * 60 + seconds

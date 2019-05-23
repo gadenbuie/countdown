@@ -1,13 +1,44 @@
-
+#' @title Generate lighter or darker version of a color
+#' @description Produces a linear blend of the color with white or black.
+#' @param color_hex A character string representing a hex color
+#' @param strength The "strength" of the blend with white or black,
+#'   0 low to 1 high.
 #' @importFrom grDevices rgb
-darken_color <- function(x, strength = 0.8) {
+#' @name lighten_darken_color
+NULL
+
+#' @rdname lighten_darken_color
+#' @export
+lighten <- function(color_hex, strength = 0.7) {
+  stopifnot(strength >= 0 && strength <= 1)
+  color_rgb <- col2rgb(color_hex)
+  color_rgb <- (1 - strength) * color_rgb + strength * 255
+  rgb(color_rgb[1], color_rgb[2], color_rgb[3], maxColorValue = 255)
+}
+
+#' @rdname lighten_darken_color
+#' @export
+darken <- function(x, strength = 0.8) {
   stopifnot(strength >= 0 && strength <= 1)
   color_rgb <- col2rgb(x)
   color_rgb <- (1 - strength) * color_rgb
   rgb(color_rgb[1], color_rgb[2], color_rgb[3], maxColorValue = 255)
 }
 
-choose_dark_or_light <- function(x, black = "#000000", white = "#FFFFFF") {
+#' Choose dark or light color
+#'
+#' Takes a color input as `x` and returns either the black or white color if
+#' dark or light text should be used over the input color for best contrast.
+#' Follows W3C Recommendations.
+#'
+#' @references <https://stackoverflow.com/a/3943023/2022615>
+#' @param x The background color
+#' @param black Text or foreground color, e.g. "#22222" or `darken(x, 0.8)`, if
+#'   black text provides the best contrast.
+#' @param white Text or foreground color or expression, e.g. "#EEEEEE" or
+#'   `lighten(x, 0.8)`, if white text provides the best contrast.
+#' @export
+choose_dark_or_light <- function(x, black = darken(x, 0.8), white = lighten(x, 0.8)) {
   color_rgb <- col2rgb(x)
   # from https://stackoverflow.com/a/3943023/2022615
   color_rgb <- color_rgb / 255
