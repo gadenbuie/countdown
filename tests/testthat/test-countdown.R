@@ -77,6 +77,16 @@ test_that("countdown() with update_every", {
   expect_true(grepl("noupdate-15", x$attribs$class))
 })
 
+test_that("countdown() sets up timer correctly with warn_when", {
+  x <- countdown(1, 30, warn_when = 15)
+  expect_equal(x$attribs$`data-warnwhen`, 15L)
+
+  x <- countdown(1, 30, warn_when = 15.25)
+  expect_equal(x$attribs$`data-warnwhen`, 15L)
+
+  expect_error(countdown(warn_when = 'after'))
+})
+
 test_that("countdown dependencies are included", {
   html_doc <- c(
     "---",

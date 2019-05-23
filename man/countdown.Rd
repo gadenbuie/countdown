@@ -7,17 +7,20 @@
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   play_sound = FALSE, font_size = "3em", margin = "0.6em",
   padding = "0 15px", bottom = if (is.null(top)) "0", right = if
-  (is.null(left)) "0", top = NULL, left = NULL, update_every = 1L,
-  blink_colon = update_every > 1L,
+  (is.null(left)) "0", top = NULL, left = NULL, warn_when = 0L,
+  update_every = 1L, blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px", border_radius = "15px",
   color_border = "#ddd", color_background = "inherit",
-  color_text = "inherit", color_running_background = "#43ac6a",
-  color_running_border = darken_color(color_running_background, 0.1),
+  color_text = "inherit", color_running_background = "#43AC6A",
+  color_running_border = darken(color_running_background, 0.1),
   color_running_text = choose_dark_or_light(color_running_background),
   color_finished_background = "#F04124",
-  color_finished_border = darken_color(color_finished_background, 0.1),
-  color_finished_text = choose_dark_or_light(color_finished_background))
+  color_finished_border = darken(color_finished_background, 0.1),
+  color_finished_text = choose_dark_or_light(color_finished_background),
+  color_warning_background = "#E6C229",
+  color_warning_border = darken(color_warning_background, 0.1),
+  color_warning_text = choose_dark_or_light(color_warning_background))
 }
 \arguments{
 \item{minutes}{The number of minutes for which the timer should run. This
@@ -62,6 +65,11 @@ unset (\code{NULL}).}
 \item{left}{Position of the timer within its container. By default \code{left} is
 unset (\code{NULL}).}
 
+\item{warn_when}{Change the countdown to "warning" state when \code{warn_when}
+seconds remain. This is achieved by adding the \code{warning} class to the
+timer when \code{warn_when} seconds or less remain. Only applied when greater
+than \code{0}.}
+
 \item{update_every}{Update interval for the timer, in seconds. When this
 argument is greater than \code{1}, the timer run but the display will only
 update, once every \code{update_every} seconds. The timer will switch to normal
@@ -104,6 +112,17 @@ finished background color.}
 \item{color_finished_border}{Color of the timer border when finished.}
 
 \item{color_finished_text}{Color of the timer text when finished.}
+
+\item{color_warning_background}{Color of the timer background when the timer
+is below \code{warn_when} seconds. Colors are automatically chosen for the
+warning timer border and text (\code{color_warning_border} and
+\code{color_warning_text}, respectively) from the warning background color.}
+
+\item{color_warning_border}{Color of the timer border when the timer
+is below \code{warn_when} seconds.}
+
+\item{color_warning_text}{Color of the timer text when the timer
+is below \code{warn_when} seconds.}
 }
 \value{
 A vanilla JavaScript countdown timer as HTML, with dependencies.

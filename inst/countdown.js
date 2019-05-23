@@ -9,6 +9,16 @@ var update_timer = function(timer, force = false) {
 	  if (secs > noup * 2 && secs % noup > 0) { return; }
 	}
 
+	// should we apply or remove warning class?
+	warnwhen = timer.div.dataset.warnwhen;
+	if (warnwhen && warnwhen > 0) {
+	  if (secs <= warnwhen && !timer.div.classList.contains("warning")) {
+	    timer.div.classList.add("warning");
+	  } else if (secs > warnwhen && timer.div.classList.contains("warning")) {
+	    timer.div.classList.remove("warning");
+	  }
+	}
+
   var mins = Math.floor(secs / 60); // 1 min = 60 secs
   secs -= mins * 60;
 
