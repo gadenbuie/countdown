@@ -2,6 +2,7 @@
 % Please edit documentation in R/countdown.R
 \name{countdown}
 \alias{countdown}
+\alias{countdown_fullscreen}
 \title{Countdown Timer}
 \usage{
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
@@ -10,7 +11,7 @@ countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   (is.null(left)) "0", top = NULL, left = NULL, warn_when = 0L,
   update_every = 1L, blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px", border_radius = "15px",
+  border_width = "3px", border_radius = "15px", line_height = "1.2",
   color_border = "#ddd", color_background = "inherit",
   color_text = "inherit", color_running_background = "#43AC6A",
   color_running_border = darken(color_running_background, 0.1),
@@ -21,6 +22,11 @@ countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   color_warning_background = "#E6C229",
   color_warning_border = darken(color_warning_background, 0.1),
   color_warning_text = choose_dark_or_light(color_warning_background))
+
+countdown_fullscreen(minutes = 1, seconds = 0, ...,
+  font_size = "30vw", line_height = "96vh", border_width = "0",
+  border_radius = "0", margin = "0", padding = "0", top = 0,
+  right = 0, bottom = 0, left = 0)
 }
 \arguments{
 \item{minutes}{The number of minutes for which the timer should run. This
@@ -123,6 +129,79 @@ is below \code{warn_when} seconds.}
 
 \item{color_warning_text}{Color of the timer text when the timer
 is below \code{warn_when} seconds.}
+
+\item{...}{Arguments passed on to \code{countdown}
+\describe{
+  \item{minutes}{The number of minutes for which the timer should run. This
+value is added to \code{seconds}.}
+  \item{seconds}{The number of seconds for which the timer should run. This
+value is added to \code{minutes}.}
+  \item{id}{A optional unique ID for the \code{<div>} containing the timer. A unique
+ID will be created if none is specified. All of the timers in a single
+document need to have unique IDs to function properly. Unless you have a
+specific reason, it would probably be best to leave this unset.}
+  \item{class}{Optional additional classes to be added to the \code{<div>}
+containing the timer. The \code{"countdown"} class is added automatically. If
+you want to modify the style of the timer, you can modify the \code{"countdown"}
+class or specify additional styles here that extend the base CSS.}
+  \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
+"stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.}
+  \item{font_size}{The font size of the time displayed in the timer.}
+  \item{margin}{The margin applied to the timer container, default is
+\code{"0.5em"}.}
+  \item{padding}{The padding within the timer container, default is \code{"0 15px"}.}
+  \item{right}{Position of the timer within its container. By default the timer
+is right-aligned using \code{right = "0"}. If \code{left} is set, \code{right} defaults to
+\code{NULL}.}
+  \item{bottom}{Position of the timer within its container. By default the
+timer is bottom-aligned using \code{bottom = "0"}. If \code{top} is set, \code{bottom}
+defaults to \code{NULL}.}
+  \item{left}{Position of the timer within its container. By default \code{left} is
+unset (\code{NULL}).}
+  \item{top}{Position of the timer within its container. By default \code{top} is
+unset (\code{NULL}).}
+  \item{warn_when}{Change the countdown to "warning" state when \code{warn_when}
+seconds remain. This is achieved by adding the \code{warning} class to the
+timer when \code{warn_when} seconds or less remain. Only applied when greater
+than \code{0}.}
+  \item{update_every}{Update interval for the timer, in seconds. When this
+argument is greater than \code{1}, the timer run but the display will only
+update, once every \code{update_every} seconds. The timer will switch to normal
+second-by-second updating for the last two \code{update_every} periods.}
+  \item{blink_colon}{Adds an animation to the blink the colon of the digital
+timer at each second. Because the blink animation is handled via CSS and
+not by the JavaScript process that decrements the timer, so the animation
+may fall out of sync with the timer. For this reason, the blink animation
+is only shown, by default, when \code{update_every} is greater than 1, i.e. when
+the countdown time is updated periodically rather than each second.}
+  \item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
+the shadow.}
+  \item{border_width}{Width of the timer border (all states).}
+  \item{border_radius}{Radius of timer border corners (all states).}
+  \item{color_border}{Color of the timer border when not yet activated.}
+  \item{color_background}{Color of the timer background when not yet activated.}
+  \item{color_text}{Color of the timer text when not yet activated.}
+  \item{color_running_background}{Color of the timer background when running.
+Colors are automatically chosen for the running timer border and text
+(\code{color_running_border} and \code{color_running_text}, respectively) from the
+running background color.}
+  \item{color_running_border}{Color of the timer border when running.}
+  \item{color_running_text}{Color of the timer text when running.}
+  \item{color_finished_background}{Color of the timer background when finished.
+Colors are automatically chosen for the finished timer border and text
+(\code{color_finished_border} and \code{color_finished_text}, respectively) from the
+finished background color.}
+  \item{color_finished_border}{Color of the timer border when finished.}
+  \item{color_finished_text}{Color of the timer text when finished.}
+  \item{color_warning_background}{Color of the timer background when the timer
+is below \code{warn_when} seconds. Colors are automatically chosen for the
+warning timer border and text (\code{color_warning_border} and
+\code{color_warning_text}, respectively) from the warning background color.}
+  \item{color_warning_border}{Color of the timer border when the timer
+is below \code{warn_when} seconds.}
+  \item{color_warning_text}{Color of the timer text when the timer
+is below \code{warn_when} seconds.}
+}}
 }
 \value{
 A vanilla JavaScript countdown timer as HTML, with dependencies.
@@ -132,6 +211,12 @@ Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 for use in web-based presentations, such as those created by
 \code{\link[xaringan:infinite_moon_reader]{xaringan::infinite_moon_reader()}}.
 }
+\section{Functions}{
+\itemize{
+\item \code{countdown_fullscreen}: A full-screen timer that takes up the entire view port
+and uses the largest reasonable font size.
+}}
+
 \examples{
 
 \dontrun{

@@ -110,6 +110,7 @@ countdown <- function(
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
+  line_height = "1.2",
   color_border = "#ddd",
   color_background = "inherit",
   color_text = "inherit",
@@ -195,6 +196,38 @@ countdown <- function(
     )
 
   htmltools::browsable(x)
+}
+
+#' @describeIn countdown A full-screen timer that takes up the entire view port
+#'   and uses the largest reasonable font size.
+#' @inheritDotParams countdown
+#' @export
+countdown_fullscreen <- function(
+  minutes = 1,
+  seconds = 0,
+  ...,
+  font_size = "30vw",
+  line_height = "96vh",
+  border_width = "0",
+  border_radius = "0",
+  margin = "0",
+  padding = "0",
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0
+) {
+  countdown(
+    minutes, seconds,
+    font_size = font_size,
+    line_height = line_height,
+    border_width = border_width,
+    border_radius = border_radius,
+    margin = margin,
+    padding = padding,
+    top = top, right = right, bottom = bottom, left = left,
+    ...
+  )
 }
 
 
