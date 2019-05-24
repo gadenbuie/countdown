@@ -4,6 +4,11 @@
   `warn_when = N`. The `warning` class is applied to the timer for the last `N`
   seconds, and the colors of this state are configured with the arguments with
   `color_warning_` prefix (thanks @hadley, #5).
+  
+* Added a new convenience function for full-screen (and stand-alone) countdown
+  timers, `countdown_fullscreen()`. This function's defaults work best when
+  called from RStudio, in xaringan slides it will still be necessary to fiddle
+  with `font_size`, `margin`, and `padding` (thanks @hadley, #6).
 
 # countdown 0.2.0
 
