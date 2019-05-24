@@ -34,11 +34,18 @@ darken <- function(x, strength = 0.8) {
 #' @references <https://stackoverflow.com/a/3943023/2022615>
 #' @param x The background color
 #' @param black Text or foreground color, e.g. "#22222" or `darken(x, 0.8)`, if
-#'   black text provides the best contrast.
+#'   black text provides the best contrast. By default chooses the input color
+#'   `x` darkened by `strength`.
 #' @param white Text or foreground color or expression, e.g. "#EEEEEE" or
-#'   `lighten(x, 0.8)`, if white text provides the best contrast.
+#'   `lighten(x, 0.8)`, if white text provides the best contrast. By default
+#'   chooses the input color `x` lightened by `strength`.
 #' @export
-choose_dark_or_light <- function(x, black = darken(x, 0.8), white = lighten(x, 0.8)) {
+choose_dark_or_light <- function(
+  x,
+  black = darken(x, strength),
+  white = lighten(x, strength),
+  strength = 0.75
+) {
   color_rgb <- col2rgb(x)
   # from https://stackoverflow.com/a/3943023/2022615
   color_rgb <- color_rgb / 255
