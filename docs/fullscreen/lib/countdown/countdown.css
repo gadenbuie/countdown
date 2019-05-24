@@ -2,45 +2,45 @@
   background: inherit;
   position: absolute;
   cursor: pointer;
-  font-size: 3em;
-  line-height: 1.2;
-  border-color: #d33682;
-  border-width: 3px;
+  font-size: 30vw;
+  line-height: 96vh;
+  border-color: #ddd;
+  border-width: 0;
   border-style: solid;
-  border-radius: 15px;
+  border-radius: 0;
   box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.4);
   -webkit-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.4);
   -moz-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.4);
-  margin: 0.6em;
-  padding: 0 15px;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 .countdown code {
   vertical-align: middle;
 }
 .countdown .digits {
-  color: #d33682;
+  color: inherit;
 }
 .countdown.running {
-  border-color: #259088;
-  background-color: #2aa198;
+  border-color: #3C9A5F;
+  background-color: #43AC6A;
 }
 .countdown.running .digits {
-  color: #073642;
+  color: #102B1A;
 }
 .countdown.finished {
-  border-color: #C62D2A;
-  background-color: #dc322f;
+  border-color: #D83A20;
+  background-color: #F04124;
 }
 .countdown.finished .digits {
-  color: #fdf6e3;
+  color: #3C1009;
 }
 .countdown.running.warning {
   border-color: #CFAE24;
   background-color: #E6C229;
 }
 .countdown.running.warning .digits {
-  color: #2D2608;
+  color: #39300A;
 }
 
 @-webkit-keyframes blink {
