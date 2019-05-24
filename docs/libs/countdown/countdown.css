@@ -31,6 +31,13 @@
 .countdown.finished .digits {
   color: #fdf6e3;
 }
+.countdown.running.warning {
+  border-color: #CFAE24;
+  background-color: #E6C229;
+}
+.countdown.running.warning .digits {
+  color: #2D2608;
+}
 
 @-webkit-keyframes blink {
 	from {opacity: 1}
