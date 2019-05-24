@@ -174,11 +174,13 @@ Settings of individual timers
 - `right`
 - `bottom`
 - `left`
+- `update_every`
+- `warn_when`
 - .subtle[`font_size`]
 - .subtle[`margin`]
 - .subtle[`padding`]
 
-.footnote[Faded arguments inherit from &#x1F449;]
+.footnote[Faded arguments inherit from first timer &#x27A1;]
 ]
 
 .pull-right[
@@ -192,15 +194,9 @@ Sets defaults for all other timers
 - `box_shadow`
 - `border_width`
 - `border_radius`
-- `color_border`
-- `color_background`
-- `color_text`
-- `color_running_background`
-- .subtle[`color_running_border`]
-- .subtle[`color_running_text`]
-- `color_finished_background`
-- .subtle[`color_finished_border`]
-- .subtle[`color_finished_text`]
+- `color` options for 
+  - `_background`, `_border`, `_text`
+  - and for `running`, `finished`, `warning`
 ]
 
 ---
@@ -354,6 +350,20 @@ Avoid countdown panic with a timer<br>that only **update**s once **every** *n* s
 ```{r}
 countdown(minutes = 1, update_every = 15, right = "33%")
 ```
+
+---
+
+# Be Warned Before Time Runs Out
+
+Warn your audience that time is about to run out. The warning style is applied to the timer for the last _N_ seconds by setting `warn_when = N`.
+
+```{r}
+countdown(0, 10, warn_when = 5, right = "33%", bottom = "33%")
+```
+
+<p style="padding-top: 10em"><p>
+
+Modify the `background`, `text` and `border` colors of the warning state using the `color_warning_...` arguments.
 
 ---
 
