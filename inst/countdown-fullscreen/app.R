@@ -52,7 +52,7 @@ ui <- basicPage(
         column(
           width = 12,
           class = inputs_col_class,
-          textInput("warn_time", "Warn When", value = "1:00", placeholder = "MM:SS"),
+          textInput("warn_time", "Warn Time Remaining", value = "1:00", placeholder = "MM:SS"),
           uiOutput("warn_time_error_ui")
         ),
         column(
