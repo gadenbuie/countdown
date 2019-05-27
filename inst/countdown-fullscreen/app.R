@@ -7,34 +7,30 @@ utc0 <- function(x) {
   as.POSIXct(x, tz = "UTC", origin = "1970-01-01")
 }
 
-slider_col_class <- "col-md-2 col-xs-8 col-xs-offset-2 col-sm-offset-0"
+inputs_col_class <- "col-md-3 col-xs-8 col-xs-offset-2 col-sm-offset-0"
+
+update_every_choices <- setNames(
+  c(1, 5, 10, 15, 30, 60),
+  c(paste(c(1, 5, 10, 15, 30), "sec"), "1 min")
+)
+
+parse_mmss <- function(x = "") {
+  error_msg <- list(error = "Please enter a time as MM:SS")
+  valid <- TRUE
+  if (is.null(x) || x == "") return(list(minutes = 0L, seconds = 0L))
+  if (!grepl(":", x)) valid <- FALSE
+  if (!grepl("\\d", x)) valid <- FALSE
+  if (!valid) return(error_msg)
+  m <- regexec("([0-9]{1,2}):([0-9]{1,2})", x)
+  x <- regmatches(x, m)[[1]]
+  if (length(x) != 3) return(error_msg)
+  list(minutes = as.integer(x[2]), seconds = as.integer(x[3]))
+}
 
 ui <- basicPage(
   tags$head(tags$style(
-    "iframe { height: 99vh; }",
-    "#about:hover { text-decoration: none; }",
-    ".sliders div { margin-right: 2em; }",
-    # BS .fivecolumns from https://stackoverflow.com/a/18006074/2022615
-    "
-@media (min-width: 768px){
-    .fivecolumns .col-md-2, .fivecolumns .col-sm-2, .fivecolumns .col-lg-2  {
-        width: 20%;
-        *width: 20%;
-    }
-}
-@media (min-width: 1200px) {
-    .fivecolumns .col-md-2, .fivecolumns .col-sm-2, .fivecolumns .col-lg-2 {
-        width: 20%;
-        *width: 20%;
-    }
-}
-@media (min-width: 768px) and (max-width: 979px) {
-    .fivecolumns .col-md-2, .fivecolumns .col-sm-2, .fivecolumns .col-lg-2 {
-        width: 20%;
-        *width: 20%;
-    }
-}
-    "
+    "iframe { height: 99vh; border: none; }",
+    "#about:hover { text-decoration: none; }"
   )),
   fluidRow(
     style = "padding-top: 1em; padding-bottom: 1em;",
@@ -44,37 +40,33 @@ ui <- basicPage(
       h1(actionLink("about", "Countdown"), style = "line-height: 35px")
     ),
     column(
-      class = "text-center col-md-9",
+      class = "text-left col-md-9",
       width = 8,
       fluidRow(
-        class = "fivecolumns",
         column(
           width = 12,
-          class = slider_col_class,
-          sliderInput("minutes", "Minutes", value = 5L, width = "100%",
-                      min = 0, max = 99, step = 1L)
+          class = inputs_col_class,
+          textInput("time", "Time", value = "5:00", placeholder = "MM:SS"),
+          uiOutput("timer_error_ui")
         ),
         column(
           width = 12,
-          class = slider_col_class,
-          sliderInput("seconds", "Seconds", value = 0L, width = "100%",
-                      min = 0, max = 59, step = 5L)
+          class = inputs_col_class,
+          textInput("warn_time", "Warn When", value = "1:00", placeholder = "MM:SS"),
+          uiOutput("warn_time_error_ui")
         ),
         column(
           width = 12,
-          class = slider_col_class,
-          sliderInput("warn_when", "Warning", value = utc0(60), width = "100%",
-                      min = utc0(0), max = utc0(5*60), timeFormat = "%M:%S", step = 1L)
+          class = inputs_col_class,
+          selectInput(
+            "update_every", "Update Every",
+            choices = update_every_choices,
+            selected = "1 sec"
+          )
         ),
         column(
           width = 12,
-          class = slider_col_class,
-          sliderInput("update_every", "Update Every", value = utc0(1), width = "100%",
-                      min = utc0(0), max = utc0(1*60), step = 5L, timeFormat = "%M:%S")
-        ),
-        column(
-          width = 12,
-          class = "col-md-2 col-xs-12",
+          class = "col-md-2 col-xs-12 text-center",
           actionButton("reset", "Reset", class = "btn-primary", style = "margin-top: 18px")
         )
       )
@@ -96,16 +88,39 @@ server <- function(input, output, session) {
 
   onSessionEnded(function() unlink(session_dir, recursive = TRUE))
 
+  timer <- reactive({
+    parse_mmss(input$time)
+  })
+
+  warn_when <- reactive({
+    x <- parse_mmss(input$warn_time)
+    x$seconds <- x$minutes * 60 + x$seconds
+    x
+  })
+
+  output$timer_error_ui <- renderUI({
+    req(timer()$error)
+    p(class = "text-danger small text-left", timer()$error)
+  })
+
+  output$warn_time_error_ui <- renderUI({
+    req(warn_when()$error)
+    p(class = "text-danger small text-left", warn_when()$error)
+  })
+
   output$timer <- renderUI({
+    req(timer()$minutes, warn_when()$seconds)
     input$reset
     tmpfile <- tempfile("countdown", session_dir, ".html")
     htmltools::save_html(
       countdown_fullscreen(
-        minutes = as.integer(input$minutes),
-        seconds = as.integer(input$seconds),
-        warn_when = as.integer(input$warn_when),
+        minutes = as.integer(timer()$minutes),
+        seconds = as.integer(timer()$seconds),
+        warn_when = as.integer(warn_when()$seconds),
         update_every = as.integer(input$update_every),
-        line_height = "94vh"
+        line_height = "94vh",
+        border_radius = "15px",
+        border_width = "3px"
       ),
       file = file.path(getwd(), tmpfile)
     )
@@ -115,10 +130,29 @@ server <- function(input, output, session) {
   })
 
   observe({
-    min <- input$minutes
-    sec <- input$seconds
-    s <- min * 60 + sec
-    updateSliderInput(session, "warn_when", value = utc0(floor(s/5)), max = utc0(s), timeFormat = "%M:%S")
+    req(timer()$minutes)
+    s_update_every <- isolate(input$update_every)
+    s <- timer()$minutes * 60 + timer()$seconds
+    c_update_every <- update_every_choices[update_every_choices <= s]
+    if (!s_update_every %in% c_update_every) {
+      s_update_every <- c_update_every[length(c_update_every)]
+    }
+    updateSelectInput(session, "update_every", choices = c_update_every,
+                      selected = s_update_every)
+  })
+
+  observe({
+    req(timer()$minutes)
+    if (input$update_every == 1L) {
+      min <- timer()$minutes
+      sec <- timer()$seconds
+      s <- (min * 60 + sec) * 0.2
+    } else {
+      s <- as.integer(input$update_every) * 2
+    }
+    min <- floor(s/ 60)
+    sec <- s - min*60
+    updateTextInput(session, "warn_time", value = sprintf("%02d:%02d", min, sec))
   })
 
   observeEvent(input$about, {
