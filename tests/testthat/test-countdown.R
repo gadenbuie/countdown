@@ -34,6 +34,8 @@ test_that("countdown css template", {
 
   test_template_file(countdown(color_running_background = "firebrick3"), "countdown_running-colors.css")
   test_template_file(countdown(color_finished_background = "magenta2"), "countdown_finished-colors.css")
+
+  test_template_file(countdown_fullscreen(), "countdown_fullscreen.css")
 })
 
 test_that("countdown()", {

@@ -11,6 +11,7 @@ countdown_app <- function(...) {
   }
 
   # Create temp dir for app and structure
+  # nocov start
   app_dir <- tempfile("")
   dir.create(file.path(app_dir, "www", "tmp"), recursive = TRUE)
 
@@ -21,4 +22,5 @@ countdown_app <- function(...) {
 
   library(shiny)
   runApp(app_dir, ...)
+  # nocov end
 }
