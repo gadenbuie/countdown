@@ -9,20 +9,34 @@
 #' \dontrun{
 #' countdown(minutes = 0, seconds = 42)
 #'
-#' countdown(minutes = 1, seconds = 30,
-#'           left = 0, right = 0,
-#'           padding = "15px",
-#'           margin = "5%",
-#'           font_size = "6em")
-#' }
+#' countdown(
+#'   minutes = 1, seconds = 30,
+#'   left = 0, right = 0,
+#'   padding = "15px", margin = "5%",
+#'   font_size = "6em"
+#' )
+#'
+#' # For a stand-alone full-screen countdown timer, use countdown_fullscreen()
+#' # with default parameters.
+#' countdown_fullscreen(1, 30)
+#'
+#' # For xaringan slides, use percentages for `margin` and `padding` and set
+#' # `font_size` and `line_height`. In general, the following is a good place
+#' # to start and then tweak the font size up or down as needed.
+#' countdown_fullscreen(
+#'   minutes = 0, seconds = 90,
+#'   padding = "20%", margin = "5%",
+#'   font_size = "8em", line_height = "1.5"
+#' )}
 #'
 #' @return A vanilla JavaScript countdown timer as HTML, with dependencies.
+#' @seealso [countdown_app()]
 #'
 #' @param minutes The number of minutes for which the timer should run. This
 #'   value is added to `seconds`.
 #' @param seconds The number of seconds for which the timer should run. This
 #'   value is added to `minutes`.
-#' @param ... Ignored
+#' @param ... Ignored by [countdown()]
 #' @param id A optional unique ID for the `<div>` containing the timer. A unique
 #'   ID will be created if none is specified. All of the timers in a single
 #'   document need to have unique IDs to function properly. Unless you have a
@@ -89,6 +103,11 @@
 #' @param color_warning_text Color of the timer text when the timer
 #'   is below `warn_when` seconds.
 #' @importFrom htmltools HTML htmlDependency div code span
+#' @name countdown
+NULL
+
+#' @describeIn countdown Create a countdown timer for use in presentations and
+#'   HTML documents.
 #' @export
 countdown <- function(
   minutes = 1L,
@@ -153,13 +172,15 @@ countdown <- function(
   x <- div(
     class = class,
     id = id,
-    style = paste0(top %:?% "top",
-                   right %:?% "right",
-                   bottom %:?% "bottom",
-                   left %:?% "left",
-                   if (!missing(margin)) margin %:?% "margin",
-                   if (!missing(padding)) padding %:?% "padding",
-                   if (!missing(font_size)) font_size %:?% "font-size"),
+    style = paste0(
+      top %:?% "top",
+      right %:?% "right",
+      bottom %:?% "bottom",
+      left %:?% "left",
+      if (!missing(margin)) margin %:?% "margin",
+      if (!missing(padding)) padding %:?% "padding",
+      if (!missing(font_size)) font_size %:?% "font-size"
+    ),
     code(
       HTML(
         paste0(
@@ -200,7 +221,9 @@ countdown <- function(
 
 #' @describeIn countdown A full-screen timer that takes up the entire view port
 #'   and uses the largest reasonable font size.
-#' @inheritDotParams countdown
+#'
+#' @param ... In [countdown_fullscreen()], additional arguments are passed on to
+#'   [countdown()].
 #' @export
 countdown_fullscreen <- function(
   minutes = 1,

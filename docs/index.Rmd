@@ -313,8 +313,7 @@ use  `countdown_fullscreen()` for a (possibly stand-alone) [full-screen timer](f
 
 --
 
-Very helpful for hiding content while the activity is going on,  
-or for keeping time for presenters.
+Very helpful for hiding content while the activity is going on, or for presenters.
 
 --
 
@@ -323,7 +322,7 @@ Here's the code<sup class="small">&#x2731;</sup>:
 ```{r full-screen, eval=FALSE}
 countdown_fullscreen(minutes = 0, seconds = 90,
                      padding = "20%", margin = "5%",
-                     font_size = "8em", line_height = "1")
+                     font_size = "8em", line_height = "1.25")
 ```
 
 
