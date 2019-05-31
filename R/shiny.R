@@ -21,7 +21,6 @@ countdown_app <- function(...) {
 
   on.exit(unlink(app_dir, recursive = TRUE))
 
-  library(shiny)
-  runApp(app_dir, ...)
+  shiny::runApp(app_dir, ...)
   # nocov end
 }
