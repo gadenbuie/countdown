@@ -62,9 +62,9 @@
 #' @param top Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
 #' @param warn_when Change the countdown to "warning" state when `warn_when`
-#'   seconds remain. This is achieved by adding the `warning` class to the
-#'   timer when `warn_when` seconds or less remain. Only applied when greater
-#'   than `0`.
+#'   seconds remain. This is achieved by adding the `warning` class to the timer
+#'   when `warn_when` seconds or less remain. Only applied when greater than
+#'   `0`.
 #' @param update_every Update interval for the timer, in seconds. When this
 #'   argument is greater than `1`, the timer run but the display will only
 #'   update, once every `update_every` seconds. The timer will switch to normal
@@ -79,6 +79,14 @@
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
 #' @param border_radius Radius of timer border corners (all states).
+#' @param line_height Line height of timer digits text. Line height needs to be
+#'   set correctly for CSS to vertically align the text within the timer box.
+#'   The default value of `1.2` means that the line height will be 1.2 times the
+#'   `font_size` of the timer text. Note that the choice of `font_size` value
+#'   and unit, in combination with the overall dimensions of the timer
+#'   container, will impact the best value of `line_height`. If the timer text
+#'   is above the midline, then you may need to increase `line_height`; if it's
+#'   below the midline, try decreasing `line_height`.
 #' @param color_border Color of the timer border when not yet activated.
 #' @param color_background Color of the timer background when not yet activated.
 #' @param color_text Color of the timer text when not yet activated.
@@ -98,10 +106,10 @@
 #'   is below `warn_when` seconds. Colors are automatically chosen for the
 #'   warning timer border and text (`color_warning_border` and
 #'   `color_warning_text`, respectively) from the warning background color.
-#' @param color_warning_border Color of the timer border when the timer
-#'   is below `warn_when` seconds.
-#' @param color_warning_text Color of the timer text when the timer
-#'   is below `warn_when` seconds.
+#' @param color_warning_border Color of the timer border when the timer is below
+#'   `warn_when` seconds.
+#' @param color_warning_text Color of the timer text when the timer is below
+#'   `warn_when` seconds.
 #' @importFrom htmltools HTML htmlDependency div code span
 #' @name countdown
 NULL

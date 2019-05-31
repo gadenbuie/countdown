@@ -72,9 +72,9 @@ unset (\code{NULL}).}
 unset (\code{NULL}).}
 
 \item{warn_when}{Change the countdown to "warning" state when \code{warn_when}
-seconds remain. This is achieved by adding the \code{warning} class to the
-timer when \code{warn_when} seconds or less remain. Only applied when greater
-than \code{0}.}
+seconds remain. This is achieved by adding the \code{warning} class to the timer
+when \code{warn_when} seconds or less remain. Only applied when greater than
+\code{0}.}
 
 \item{update_every}{Update interval for the timer, in seconds. When this
 argument is greater than \code{1}, the timer run but the display will only
@@ -94,6 +94,15 @@ the shadow.}
 \item{border_width}{Width of the timer border (all states).}
 
 \item{border_radius}{Radius of timer border corners (all states).}
+
+\item{line_height}{Line height of timer digits text. Line height needs to be
+set correctly for CSS to vertically align the text within the timer box.
+The default value of \code{1.2} means that the line height will be 1.2 times the
+\code{font_size} of the timer text. Note that the choice of \code{font_size} value
+and unit, in combination with the overall dimensions of the timer
+container, will impact the best value of \code{line_height}. If the timer text
+is above the midline, then you may need to increase \code{line_height}; if it's
+below the midline, try decreasing \code{line_height}.}
 
 \item{color_border}{Color of the timer border when not yet activated.}
 
@@ -124,11 +133,11 @@ is below \code{warn_when} seconds. Colors are automatically chosen for the
 warning timer border and text (\code{color_warning_border} and
 \code{color_warning_text}, respectively) from the warning background color.}
 
-\item{color_warning_border}{Color of the timer border when the timer
-is below \code{warn_when} seconds.}
+\item{color_warning_border}{Color of the timer border when the timer is below
+\code{warn_when} seconds.}
 
-\item{color_warning_text}{Color of the timer text when the timer
-is below \code{warn_when} seconds.}
+\item{color_warning_text}{Color of the timer text when the timer is below
+\code{warn_when} seconds.}
 
 \item{...}{In \code{\link[=countdown_fullscreen]{countdown_fullscreen()}}, additional arguments are passed on to
 \code{\link[=countdown]{countdown()}}.}
