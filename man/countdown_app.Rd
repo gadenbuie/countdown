@@ -29,5 +29,6 @@ only used for recording or running automated tests. Defaults to the
 }}
 }
 \description{
-Launches a full screen, interactive countdown timer as a \link{shiny} app.
+Launches a full screen, interactive countdown timer as a
+\link[shiny]{shiny-package} app.
 }

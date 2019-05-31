@@ -1,6 +1,7 @@
 #' Launch Countdown Shiny App
 #'
-#' Launches a full screen, interactive countdown timer as a [shiny] app.
+#' Launches a full screen, interactive countdown timer as a
+#' \link[shiny]{shiny-package} app.
 #'
 #' @inheritDotParams shiny::runApp port launch.browser host workerId quiet
 #'   display.mode test.mode
