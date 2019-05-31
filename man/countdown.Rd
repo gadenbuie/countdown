@@ -35,7 +35,8 @@ value is added to \code{seconds}.}
 \item{seconds}{The number of seconds for which the timer should run. This
 value is added to \code{minutes}.}
 
-\item{...}{Ignored by \code{\link[=countdown]{countdown()}}}
+\item{...}{Ignored by \code{\link[=countdown]{countdown()}}. In \code{\link[=countdown_fullscreen]{countdown_fullscreen()}}, additional
+arguments are passed on to \code{\link[=countdown]{countdown()}}.}
 
 \item{id}{A optional unique ID for the \code{<div>} containing the timer. A unique
 ID will be created if none is specified. All of the timers in a single
@@ -138,9 +139,6 @@ warning timer border and text (\code{color_warning_border} and
 
 \item{color_warning_text}{Color of the timer text when the timer is below
 \code{warn_when} seconds.}
-
-\item{...}{In \code{\link[=countdown_fullscreen]{countdown_fullscreen()}}, additional arguments are passed on to
-\code{\link[=countdown]{countdown()}}.}
 }
 \value{
 A vanilla JavaScript countdown timer as HTML, with dependencies.

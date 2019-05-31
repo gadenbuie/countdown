@@ -36,7 +36,8 @@
 #'   value is added to `seconds`.
 #' @param seconds The number of seconds for which the timer should run. This
 #'   value is added to `minutes`.
-#' @param ... Ignored by [countdown()]
+#' @param ... Ignored by [countdown()]. In [countdown_fullscreen()], additional
+#'   arguments are passed on to [countdown()].
 #' @param id A optional unique ID for the `<div>` containing the timer. A unique
 #'   ID will be created if none is specified. All of the timers in a single
 #'   document need to have unique IDs to function properly. Unless you have a
@@ -231,8 +232,6 @@ countdown <- function(
 #' @describeIn countdown A full-screen timer that takes up the entire view port
 #'   and uses the largest reasonable font size.
 #'
-#' @param ... In [countdown_fullscreen()], additional arguments are passed on to
-#'   [countdown()].
 #' @export
 countdown_fullscreen <- function(
   minutes = 1,
