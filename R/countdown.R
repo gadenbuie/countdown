@@ -179,7 +179,8 @@ countdown <- function(
       left %:?% "left",
       if (!missing(margin)) margin %:?% "margin",
       if (!missing(padding)) padding %:?% "padding",
-      if (!missing(font_size)) font_size %:?% "font-size"
+      if (!missing(font_size)) font_size %:?% "font-size",
+      if (!missing(line_height)) line_height %:?% "line-height"
     ),
     code(
       HTML(
