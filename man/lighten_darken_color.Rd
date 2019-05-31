@@ -8,7 +8,7 @@
 \usage{
 lighten(color_hex, strength = 0.7)
 
-darken(x, strength = 0.8)
+darken(color_hex, strength = 0.8)
 }
 \arguments{
 \item{color_hex}{A character string representing a hex color}

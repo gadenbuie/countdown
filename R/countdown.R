@@ -1,3 +1,5 @@
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
 #' Countdown Timer
 #'
 #' Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
