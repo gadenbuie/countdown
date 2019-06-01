@@ -36,7 +36,7 @@ ui <- basicPage(
     "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
     "#about { font-family: 'Nova Square'; color: #4389A0; }"
   )),
-  includeCSS("www/bootstrap.min.css"),
+  includeCSS("www/bootstrap.min.css"), # https://bootswatch.com/3/slate/
   tags$head(tags$style(
     ".form-control { background: #3E444C !important; color: #ddd !important; }"
   )),
@@ -95,7 +95,7 @@ server <- function(input, output, session) {
   session_dir <- file.path("www", "tmp", session_token)
   dir.create(session_dir)
   clean_session_files <- function() {
-    # cat("\nCleaning up:", session_dir)
+    message("Cleaning up session files: ", session_dir)
     unlink(session_dir, recursive = TRUE)
   }
 
