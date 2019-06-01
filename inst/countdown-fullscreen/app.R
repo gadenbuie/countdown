@@ -26,6 +26,7 @@ parse_mmss <- function(x = "") {
   if (length(x) != 3) return(error_msg)
   time <- list(minutes = as.integer(x[2]), seconds = as.integer(x[3]))
   if (is.na(time$seconds)) time$seconds <- 0
+  if (time$minutes + time$seconds < 1) return(error_msg)
   time
 }
 
