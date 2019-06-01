@@ -25,3 +25,19 @@ You can install countdown from GitHub with:
 # install.packages("remotes")
 remotes::install_github("gadenbuie/countdown")
 ```
+
+## Shiny App
+
+**countdown** ships with a [Shiny app](https://shiny.rstudio.com) for an interactive _full-screen countdown timer_!
+
+To launch the app, run
+
+```r
+countdown_app()
+```
+
+or use the version hosted online at [apps.garrickadenbuie.com/countdown](https://apps.garrickadenbuie.com/countdown/).
+
+<a href="https://apps.garrickadenbuie.com/countdown/">
+<img src="docs/img/countdown-app.png" width="75%" />
+</a>
