@@ -2,6 +2,7 @@
 % Please edit documentation in R/countdown.R
 \name{countdown}
 \alias{countdown}
+\alias{countdown_fullscreen}
 \title{Countdown Timer}
 \usage{
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
@@ -10,7 +11,7 @@ countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   (is.null(left)) "0", top = NULL, left = NULL, warn_when = 0L,
   update_every = 1L, blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px", border_radius = "15px",
+  border_width = "3px", border_radius = "15px", line_height = "1.2",
   color_border = "#ddd", color_background = "inherit",
   color_text = "inherit", color_running_background = "#43AC6A",
   color_running_border = darken(color_running_background, 0.1),
@@ -21,6 +22,11 @@ countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
   color_warning_background = "#E6C229",
   color_warning_border = darken(color_warning_background, 0.1),
   color_warning_text = choose_dark_or_light(color_warning_background))
+
+countdown_fullscreen(minutes = 1, seconds = 0, ...,
+  font_size = "30vw", line_height = "96vh", border_width = "0",
+  border_radius = "0", margin = "0", padding = "0", top = 0,
+  right = 0, bottom = 0, left = 0)
 }
 \arguments{
 \item{minutes}{The number of minutes for which the timer should run. This
@@ -29,7 +35,8 @@ value is added to \code{seconds}.}
 \item{seconds}{The number of seconds for which the timer should run. This
 value is added to \code{minutes}.}
 
-\item{...}{Ignored}
+\item{...}{Ignored by \code{\link[=countdown]{countdown()}}. In \code{\link[=countdown_fullscreen]{countdown_fullscreen()}}, additional
+arguments are passed on to \code{\link[=countdown]{countdown()}}.}
 
 \item{id}{A optional unique ID for the \code{<div>} containing the timer. A unique
 ID will be created if none is specified. All of the timers in a single
@@ -66,9 +73,9 @@ unset (\code{NULL}).}
 unset (\code{NULL}).}
 
 \item{warn_when}{Change the countdown to "warning" state when \code{warn_when}
-seconds remain. This is achieved by adding the \code{warning} class to the
-timer when \code{warn_when} seconds or less remain. Only applied when greater
-than \code{0}.}
+seconds remain. This is achieved by adding the \code{warning} class to the timer
+when \code{warn_when} seconds or less remain. Only applied when greater than
+\code{0}.}
 
 \item{update_every}{Update interval for the timer, in seconds. When this
 argument is greater than \code{1}, the timer run but the display will only
@@ -88,6 +95,15 @@ the shadow.}
 \item{border_width}{Width of the timer border (all states).}
 
 \item{border_radius}{Radius of timer border corners (all states).}
+
+\item{line_height}{Line height of timer digits text. Line height needs to be
+set correctly for CSS to vertically align the text within the timer box.
+The default value of \code{1.2} means that the line height will be 1.2 times the
+\code{font_size} of the timer text. Note that the choice of \code{font_size} value
+and unit, in combination with the overall dimensions of the timer
+container, will impact the best value of \code{line_height}. If the timer text
+is above the midline, then you may need to increase \code{line_height}; if it's
+below the midline, try decreasing \code{line_height}.}
 
 \item{color_border}{Color of the timer border when not yet activated.}
 
@@ -118,11 +134,11 @@ is below \code{warn_when} seconds. Colors are automatically chosen for the
 warning timer border and text (\code{color_warning_border} and
 \code{color_warning_text}, respectively) from the warning background color.}
 
-\item{color_warning_border}{Color of the timer border when the timer
-is below \code{warn_when} seconds.}
+\item{color_warning_border}{Color of the timer border when the timer is below
+\code{warn_when} seconds.}
 
-\item{color_warning_text}{Color of the timer text when the timer
-is below \code{warn_when} seconds.}
+\item{color_warning_text}{Color of the timer text when the timer is below
+\code{warn_when} seconds.}
 }
 \value{
 A vanilla JavaScript countdown timer as HTML, with dependencies.
@@ -132,16 +148,41 @@ Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 for use in web-based presentations, such as those created by
 \code{\link[xaringan:infinite_moon_reader]{xaringan::infinite_moon_reader()}}.
 }
+\section{Functions}{
+\itemize{
+\item \code{countdown}: Create a countdown timer for use in presentations and
+HTML documents.
+
+\item \code{countdown_fullscreen}: A full-screen timer that takes up the entire view port
+and uses the largest reasonable font size.
+}}
+
 \examples{
 
 \dontrun{
 countdown(minutes = 0, seconds = 42)
 
-countdown(minutes = 1, seconds = 30,
-          left = 0, right = 0,
-          padding = "15px",
-          margin = "5\%",
-          font_size = "6em")
-}
+countdown(
+  minutes = 1, seconds = 30,
+  left = 0, right = 0,
+  padding = "15px", margin = "5\%",
+  font_size = "6em"
+)
 
+# For a stand-alone full-screen countdown timer, use countdown_fullscreen()
+# with default parameters.
+countdown_fullscreen(1, 30)
+
+# For xaringan slides, use percentages for `margin` and `padding` and set
+# `font_size` and `line_height`. In general, the following is a good place
+# to start and then tweak the font size up or down as needed.
+countdown_fullscreen(
+  minutes = 0, seconds = 90,
+  padding = "20\%", margin = "5\%",
+  font_size = "8em", line_height = "1.5"
+)}
+
+}
+\seealso{
+\code{\link[=countdown_app]{countdown_app()}}
 }

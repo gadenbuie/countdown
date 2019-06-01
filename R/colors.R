@@ -18,9 +18,9 @@ lighten <- function(color_hex, strength = 0.7) {
 
 #' @rdname lighten_darken_color
 #' @export
-darken <- function(x, strength = 0.8) {
+darken <- function(color_hex, strength = 0.8) {
   stopifnot(strength >= 0 && strength <= 1)
-  color_rgb <- col2rgb(x)
+  color_rgb <- col2rgb(color_hex)
   color_rgb <- (1 - strength) * color_rgb
   rgb(color_rgb[1], color_rgb[2], color_rgb[3], maxColorValue = 255)
 }
@@ -34,18 +34,32 @@ darken <- function(x, strength = 0.8) {
 #' @references <https://stackoverflow.com/a/3943023/2022615>
 #' @param x The background color
 #' @param black Text or foreground color, e.g. "#22222" or `darken(x, 0.8)`, if
-#'   black text provides the best contrast.
+#'   black text provides the best contrast. By default chooses the input color
+#'   `x` darkened by `strength`.
 #' @param white Text or foreground color or expression, e.g. "#EEEEEE" or
-#'   `lighten(x, 0.8)`, if white text provides the best contrast.
+#'   `lighten(x, 0.8)`, if white text provides the best contrast. By default
+#'   chooses the input color `x` lightened by `strength`.
+#' @param strength Default strength by which `x` is darkened or lightened to
+#'   arrive at a color approximating `black` or `white`. Default is 0.75 (75%);
+#'   ignored if a value for `black` or `white` is provided.
 #' @export
-choose_dark_or_light <- function(x, black = darken(x, 0.8), white = lighten(x, 0.8)) {
+choose_dark_or_light <- function(
+  x,
+  black = NULL,
+  white = NULL,
+  strength = 0.75
+) {
   color_rgb <- col2rgb(x)
   # from https://stackoverflow.com/a/3943023/2022615
   color_rgb <- color_rgb / 255
   color_rgb[color_rgb <= 0.03928] <- color_rgb[color_rgb <= 0.03928]/12.92
   color_rgb[color_rgb > 0.03928] <- ((color_rgb[color_rgb > 0.03928] + 0.055)/1.055)^2.4
   lum <- t(c(0.2126, 0.7152, 0.0722)) %*% color_rgb
-  chosen_color <- if (lum[1, 1] > 0.179) black else white
+  chosen_color <- if (lum[1, 1] > 0.179) {
+    black %||% darken(x, strength)
+  } else {
+    white %||% lighten(x, strength)
+  }
   rgb2hex(col2rgb(chosen_color))
 }
 

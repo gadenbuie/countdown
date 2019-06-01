@@ -194,6 +194,7 @@ Sets defaults for all other timers
 - `box_shadow`
 - `border_width`
 - `border_radius`
+- `line_height`
 - `color` options for 
   - `_background`, `_border`, `_text`
   - and for `running`, `finished`, `warning`
@@ -307,26 +308,25 @@ countdown(minutes = 1, seconds = 30,
 
 # Full-screen timers
 
-Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer.
+Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer, or
+use  `countdown_fullscreen()` for a (possibly stand-alone) [full-screen timer](fullscreen/index.html).
 
 --
 
-Very helpful for hiding content while the activity is going on.
+Very helpful for hiding content while the activity is going on, or for presenters.
 
 --
 
-Here's the code<sup>&#x2731;</sup>:
+Here's the code<sup class="small">&#x2731;</sup>:
 
 ```{r full-screen, eval=FALSE}
-countdown(minutes = 0, seconds = 90, 
-          top = 0, bottom = 0,
-          left = 0, right = 0,
-          padding = "20%",
-          margin = "5%",
-          font_size = "8em")
+countdown_fullscreen(minutes = 0, seconds = 90,
+                     padding = "20%", margin = "5%",
+                     font_size = "8em", line_height = "1.25")
 ```
 
-.footnote[<sup>&#x2731;</sup>_some fiddling with `padding`, `margin` and `font_size` may be required_]
+
+.footnote[<sup class="small">&#x2731;</sup>_some fiddling with `padding`, `margin` and `font_size` is required in **xaringan** slides, for stand-alone timers, use the default values_]
 
 --
 

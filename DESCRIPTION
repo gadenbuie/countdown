@@ -21,6 +21,7 @@ Imports:
     utils,
     whisker
 Suggests: 
+    shiny,
     testthat
 Encoding: UTF-8
 LazyData: true

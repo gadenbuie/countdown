@@ -4,17 +4,22 @@
 \alias{choose_dark_or_light}
 \title{Choose dark or light color}
 \usage{
-choose_dark_or_light(x, black = darken(x, 0.8), white = lighten(x,
-  0.8))
+choose_dark_or_light(x, black = NULL, white = NULL, strength = 0.75)
 }
 \arguments{
 \item{x}{The background color}
 
 \item{black}{Text or foreground color, e.g. "#22222" or \code{darken(x, 0.8)}, if
-black text provides the best contrast.}
+black text provides the best contrast. By default chooses the input color
+\code{x} darkened by \code{strength}.}
 
 \item{white}{Text or foreground color or expression, e.g. "#EEEEEE" or
-\code{lighten(x, 0.8)}, if white text provides the best contrast.}
+\code{lighten(x, 0.8)}, if white text provides the best contrast. By default
+chooses the input color \code{x} lightened by \code{strength}.}
+
+\item{strength}{Default strength by which \code{x} is darkened or lightened to
+arrive at a color approximating \code{black} or \code{white}. Default is 0.75 (75%);
+ignored if a value for \code{black} or \code{white} is provided.}
 }
 \description{
 Takes a color input as \code{x} and returns either the black or white color if

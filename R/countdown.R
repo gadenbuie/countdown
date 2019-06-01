@@ -1,3 +1,5 @@
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
 #' Countdown Timer
 #'
 #' Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
@@ -9,20 +11,35 @@
 #' \dontrun{
 #' countdown(minutes = 0, seconds = 42)
 #'
-#' countdown(minutes = 1, seconds = 30,
-#'           left = 0, right = 0,
-#'           padding = "15px",
-#'           margin = "5%",
-#'           font_size = "6em")
-#' }
+#' countdown(
+#'   minutes = 1, seconds = 30,
+#'   left = 0, right = 0,
+#'   padding = "15px", margin = "5%",
+#'   font_size = "6em"
+#' )
+#'
+#' # For a stand-alone full-screen countdown timer, use countdown_fullscreen()
+#' # with default parameters.
+#' countdown_fullscreen(1, 30)
+#'
+#' # For xaringan slides, use percentages for `margin` and `padding` and set
+#' # `font_size` and `line_height`. In general, the following is a good place
+#' # to start and then tweak the font size up or down as needed.
+#' countdown_fullscreen(
+#'   minutes = 0, seconds = 90,
+#'   padding = "20%", margin = "5%",
+#'   font_size = "8em", line_height = "1.5"
+#' )}
 #'
 #' @return A vanilla JavaScript countdown timer as HTML, with dependencies.
+#' @seealso [countdown_app()]
 #'
 #' @param minutes The number of minutes for which the timer should run. This
 #'   value is added to `seconds`.
 #' @param seconds The number of seconds for which the timer should run. This
 #'   value is added to `minutes`.
-#' @param ... Ignored
+#' @param ... Ignored by [countdown()]. In [countdown_fullscreen()], additional
+#'   arguments are passed on to [countdown()].
 #' @param id A optional unique ID for the `<div>` containing the timer. A unique
 #'   ID will be created if none is specified. All of the timers in a single
 #'   document need to have unique IDs to function properly. Unless you have a
@@ -48,9 +65,9 @@
 #' @param top Position of the timer within its container. By default `top` is
 #'   unset (`NULL`).
 #' @param warn_when Change the countdown to "warning" state when `warn_when`
-#'   seconds remain. This is achieved by adding the `warning` class to the
-#'   timer when `warn_when` seconds or less remain. Only applied when greater
-#'   than `0`.
+#'   seconds remain. This is achieved by adding the `warning` class to the timer
+#'   when `warn_when` seconds or less remain. Only applied when greater than
+#'   `0`.
 #' @param update_every Update interval for the timer, in seconds. When this
 #'   argument is greater than `1`, the timer run but the display will only
 #'   update, once every `update_every` seconds. The timer will switch to normal
@@ -65,6 +82,14 @@
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
 #' @param border_radius Radius of timer border corners (all states).
+#' @param line_height Line height of timer digits text. Line height needs to be
+#'   set correctly for CSS to vertically align the text within the timer box.
+#'   The default value of `1.2` means that the line height will be 1.2 times the
+#'   `font_size` of the timer text. Note that the choice of `font_size` value
+#'   and unit, in combination with the overall dimensions of the timer
+#'   container, will impact the best value of `line_height`. If the timer text
+#'   is above the midline, then you may need to increase `line_height`; if it's
+#'   below the midline, try decreasing `line_height`.
 #' @param color_border Color of the timer border when not yet activated.
 #' @param color_background Color of the timer background when not yet activated.
 #' @param color_text Color of the timer text when not yet activated.
@@ -84,11 +109,16 @@
 #'   is below `warn_when` seconds. Colors are automatically chosen for the
 #'   warning timer border and text (`color_warning_border` and
 #'   `color_warning_text`, respectively) from the warning background color.
-#' @param color_warning_border Color of the timer border when the timer
-#'   is below `warn_when` seconds.
-#' @param color_warning_text Color of the timer text when the timer
-#'   is below `warn_when` seconds.
+#' @param color_warning_border Color of the timer border when the timer is below
+#'   `warn_when` seconds.
+#' @param color_warning_text Color of the timer text when the timer is below
+#'   `warn_when` seconds.
 #' @importFrom htmltools HTML htmlDependency div code span
+#' @name countdown
+NULL
+
+#' @describeIn countdown Create a countdown timer for use in presentations and
+#'   HTML documents.
 #' @export
 countdown <- function(
   minutes = 1L,
@@ -110,6 +140,7 @@ countdown <- function(
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
+  line_height = "1.2",
   color_border = "#ddd",
   color_background = "inherit",
   color_text = "inherit",
@@ -152,13 +183,16 @@ countdown <- function(
   x <- div(
     class = class,
     id = id,
-    style = paste0(top %:?% "top",
-                   right %:?% "right",
-                   bottom %:?% "bottom",
-                   left %:?% "left",
-                   if (!missing(margin)) margin %:?% "margin",
-                   if (!missing(padding)) padding %:?% "padding",
-                   if (!missing(font_size)) font_size %:?% "font-size"),
+    style = paste0(
+      top %:?% "top",
+      right %:?% "right",
+      bottom %:?% "bottom",
+      left %:?% "left",
+      if (!missing(margin)) margin %:?% "margin",
+      if (!missing(padding)) padding %:?% "padding",
+      if (!missing(font_size)) font_size %:?% "font-size",
+      if (!missing(line_height)) line_height %:?% "line-height"
+    ),
     code(
       HTML(
         paste0(
@@ -195,6 +229,38 @@ countdown <- function(
     )
 
   htmltools::browsable(x)
+}
+
+#' @describeIn countdown A full-screen timer that takes up the entire view port
+#'   and uses the largest reasonable font size.
+#'
+#' @export
+countdown_fullscreen <- function(
+  minutes = 1,
+  seconds = 0,
+  ...,
+  font_size = "30vw",
+  line_height = "96vh",
+  border_width = "0",
+  border_radius = "0",
+  margin = "0",
+  padding = "0",
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0
+) {
+  countdown(
+    minutes, seconds,
+    font_size = font_size,
+    line_height = line_height,
+    border_width = border_width,
+    border_radius = border_radius,
+    margin = margin,
+    padding = padding,
+    top = top, right = right, bottom = bottom, left = left,
+    ...
+  )
 }
 
 

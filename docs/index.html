@@ -15,7 +15,7 @@ class: middle, left, title-slide
 # <code style='font-size: 200%'>countdown</code>
 ## ⏲ :: 💭 💬 👩‍💻 :: ⏰
 ### <a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>
-### <span style="color: #b58900;">0.2.0.9000</span><br/><span style="color: #2aa198">2019-05-23</span>
+### <span style="color: #b58900;">0.2.0.9000</span><br/><span style="color: #2aa198">2019-05-30</span>
 
 ---
 
@@ -34,7 +34,7 @@ class: center middle
 
 &lt;p style="margin: 11em 0;"&gt;&lt;/p&gt;
 
-<div class="countdown" id="timer_5ce74fed" style="top:26%;right:33%;" data-audio="true" data-warnwhen="0">
+<div class="countdown" id="timer_5cf08804" style="top:26%;right:33%;" data-audio="true" data-warnwhen="0">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">42</span></code>
 </div>
 
@@ -154,6 +154,7 @@ Sets defaults for all other timers
 - `box_shadow`
 - `border_width`
 - `border_radius`
+- `line_height`
 - `color` options for 
   - `_background`, `_border`, `_text`
   - and for `running`, `finished`, `warning`
@@ -233,7 +234,7 @@ Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
 countdown(minutes = 0, seconds = 7, bottom = 0)
 ```
 
-<div class="countdown" id="timer_5ce74da8" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5cf086a6" style="right:0;bottom:0;" data-warnwhen="0">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">07</span></code>
 </div>
 
@@ -243,7 +244,7 @@ countdown(minutes = 0, seconds = 7, bottom = 0)
 countdown(minutes = 0, seconds = 13, top = 0)
 ```
 
-<div class="countdown" id="timer_5ce75038" style="top:0;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5cf08530" style="top:0;right:0;" data-warnwhen="0">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">13</span></code>
 </div>
 
@@ -253,7 +254,7 @@ countdown(minutes = 0, seconds = 13, top = 0)
 countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
 
-<div class="countdown" id="timer_5ce74dca" style="bottom:0;left:0;" data-warnwhen="0">
+<div class="countdown" id="timer_5cf08755" style="bottom:0;left:0;" data-warnwhen="0">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">21</span></code>
 </div>
 
@@ -279,7 +280,7 @@ countdown(minutes = 1, seconds = 30,
           font_size = "6em")
 ```
 
-<div class="countdown" id="timer_5ce74d2b" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;" data-warnwhen="0">
+<div class="countdown" id="timer_5cf08688" style="right:0;bottom:0;left:0;margin:5%;padding:15px;font-size:6em;" data-warnwhen="0">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
@@ -287,31 +288,30 @@ countdown(minutes = 1, seconds = 30,
 
 # Full-screen timers
 
-Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer.
+Set `top`, `bottom`, `left` and `right` all to `0` to get a full screen timer, or
+use  `countdown_fullscreen()` for a (possibly stand-alone) [full-screen timer](fullscreen/index.html).
 
 --
 
-Very helpful for hiding content while the activity is going on.
+Very helpful for hiding content while the activity is going on, or for presenters.
 
 --
 
-Here's the code&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;:
+Here's the code&lt;sup class="small"&gt;&amp;#x2731;&lt;/sup&gt;:
 
 
 ```r
-countdown(minutes = 0, seconds = 90, 
-          top = 0, bottom = 0,
-          left = 0, right = 0,
-          padding = "20%",
-          margin = "5%",
-          font_size = "8em")
+countdown_fullscreen(minutes = 0, seconds = 90,
+                     padding = "20%", margin = "5%",
+                     font_size = "8em", line_height = "1.25")
 ```
 
-.footnote[&lt;sup&gt;&amp;#x2731;&lt;/sup&gt;_some fiddling with `padding`, `margin` and `font_size` may be required_]
+
+.footnote[&lt;sup class="small"&gt;&amp;#x2731;&lt;/sup&gt;_some fiddling with `padding`, `margin` and `font_size` is required in **xaringan** slides, for stand-alone timers, use the default values_]
 
 --
 
-<div class="countdown" id="timer_5ce75008" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;" data-warnwhen="0">
+<div class="countdown" id="timer_5cf084c8" style="top:0;right:0;bottom:0;left:0;margin:5%;padding:20%;font-size:8em;line-height:1.25;" data-warnwhen="0">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">30</span></code>
 </div>
 
@@ -333,7 +333,7 @@ Avoid countdown panic with a timer&lt;br&gt;that only **update**s once **every**
 countdown(minutes = 1, update_every = 15, right = "33%")
 ```
 
-<div class="countdown blink-colon noupdate-15" id="timer_5ce74fc8" style="right:33%;bottom:0;" data-warnwhen="0">
+<div class="countdown blink-colon noupdate-15" id="timer_5cf087f2" style="right:33%;bottom:0;" data-warnwhen="0">
 <code><span class="digits minutes">01</span><span class="digits colon">:</span><span class="digits seconds">00</span></code>
 </div>
 
@@ -348,7 +348,7 @@ Warn your audience that time is about to run out. The warning style is applied t
 countdown(0, 10, warn_when = 5, right = "33%", bottom = "33%")
 ```
 
-<div class="countdown" id="timer_5ce74d9d" style="right:33%;bottom:33%;" data-warnwhen="5">
+<div class="countdown" id="timer_5cf0876a" style="right:33%;bottom:33%;" data-warnwhen="5">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">10</span></code>
 </div>
 
@@ -366,7 +366,7 @@ a very small amount of HTML and CSS and bit more of Javascript.
 Each countdown timer element looks something like this:
 
 ````html
-&lt;div class="countdown" id="timer_5ce74fda" style="right:0;bottom:0;" data-warnwhen="0"&gt;
+&lt;div class="countdown" id="timer_5cf0878a" style="right:0;bottom:0;" data-warnwhen="0"&gt;
   &lt;code&gt;
     &lt;span class="digits minutes"&gt;03&lt;/span&gt;
     &lt;span class="digits colon"&gt;:&lt;/span&gt;
@@ -451,7 +451,7 @@ Set `play_sound = TRUE` to be alerted to the end of the timer with fanfare!
 countdown(0, 10, play_sound = TRUE)
 ```
 
-<div class="countdown" id="timer_5ce74fa5" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
+<div class="countdown" id="timer_5cf08812" style="right:0;bottom:0;" data-audio="true" data-warnwhen="0">
 <code><span class="digits minutes">00</span><span class="digits colon">:</span><span class="digits seconds">10</span></code>
 </div>
 

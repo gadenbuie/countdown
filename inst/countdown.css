@@ -3,6 +3,7 @@
   position: absolute;
   cursor: pointer;
   font-size: {{font_size}};
+  line-height: {{line_height}};
   border-color: {{color_border}};
   border-width: {{border_width}};
   border-style: solid;
@@ -15,6 +16,9 @@
   margin: {{margin}};
   padding: {{padding}};
   text-align: center;
+}
+.countdown code {
+  vertical-align: middle;
 }
 .countdown .digits {
   color: {{color_text}};

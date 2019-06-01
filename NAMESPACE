@@ -2,6 +2,8 @@
 
 export(choose_dark_or_light)
 export(countdown)
+export(countdown_app)
+export(countdown_fullscreen)
 export(darken)
 export(lighten)
 importFrom(grDevices,rgb)

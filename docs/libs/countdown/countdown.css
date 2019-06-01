@@ -3,6 +3,7 @@
   position: absolute;
   cursor: pointer;
   font-size: 3em;
+  line-height: 1.2;
   border-color: #d33682;
   border-width: 3px;
   border-style: solid;
@@ -13,6 +14,9 @@
   margin: 0.6em;
   padding: 0 15px;
   text-align: center;
+}
+.countdown code {
+  vertical-align: middle;
 }
 .countdown .digits {
   color: #d33682;
@@ -36,7 +40,7 @@
   background-color: #E6C229;
 }
 .countdown.running.warning .digits {
-  color: #2D2608;
+  color: #39300A;
 }
 
 @-webkit-keyframes blink {
