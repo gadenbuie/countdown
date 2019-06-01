@@ -15,16 +15,18 @@ update_every_choices <- setNames(
 )
 
 parse_mmss <- function(x = "") {
-  error_msg <- list(error = "Please enter a time as MM:SS")
+  error_msg <- list(error = "Please enter a time as MM or MM:SS")
   valid <- TRUE
   if (is.null(x) || x == "") return(list(minutes = 0L, seconds = 0L))
-  if (!grepl(":", x)) valid <- FALSE
+  if (grepl("[^:0-9]", x)) valid <- FALSE
   if (!grepl("\\d", x)) valid <- FALSE
   if (!valid) return(error_msg)
-  m <- regexec("([0-9]{1,2}):([0-9]{1,2})", x)
+  m <- regexec("([0-9]{1,2}):?([0-9]{1,2})?", x)
   x <- regmatches(x, m)[[1]]
   if (length(x) != 3) return(error_msg)
-  list(minutes = as.integer(x[2]), seconds = as.integer(x[3]))
+  time <- list(minutes = as.integer(x[2]), seconds = as.integer(x[3]))
+  if (is.na(time$seconds)) time$seconds <- 0
+  time
 }
 
 ui <- basicPage(
@@ -32,12 +34,16 @@ ui <- basicPage(
     "iframe { height: 99vh; border: none; }",
     "#about:hover { text-decoration: none; }"
   )),
+  includeCSS("www/bootstrap.min.css"),
+  tags$head(tags$style(
+    ".form-control { background: #3E444C !important; color: #ddd !important; }"
+  )),
   fluidRow(
     style = "padding-top: 1em; padding-bottom: 1em;",
     column(
       class = "text-center col-md-3",
       width = 4,
-      h1(actionLink("about", "Countdown"), style = "line-height: 35px")
+      h1(actionLink("about", "countdown", class = "text-info"), style = "line-height: 35px")
     ),
     column(
       class = "text-left col-md-9",
@@ -61,7 +67,8 @@ ui <- basicPage(
           selectInput(
             "update_every", "Update Every",
             choices = update_every_choices,
-            selected = "1 sec"
+            selected = "1 sec",
+            selectize = FALSE
           )
         ),
         column(
@@ -85,10 +92,15 @@ server <- function(input, output, session) {
 
   session_dir <- file.path("www", "tmp", session_token)
   dir.create(session_dir)
+  clean_session_files <- function() {
+    # cat("\nCleaning up:", session_dir)
+    unlink(session_dir, recursive = TRUE)
+  }
 
-  onSessionEnded(function() unlink(session_dir, recursive = TRUE))
+  onStop(clean_session_files)
 
   timer <- reactive({
+    req(input$time)
     parse_mmss(input$time)
   })
 
@@ -119,8 +131,20 @@ server <- function(input, output, session) {
         warn_when = as.integer(warn_when()$seconds),
         update_every = as.integer(input$update_every),
         line_height = "94vh",
-        border_radius = "15px",
-        border_width = "3px"
+        border_width = "5px",
+        color_border = "#7A8288",
+        color_background = "#272B30",
+        color_text = "#C8C8C8",
+        # color_running_background = "#102B1A",
+        color_running_text = "#43AC6A",
+        color_running_background = "#272B30",
+        color_running_border = "#272B30",
+        color_warning_text = "#E6C229",
+        color_warning_background = "#272B30",
+        color_warning_border = "#E6C229",
+        # color_warning_background = darken("#E6C229", 0.6),
+        color_finished_background = "#F04124",
+        color_finished_text = "#272B30"
       ),
       file = file.path(getwd(), tmpfile)
     )
@@ -160,7 +184,7 @@ server <- function(input, output, session) {
       modalDialog(
         title = "About Countdown",
         p(
-          code(a("countdown", href = "https://pkg.garrickadenbuie.com/countdown")),
+          a("countdown", href = "https://pkg.garrickadenbuie.com/countdown"),
           "is a small R package for creating HTML-based timers.",
           "Learn", em("why"), "and", em("how"), "at",
           a("pkg.garrickadenbuie.com/countdown.", href = "https://pkg.garrickadenbuie.com/countdown")
