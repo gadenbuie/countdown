@@ -31,8 +31,10 @@ parse_mmss <- function(x = "") {
 
 ui <- basicPage(
   tags$head(tags$style(
+    "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
     "iframe { height: 99vh; border: none; }",
-    "#about:hover { text-decoration: none; }"
+    "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
+    "#about { font-family: 'Nova Square'; color: #4389A0; }"
   )),
   includeCSS("www/bootstrap.min.css"),
   tags$head(tags$style(
@@ -125,26 +127,32 @@ server <- function(input, output, session) {
     input$reset
     tmpfile <- tempfile("countdown", session_dir, ".html")
     htmltools::save_html(
-      countdown_fullscreen(
-        minutes = as.integer(timer()$minutes),
-        seconds = as.integer(timer()$seconds),
-        warn_when = as.integer(warn_when()$seconds),
-        update_every = as.integer(input$update_every),
-        line_height = "94vh",
-        border_width = "5px",
-        color_border = "#7A8288",
-        color_background = "#272B30",
-        color_text = "#C8C8C8",
-        # color_running_background = "#102B1A",
-        color_running_text = "#43AC6A",
-        color_running_background = "#272B30",
-        color_running_border = "#272B30",
-        color_warning_text = "#E6C229",
-        color_warning_background = "#272B30",
-        color_warning_border = "#E6C229",
-        # color_warning_background = darken("#E6C229", 0.6),
-        color_finished_background = "#F04124",
-        color_finished_text = "#272B30"
+      htmltools::tagList(
+        htmltools::tags$head(htmltools::tags$style(
+          "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
+          ".countdown .digits { font-family: 'Roboto Mono'; }"
+        )),
+        countdown_fullscreen(
+          minutes = as.integer(timer()$minutes),
+          seconds = as.integer(timer()$seconds),
+          warn_when = as.integer(warn_when()$seconds),
+          update_every = as.integer(input$update_every),
+          line_height = "94vh",
+          border_width = "5px",
+          color_border = "#7A8288",
+          color_background = "#272B30",
+          color_text = "#C8C8C8",
+          # color_running_background = "#102B1A",
+          color_running_text = "#43AC6A",
+          color_running_background = "#272B30",
+          color_running_border = "#272B30",
+          color_warning_text = "#E6C229",
+          color_warning_background = "#272B30",
+          color_warning_border = "#E6C229",
+          # color_warning_background = darken("#E6C229", 0.6),
+          color_finished_background = "#F04124",
+          color_finished_text = "#272B30"
+        )
       ),
       file = file.path(getwd(), tmpfile)
     )
