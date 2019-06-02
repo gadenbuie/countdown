@@ -28,7 +28,7 @@ var update_timer = function(timer, force = false) {
 }
 var countdown = function (e) {
   target = e.target;
-  if (target.classList.contains("digits")) {
+  if (target.classList.contains("countdown-digits")) {
     target = target.parentElement;
   }
   if (target.tagName == "CODE") {

@@ -55,15 +55,15 @@ test_that("countdown()", {
   }
 
   test_inner_html(x,
-                  "<span class=\"digits minutes\">01</span>",
-                  "<span class=\"digits colon\">:</span>",
-                  "<span class=\"digits seconds\">30</span>")
+                  "<span class=\"countdown-digits minutes\">01</span>",
+                  "<span class=\"countdown-digits colon\">:</span>",
+                  "<span class=\"countdown-digits seconds\">30</span>")
 
   # seconds and minutes get added
   test_inner_html(countdown(10.05, 65),
-                  "<span class=\"digits minutes\">11</span>",
-                  "<span class=\"digits colon\">:</span>",
-                  "<span class=\"digits seconds\">08</span>")
+                  "<span class=\"countdown-digits minutes\">11</span>",
+                  "<span class=\"countdown-digits colon\">:</span>",
+                  "<span class=\"countdown-digits seconds\">08</span>")
 
   expect_equal(countdown(class = "countdown")$attribs$class, "countdown")
   expect_equal(countdown(class = c("test", "countdown", "test"))$attribs$class, "countdown test")

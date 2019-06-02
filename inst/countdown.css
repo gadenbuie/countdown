@@ -17,31 +17,31 @@
   padding: {{padding}};
   text-align: center;
 }
-.countdown code {
+code.countdown-time {
   vertical-align: middle;
 }
-.countdown .digits {
+.countdown-digits {
   color: {{color_text}};
 }
 .countdown.running {
   border-color: {{color_running_border}};
   background-color: {{color_running_background}};
 }
-.countdown.running .digits {
+.countdown.running .countdown-digits {
   color: {{color_running_text}};
 }
 .countdown.finished {
   border-color: {{color_finished_border}};
   background-color: {{color_finished_background}};
 }
-.countdown.finished .digits {
+.countdown.finished .countdown-digits {
   color: {{color_finished_text}};
 }
 .countdown.running.warning {
   border-color: {{color_warning_border}};
   background-color: {{color_warning_background}};
 }
-.countdown.running.warning .digits {
+.countdown.running.warning .countdown-digits {
   color: {{color_warning_text}};
 }
 
@@ -57,7 +57,7 @@
 	to   {opacity: 1}
 }
 
-.countdown.running.blink-colon .digits.colon{
+.countdown.running.blink-colon .countdown-digits.colon {
   -webkit-animation: blink 2s steps(1, end) 0s infinite;
           animation: blink 2s steps(1, end) 0s infinite;
 }

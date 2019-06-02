@@ -194,11 +194,12 @@ countdown <- function(
       if (!missing(line_height)) line_height %:?% "line-height"
     ),
     code(
+      class = "countdown-time",
       HTML(
         paste0(
-          span(class = "digits minutes", sprintf("%02d", minutes)),
-          span(class = "digits colon", ":"),
-          span(class = "digits seconds", sprintf("%02d", seconds))
+          span(class = "countdown-digits minutes", sprintf("%02d", minutes)),
+          span(class = "countdown-digits colon", ":"),
+          span(class = "countdown-digits seconds", sprintf("%02d", seconds))
         )
       )
     )
