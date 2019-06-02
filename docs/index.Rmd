@@ -62,7 +62,7 @@ class: center middle
 
 <p style="margin: 11em 0;"></p>
 
-```{r first-timer, echo=FALSE}
+```{r first-timer, echo=FALSE, warning=FALSE, message=FALSE}
 library(countdown)
 solarized <- xaringanthemer:::solarized
 countdown(
