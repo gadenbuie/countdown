@@ -109,6 +109,11 @@ server <- function(input, output, session) {
 
   output$timer <- renderUI({
     req(timer()$minutes, warn_when()$seconds)
+    req(timer()$minutes + timer()$seconds > 0)
+    validate(need(
+      timer()$minutes + timer()$seconds / 60 < 100,
+      "Timer must be less than 100 minutes."
+    ))
     input$reset
     tmpfile <- tempfile("countdown", session_dir, ".html")
     htmltools::save_html(
