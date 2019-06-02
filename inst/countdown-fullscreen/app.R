@@ -164,7 +164,13 @@ server <- function(input, output, session) {
     if (input$update_every == 1L) {
       min <- timer()$minutes
       sec <- timer()$seconds
-      s <- (min * 60 + sec) * 0.2
+      s <- (min * 60 + sec)
+      if (s > 60) {
+        s <- ceiling(s * 0.2 / 30) * 30
+      } else {
+        s_opts <- seq(0, 60, 5)
+        s <- max(s_opts[s_opts <= (s / 2)])
+      }
     } else {
       s <- as.integer(input$update_every) * 2
     }
