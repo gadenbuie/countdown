@@ -6,10 +6,10 @@
 \title{Countdown Timer}
 \usage{
 countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
-  play_sound = FALSE, font_size = "3em", margin = "0.6em",
-  padding = "0 15px", bottom = if (is.null(top)) "0", right = if
-  (is.null(left)) "0", top = NULL, left = NULL, warn_when = 0L,
-  update_every = 1L, blink_colon = update_every > 1L,
+  style = NULL, play_sound = FALSE, font_size = "3em",
+  margin = "0.6em", padding = "0 15px", bottom = if (is.null(top))
+  "0", right = if (is.null(left)) "0", top = NULL, left = NULL,
+  warn_when = 0L, update_every = 1L, blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px", border_radius = "15px", line_height = "1.2",
   color_border = "#ddd", color_background = "inherit",
@@ -45,6 +45,12 @@ specific reason, it would probably be best to leave this unset.}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
 class or specify additional styles here that extend the base CSS.}
+
+\item{style}{CSS rules to be applied inline to the timer. Use \code{style} to
+override any global CSS rules for the timer. For example, to display the
+timer relative to the position where it is called (rather than positioned
+absolutely, as in the default), set
+\code{style = "position: relative; width: min-content;"}.}
 
 \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
 "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.}
@@ -178,7 +184,12 @@ countdown_fullscreen(
   minutes = 0, seconds = 90,
   padding = "20\%", margin = "5\%",
   font_size = "8em", line_height = "1.5"
-)}
+)
+
+# To position the timer "inline" in R Markdown documents,
+# use the `style` argument on each timer:
+countdown(1, 30, style = "position: relative; width: min-content;")
+}
 
 }
 \seealso{

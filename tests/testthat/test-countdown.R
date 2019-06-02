@@ -72,6 +72,14 @@ test_that("countdown()", {
   expect_error(countdown(100), "minutes")
 })
 
+test_that("countdown() with `style`", {
+  x <- countdown(id = "test", style = "position: relative; width: 100%")
+  y <- countdown(id = "test", style = c("position: relative", "width: 100%"))
+
+  expect_identical(as.character(x), as.character(y))
+  expect_true(grepl("style=\".+?position: relative;", as.character(x)))
+})
+
 test_that("countdown() with update_every", {
   x <- countdown(1, 30, id = "timer_1", update_every = 15)
 

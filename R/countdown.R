@@ -29,7 +29,12 @@
 #'   minutes = 0, seconds = 90,
 #'   padding = "20%", margin = "5%",
 #'   font_size = "8em", line_height = "1.5"
-#' )}
+#' )
+#'
+#' # To position the timer "inline" in R Markdown documents,
+#' # use the `style` argument on each timer:
+#' countdown(1, 30, style = "position: relative; width: min-content;")
+#' }
 #'
 #' @return A vanilla JavaScript countdown timer as HTML, with dependencies.
 #' @seealso [countdown_app()]
@@ -48,6 +53,11 @@
 #'   containing the timer. The `"countdown"` class is added automatically. If
 #'   you want to modify the style of the timer, you can modify the `"countdown"`
 #'   class or specify additional styles here that extend the base CSS.
+#' @param style CSS rules to be applied inline to the timer. Use `style` to
+#'   override any global CSS rules for the timer. For example, to display the
+#'   timer relative to the position where it is called (rather than positioned
+#'   absolutely, as in the default), set
+#'   `style = "position: relative; width: min-content;"`.
 #' @param play_sound Play a sound at the end of the timer? If `TRUE`, plays the
 #'   "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 #' @param font_size The font size of the time displayed in the timer.
@@ -126,6 +136,7 @@ countdown <- function(
   ...,
   id = NULL,
   class = NULL,
+  style = NULL,
   play_sound = FALSE,
   font_size = "3em",
   margin = "0.6em",
@@ -191,7 +202,8 @@ countdown <- function(
       if (!missing(margin)) margin %:?% "margin",
       if (!missing(padding)) padding %:?% "padding",
       if (!missing(font_size)) font_size %:?% "font-size",
-      if (!missing(line_height)) line_height %:?% "line-height"
+      if (!missing(line_height)) line_height %:?% "line-height",
+      paste(style, collapse = "; ")
     ),
     code(
       class = "countdown-time",
