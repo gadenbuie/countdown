@@ -22,8 +22,8 @@ Check out countdown in its native environment in the [countdown presentation](ht
 You can install countdown from GitHub with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("gadenbuie/countdown")
+# install.packages("devtools")
+devtools::install_github("gadenbuie/countdown")
 ```
 
 ## Shiny App

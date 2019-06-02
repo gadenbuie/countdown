@@ -15,31 +15,31 @@
   padding: 0 15px;
   text-align: center;
 }
-.countdown code {
+code.countdown-time {
   vertical-align: middle;
 }
-.countdown .digits {
+.countdown-digits {
   color: #d33682;
 }
 .countdown.running {
   border-color: #259088;
   background-color: #2aa198;
 }
-.countdown.running .digits {
+.countdown.running .countdown-digits {
   color: #073642;
 }
 .countdown.finished {
   border-color: #C62D2A;
   background-color: #dc322f;
 }
-.countdown.finished .digits {
+.countdown.finished .countdown-digits {
   color: #fdf6e3;
 }
 .countdown.running.warning {
   border-color: #CFAE24;
   background-color: #E6C229;
 }
-.countdown.running.warning .digits {
+.countdown.running.warning .countdown-digits {
   color: #39300A;
 }
 
@@ -55,7 +55,7 @@
 	to   {opacity: 1}
 }
 
-.countdown.running.blink-colon .digits.colon{
+.countdown.running.blink-colon .countdown-digits.colon {
   -webkit-animation: blink 2s steps(1, end) 0s infinite;
           animation: blink 2s steps(1, end) 0s infinite;
 }

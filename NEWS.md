@@ -1,3 +1,12 @@
+# countdown 0.3.3
+
+* Added `.countdown-time` class to `<code>` element of timer. Renamed `.digits`
+  class to `.countdown-digits`. This ensures that it's possible to write CSS
+  rules with high specificity values (#10).
+  
+* Added `style` argument to `countdown()` for inlining CSS rules to the parent
+  `div` of the timer.
+
 # countdown 0.3.0
 
 * Added a warning state to the coundown timer that is enabled by setting

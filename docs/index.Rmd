@@ -87,7 +87,7 @@ Click while running to **bump** it up.
 
 Click when complete to **restart** it.
 
-.small.subtle[&#x1F4F5; Timers don't work on mobile]
+.small.subtle[&#x1F4F5; Timers don't work on mobile &#x1F625;]
 
 ---
 # Easily add a timer to your slides!
@@ -95,7 +95,7 @@ Click when complete to **restart** it.
 First, install `countdown` from [GitHub][countdown]
 
 ```r
-remotes::install_github("gadenbuie/countdown")
+devtools::install_github("gadenbuie/countdown")
 ```
 
 --
@@ -377,7 +377,7 @@ Each countdown timer element looks something like this:
 ````html
 ```{r echo=FALSE, results="asis"}
 x <- countdown(3, 30)
-x <- gsub("((code|span)>)(<span)", "\\1\n    \\3", x)
+x <- gsub("((code|span)( class.+?)?>)(<span)", "\\1\n    \\4", x)
 x <- sub("(span>)(</code)", "\\1\n  \\2", x)
 cat(paste(x), sep = "\n")
 ```
@@ -413,7 +413,7 @@ Just give each timer a unique `id` that you can use in your CSS.
   background-image: url(img/bg-sqfw.gif);
   background-size: cover;
 }
-#special_timer.running .digits {
+#special_timer.running .countdown-digits {
   color: #fdf6e3;
 }
 ```
