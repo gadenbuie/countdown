@@ -42,7 +42,6 @@ darken <- function(color_hex, strength = 0.8) {
 #' @param strength Default strength by which `x` is darkened or lightened to
 #'   arrive at a color approximating `black` or `white`. Default is 0.75 (75%);
 #'   ignored if a value for `black` or `white` is provided.
-#' @export
 choose_dark_or_light <- function(
   x,
   black = NULL,
