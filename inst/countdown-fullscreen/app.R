@@ -14,22 +14,6 @@ update_every_choices <- setNames(
   c(paste(c(1, 5, 10, 15, 30), "sec"), "1 min")
 )
 
-parse_mmss <- function(x = "") {
-  error_msg <- list(error = "Please enter a time as MM or MM:SS")
-  valid <- TRUE
-  if (is.null(x) || x == "") return(list(minutes = 0L, seconds = 0L))
-  if (grepl("[^:0-9]", x)) valid <- FALSE
-  if (!grepl("\\d", x)) valid <- FALSE
-  if (!valid) return(error_msg)
-  m <- regexec("([0-9]{1,2}):?([0-9]{1,2})?", x)
-  x <- regmatches(x, m)[[1]]
-  if (length(x) != 3) return(error_msg)
-  time <- list(minutes = as.integer(x[2]), seconds = as.integer(x[3]))
-  if (is.na(time$seconds)) time$seconds <- 0
-  if (time$minutes + time$seconds < 1) return(error_msg)
-  time
-}
-
 ui <- basicPage(
   tags$head(tags$style(
     "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
@@ -104,11 +88,11 @@ server <- function(input, output, session) {
 
   timer <- reactive({
     req(input$time)
-    parse_mmss(input$time)
+    countdown:::parse_mmss(input$time)
   })
 
   warn_when <- reactive({
-    x <- parse_mmss(input$warn_time)
+    x <- countdown:::parse_mmss(input$warn_time)
     x$seconds <- x$minutes * 60 + x$seconds
     x
   })
@@ -164,6 +148,7 @@ server <- function(input, output, session) {
 
   observe({
     req(timer()$minutes)
+    req(timer()$minutes + timer()$seconds > 0)
     s_update_every <- isolate(input$update_every)
     s <- timer()$minutes * 60 + timer()$seconds
     c_update_every <- update_every_choices[update_every_choices <= s]
