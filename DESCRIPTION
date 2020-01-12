@@ -1,7 +1,7 @@
 Package: countdown
 Title: A Countdown Timer for R Markdown HTML Presentations and
     Documents
-Version: 0.3.3
+Version: 0.3.4
 Authors@R: 
     person(given = "Garrick",
            family = "Aden-Buie",
@@ -26,4 +26,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

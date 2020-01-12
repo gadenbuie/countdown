@@ -7,21 +7,26 @@
   border-color: {{color_border}};
   border-width: {{border_width}};
   border-style: solid;
-  border-radius: {{border_radius}};
-  {{#box_shadow}}
+  border-radius: {{border_radius}};{{#box_shadow}}
   box-shadow: {{box_shadow}};
-  -webkit-box-shadow: {{box_shadow}};
-  -moz-box-shadow: {{box_shadow}};
-  {{/box_shadow}}
+  -webkit-box-shadow: {{box_shadow}};{{/box_shadow}}
   margin: {{margin}};
   padding: {{padding}};
   text-align: center;
 }
-code.countdown-time {
-  vertical-align: middle;
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.countdown .countdown-time {
+  background: none;
+  font-size: 100%;
+  padding: 0;
 }
 .countdown-digits {
   color: {{color_text}};
+  vertical-align: text-bottom;
 }
 .countdown.running {
   border-color: {{color_running_border}};

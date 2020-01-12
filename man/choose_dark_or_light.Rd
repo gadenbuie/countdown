@@ -18,7 +18,7 @@ black text provides the best contrast. By default chooses the input color
 chooses the input color \code{x} lightened by \code{strength}.}
 
 \item{strength}{Default strength by which \code{x} is darkened or lightened to
-arrive at a color approximating \code{black} or \code{white}. Default is 0.75 (75%);
+arrive at a color approximating \code{black} or \code{white}. Default is 0.75 (75\%);
 ignored if a value for \code{black} or \code{white} is provided.}
 }
 \description{

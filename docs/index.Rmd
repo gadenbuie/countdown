@@ -252,7 +252,7 @@ countdown(minutes = 0, seconds = 15)
 ```
 
 .center[
-<iframe src="default-timer/index.html" width="210px" height="125px" style="border:3px solid #002b36;"></iframe>
+<iframe src="default-timer/index.html" width="210px" height="128px" style="border:3px solid #002b36;"></iframe>
 ]
 
 ---
@@ -299,7 +299,7 @@ You can also override the global timer `font_size`, `padding`, and `margin`.
 ```{r}
 countdown(minutes = 1, seconds = 30, 
           left = 0, right = 0,
-          padding = "15px",
+          padding = "50px",
           margin = "5%",
           font_size = "6em")
 ```
@@ -317,16 +317,16 @@ Very helpful for hiding content while the activity is going on, or for presenter
 
 --
 
-Here's the code<sup class="small">&#x2731;</sup>:
+Here's the code. I made the the `font_size` bigger and adjusted the `margin`
+around the timer so it takes up the whole screen.
 
 ```{r full-screen, eval=FALSE}
-countdown_fullscreen(minutes = 0, seconds = 90,
-                     padding = "20%", margin = "5%",
-                     font_size = "8em", line_height = "1.25")
+countdown(minutes = 0, seconds = 90, 
+          top = 0, bottom = 0,
+          left = 0, right = 0,
+          margin = "5%",
+          font_size = "8em")
 ```
-
-
-.footnote[<sup class="small">&#x2731;</sup>_some fiddling with `padding`, `margin` and `font_size` is required in **xaringan** slides, for stand-alone timers, use the default values_]
 
 --
 

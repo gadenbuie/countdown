@@ -3,20 +3,28 @@
   position: absolute;
   cursor: pointer;
   font-size: 3em;
-  line-height: 1.2;
+  line-height: 1;
   border-color: #ddd;
   border-width: 3px;
   border-style: solid;
   border-radius: 15px;
   margin: 0.6em;
-  padding: 0 15px;
+  padding: 10px 15px;
   text-align: center;
 }
-code.countdown-time {
-  vertical-align: middle;
+.countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.countdown .countdown-time {
+  background: none;
+  font-size: 100%;
+  padding: 0;
 }
 .countdown-digits {
   color: inherit;
+  vertical-align: text-bottom;
 }
 .countdown.running {
   border-color: #3C9A5F;

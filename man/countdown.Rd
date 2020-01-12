@@ -5,26 +5,56 @@
 \alias{countdown_fullscreen}
 \title{Countdown Timer}
 \usage{
-countdown(minutes = 1L, seconds = 0L, ..., id = NULL, class = NULL,
-  style = NULL, play_sound = FALSE, font_size = "3em",
-  margin = "0.6em", padding = "0 15px", bottom = if (is.null(top))
-  "0", right = if (is.null(left)) "0", top = NULL, left = NULL,
-  warn_when = 0L, update_every = 1L, blink_colon = update_every > 1L,
+countdown(
+  minutes = 1L,
+  seconds = 0L,
+  ...,
+  id = NULL,
+  class = NULL,
+  style = NULL,
+  play_sound = FALSE,
+  font_size = "3em",
+  margin = "0.6em",
+  padding = "10px 15px",
+  bottom = if (is.null(top)) "0",
+  right = if (is.null(left)) "0",
+  top = NULL,
+  left = NULL,
+  warn_when = 0L,
+  update_every = 1L,
+  blink_colon = update_every > 1L,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px", border_radius = "15px", line_height = "1.2",
-  color_border = "#ddd", color_background = "inherit",
-  color_text = "inherit", color_running_background = "#43AC6A",
+  border_width = "3px",
+  border_radius = "15px",
+  line_height = "1",
+  color_border = "#ddd",
+  color_background = "inherit",
+  color_text = "inherit",
+  color_running_background = "#43AC6A",
   color_running_border = darken(color_running_background, 0.1),
-  color_running_text = NULL, color_finished_background = "#F04124",
+  color_running_text = NULL,
+  color_finished_background = "#F04124",
   color_finished_border = darken(color_finished_background, 0.1),
-  color_finished_text = NULL, color_warning_background = "#E6C229",
+  color_finished_text = NULL,
+  color_warning_background = "#E6C229",
   color_warning_border = darken(color_warning_background, 0.1),
-  color_warning_text = NULL)
+  color_warning_text = NULL
+)
 
-countdown_fullscreen(minutes = 1, seconds = 0, ...,
-  font_size = "30vw", line_height = "96vh", border_width = "0",
-  border_radius = "0", margin = "0", padding = "0", top = 0,
-  right = 0, bottom = 0, left = 0)
+countdown_fullscreen(
+  minutes = 1,
+  seconds = 0,
+  ...,
+  font_size = "30vw",
+  border_width = "0",
+  border_radius = "0",
+  margin = "0",
+  padding = "0",
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0
+)
 }
 \arguments{
 \item{minutes}{The number of minutes for which the timer should run. This
@@ -36,12 +66,12 @@ value is added to \code{minutes}.}
 \item{...}{Ignored by \code{\link[=countdown]{countdown()}}. In \code{\link[=countdown_fullscreen]{countdown_fullscreen()}}, additional
 arguments are passed on to \code{\link[=countdown]{countdown()}}.}
 
-\item{id}{A optional unique ID for the \code{<div>} containing the timer. A unique
+\item{id}{A optional unique ID for the \verb{<div>} containing the timer. A unique
 ID will be created if none is specified. All of the timers in a single
 document need to have unique IDs to function properly. Unless you have a
 specific reason, it would probably be best to leave this unset.}
 
-\item{class}{Optional additional classes to be added to the \code{<div>}
+\item{class}{Optional additional classes to be added to the \verb{<div>}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
 class or specify additional styles here that extend the base CSS.}
@@ -60,7 +90,7 @@ absolutely, as in the default), set
 \item{margin}{The margin applied to the timer container, default is
 \code{"0.5em"}.}
 
-\item{padding}{The padding within the timer container, default is \code{"0 15px"}.}
+\item{padding}{The padding within the timer container, default is \code{"10px 15px"}.}
 
 \item{bottom}{Position of the timer within its container. By default the
 timer is bottom-aligned using \code{bottom = "0"}. If \code{top} is set, \code{bottom}
@@ -100,14 +130,9 @@ the shadow.}
 
 \item{border_radius}{Radius of timer border corners (all states).}
 
-\item{line_height}{Line height of timer digits text. Line height needs to be
-set correctly for CSS to vertically align the text within the timer box.
-The default value of \code{1.2} means that the line height will be 1.2 times the
-\code{font_size} of the timer text. Note that the choice of \code{font_size} value
-and unit, in combination with the overall dimensions of the timer
-container, will impact the best value of \code{line_height}. If the timer text
-is above the midline, then you may need to increase \code{line_height}; if it's
-below the midline, try decreasing \code{line_height}.}
+\item{line_height}{Line height of timer digits text. Use this value to nudge
+the timer digits up or down vertically. The best value generally depends on
+the fonts used in your slides or document. The default value is \code{1}.}
 
 \item{color_border}{Color of the timer border when not yet activated.}
 
@@ -177,13 +202,14 @@ countdown(
 # with default parameters.
 countdown_fullscreen(1, 30)
 
-# For xaringan slides, use percentages for `margin` and `padding` and set
-# `font_size` and `line_height`. In general, the following is a good place
-# to start and then tweak the font size up or down as needed.
+# For xaringan slides, use percentages for `margin` to set the distance from
+# the edge of the slide and use `font_size` to adjust the size of the digits.
+# If you need to nudge the text up or down vertically, increase or decrease
+# `line_height`.
 countdown_fullscreen(
   minutes = 0, seconds = 90,
-  padding = "20\%", margin = "5\%",
-  font_size = "8em", line_height = "1.5"
+  margin = "5\%",
+  font_size = "8em",
 )
 
 # To position the timer "inline" in R Markdown documents,

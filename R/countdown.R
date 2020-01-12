@@ -22,13 +22,14 @@
 #' # with default parameters.
 #' countdown_fullscreen(1, 30)
 #'
-#' # For xaringan slides, use percentages for `margin` and `padding` and set
-#' # `font_size` and `line_height`. In general, the following is a good place
-#' # to start and then tweak the font size up or down as needed.
+#' # For xaringan slides, use percentages for `margin` to set the distance from
+#' # the edge of the slide and use `font_size` to adjust the size of the digits.
+#' # If you need to nudge the text up or down vertically, increase or decrease
+#' # `line_height`.
 #' countdown_fullscreen(
 #'   minutes = 0, seconds = 90,
-#'   padding = "20%", margin = "5%",
-#'   font_size = "8em", line_height = "1.5"
+#'   margin = "5%",
+#'   font_size = "8em",
 #' )
 #'
 #' # To position the timer "inline" in R Markdown documents,
@@ -63,7 +64,7 @@
 #' @param font_size The font size of the time displayed in the timer.
 #' @param margin The margin applied to the timer container, default is
 #'   `"0.5em"`.
-#' @param padding The padding within the timer container, default is `"0 15px"`.
+#' @param padding The padding within the timer container, default is `"10px 15px"`.
 #' @param right Position of the timer within its container. By default the timer
 #'   is right-aligned using `right = "0"`. If `left` is set, `right` defaults to
 #'   `NULL`.
@@ -92,14 +93,9 @@
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
 #' @param border_radius Radius of timer border corners (all states).
-#' @param line_height Line height of timer digits text. Line height needs to be
-#'   set correctly for CSS to vertically align the text within the timer box.
-#'   The default value of `1.2` means that the line height will be 1.2 times the
-#'   `font_size` of the timer text. Note that the choice of `font_size` value
-#'   and unit, in combination with the overall dimensions of the timer
-#'   container, will impact the best value of `line_height`. If the timer text
-#'   is above the midline, then you may need to increase `line_height`; if it's
-#'   below the midline, try decreasing `line_height`.
+#' @param line_height Line height of timer digits text. Use this value to nudge
+#'   the timer digits up or down vertically. The best value generally depends on
+#'   the fonts used in your slides or document. The default value is `1`.
 #' @param color_border Color of the timer border when not yet activated.
 #' @param color_background Color of the timer background when not yet activated.
 #' @param color_text Color of the timer text when not yet activated.
@@ -140,7 +136,7 @@ countdown <- function(
   play_sound = FALSE,
   font_size = "3em",
   margin = "0.6em",
-  padding = "0 15px",
+  padding = "10px 15px",
   bottom = if (is.null(top)) "0",
   right = if (is.null(left)) "0",
   top = NULL,
@@ -151,7 +147,7 @@ countdown <- function(
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
-  line_height = "1.2",
+  line_height = "1",
   color_border = "#ddd",
   color_background = "inherit",
   color_text = "inherit",
@@ -261,7 +257,6 @@ countdown_fullscreen <- function(
   seconds = 0,
   ...,
   font_size = "30vw",
-  line_height = "96vh",
   border_width = "0",
   border_radius = "0",
   margin = "0",
@@ -274,7 +269,6 @@ countdown_fullscreen <- function(
   countdown(
     minutes, seconds,
     font_size = font_size,
-    line_height = line_height,
     border_width = border_width,
     border_radius = border_radius,
     margin = margin,
