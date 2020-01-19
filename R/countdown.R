@@ -61,6 +61,8 @@
 #'   `style = "position: relative; width: min-content;"`.
 #' @param play_sound Play a sound at the end of the timer? If `TRUE`, plays the
 #'   "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
+#'   Alternatively, `play_sound` can be a relative or absolute URL to a sound
+#'   file, such as an `mp3`, `wav`, `ogg`, or other audio file type.
 #' @param font_size The font size of the time displayed in the timer.
 #' @param margin The margin applied to the timer container, default is
 #'   `"0.5em"`.
@@ -213,7 +215,11 @@ countdown <- function(
     )
   )
 
-  if (play_sound) x$attribs$`data-audio` <- "true"
+  if (isTRUE(play_sound)) {
+    x$attribs$`data-audio` <- "true"
+  } else if (is.character(play_sound) && nzchar(play_sound)) {
+    x$attribs$`data-audio` <- play_sound
+  }
   x$attribs$`data-warnwhen` <- if (warn_when > 0) warn_when else 0L
 
   tmpdir <- tempfile("countdown")
