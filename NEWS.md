@@ -1,3 +1,11 @@
+# countdown 0.3.5
+
+* Any sound file hosted online can no be played in place of the default sound
+  by setting `play_sound` to the absolute or relative URL of the sound file.
+  
+* The default CSS styles were updated for better automatic vertical centering
+  of the countdown digits.
+
 # countdown 0.3.3
 
 * Added `.countdown-time` class to `<code>` element of timer. Renamed `.digits`
