@@ -83,7 +83,9 @@ absolutely, as in the default), set
 \code{style = "position: relative; width: min-content;"}.}
 
 \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
-"stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.}
+"stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
+Alternatively, \code{play_sound} can be a relative or absolute URL to a sound
+file, such as an \code{mp3}, \code{wav}, \code{ogg}, or other audio file type.}
 
 \item{font_size}{The font size of the time displayed in the timer.}
 
