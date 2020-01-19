@@ -26,7 +26,6 @@
 }
 .countdown-digits {
   color: #d33682;
-  vertical-align: text-bottom;
 }
 .countdown.running {
   border-color: #259088;
