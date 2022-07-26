@@ -180,18 +180,24 @@ countdown <- function(
 
   class <- paste(unique(c("countdown", class)), collapse = " ")
 
-  if (blink_colon) class <- paste(class, "blink-colon")
-
-  update_every <- as.integer(update_every)
-  if (update_every > 1L) {
-    class <- paste0(class, " noupdate-", update_every)
+  play_sound <- if (isTRUE(play_sound)) {
+    "true"
+  } else if (is.character(play_sound) && nzchar(play_sound)) {
+    play_sound
   }
+
+  warn_when <- if (warn_when > 0) warn_when
+  update_every <- as.integer(update_every)
 
   `%:?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
 
   x <- div(
     class = class,
     id = id,
+    `data-warn-when` = warn_when,
+    `data-update-every` = update_every,
+    `data-play-sound` = play_sound,
+    `data-blink-colon` = if (isTRUE(blink_colon)) "true",
     style = paste0(
       top %:?% "top",
       right %:?% "right",
@@ -215,27 +221,21 @@ countdown <- function(
     )
   )
 
-  if (isTRUE(play_sound)) {
-    x$attribs$`data-audio` <- "true"
-  } else if (is.character(play_sound) && nzchar(play_sound)) {
-    x$attribs$`data-audio` <- play_sound
-  }
-  x$attribs$`data-warnwhen` <- if (warn_when > 0) warn_when else 0L
-
   tmpdir <- tempfile("countdown")
   dir.create(tmpdir)
-  file.copy(system.file("countdown.js", package = "countdown"),
-            file.path(tmpdir, "countdown.js"))
-  file.copy(system.file("smb_stage_clear.mp3", package = "countdown"),
-            file.path(tmpdir, "smb_stage_clear.mp3"))
+  file.copy(
+    system.file("countdown.js", package = "countdown"),
+    file.path(tmpdir, "countdown.js")
+  )
+  file.copy(
+    system.file("smb_stage_clear.mp3", package = "countdown"),
+    file.path(tmpdir, "smb_stage_clear.mp3")
+  )
 
   # Set text based on background color
-  color_running_text <- color_running_text %||%
-    choose_dark_or_light(color_running_background)
-  color_finished_text <- color_finished_text %||%
-    choose_dark_or_light(color_finished_background)
-  color_warning_text <- color_warning_text %||%
-    choose_dark_or_light(color_warning_background)
+  color_running_text  <- color_running_text  %||% choose_dark_or_light(color_running_background)
+  color_finished_text <- color_finished_text %||% choose_dark_or_light(color_finished_background)
+  color_warning_text  <- color_warning_text  %||% choose_dark_or_light(color_warning_background)
 
   css_template <- readLines(system.file("countdown.css", package = "countdown"))
   css <- whisker::whisker.render(css_template)
@@ -243,13 +243,13 @@ countdown <- function(
   writeLines(css, css_file)
 
   htmltools::htmlDependencies(x) <- htmlDependency(
-      "countdown",
-      version = utils::packageVersion("countdown"),
-      src = gsub("//", "/", dirname(css_file)),
-      script = "countdown.js",
-      stylesheet = "countdown.css",
-      all_files = TRUE
-    )
+    "countdown",
+    version = utils::packageVersion("countdown"),
+    src = gsub("//", "/", dirname(css_file)),
+    script = "countdown.js",
+    stylesheet = "countdown.css",
+    all_files = TRUE
+  )
 
   htmltools::browsable(x)
 }

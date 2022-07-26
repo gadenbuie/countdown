@@ -1,141 +1,179 @@
-var counters = {timer: {}};
-var update_timer = function(timer, force = false) {
-	var secs = timer.value;
-
-	// check if we should update timer or not
-	noup = timer.div.className.match(/noupdate-\d+/);
-	if (!force && noup != null) {
-	  noup = parseInt(noup[0].match(/\d+$/));
-	  if (secs > noup * 2 && secs % noup > 0) { return; }
-	}
-
-	// should we apply or remove warning class?
-	warnwhen = timer.div.dataset.warnwhen;
-	if (warnwhen && warnwhen > 0) {
-	  if (secs <= warnwhen && !timer.div.classList.contains("warning")) {
-	    timer.div.classList.add("warning");
-	  } else if (secs > warnwhen && timer.div.classList.contains("warning")) {
-	    timer.div.classList.remove("warning");
-	  }
-	}
-
-  var mins = Math.floor(secs / 60); // 1 min = 60 secs
-  secs -= mins * 60;
-
-  // Update HTML
-  timer.min.innerHTML = String(mins).padStart(2, 0);
-  timer.sec.innerHTML = String(secs).padStart(2, 0);
-}
-var countdown = function (e) {
-  target = e.target;
-  if (target.classList.contains("countdown-digits")) {
-    target = target.parentElement;
-  }
-  if (target.tagName == "CODE") {
-    target = target.parentElement;
-  }
-
-  // Init counter
-  if (!counters.timer.hasOwnProperty(target.id)) {
-    counters.timer[target.id] = {};
-    // Set the containers
-	  counters.timer[target.id].min = target.getElementsByClassName("minutes")[0];
-  	counters.timer[target.id].sec = target.getElementsByClassName("seconds")[0];
-  	counters.timer[target.id].div = target;
-  }
-
-  if (!counters.timer[target.id].running) {
-    if (!counters.timer[target.id].end) {
-      counters.timer[target.id].end   = parseInt(counters.timer[target.id].min.innerHTML) * 60;
-		  counters.timer[target.id].end  += parseInt(counters.timer[target.id].sec.innerHTML);
+class CountdownTimer {
+  constructor (el) {
+    if (typeof el === 'string' || el instanceof String) {
+      el = document.querySelector(el)
     }
 
-    counters.timer[target.id].value = counters.timer[target.id].end;
-    update_timer(counters.timer[target.id]);
-    if (counters.ticker) counters.timer[target.id].value += 1;
-
-    // Start if not past end date
-    if (counters.timer[target.id].value > 0) {
-      base_class = target.className.replace(/\s?(running|finished)/, "")
-      target.className = base_class + " running";
-      counters.timer[target.id].running = true;
-
-      if (!counters.ticker) {
-        counters.ticker = setInterval(counter_update_all, 1000);
-      }
+    if (el.counter) {
+      return el.counter
     }
-  } else {
-    // Bump timer value if running & clicked
-    counters.timer[target.id].value += counter_bump_increment(counters.timer[target.id].end);
-    update_timer(counters.timer[target.id], force = true);
-    counters.timer[target.id].value += 1;
-  }
-};
 
-var counter_bump_increment = function(val) {
-  if (val <= 30) {
-    return 5;
-  } else if (val <= 300) {
-    return 15;
-  } else if (val <= 3000) {
-    return 30;
-  } else {
-    return 60;
-  }
-}
+    const self = this
+    el.addEventListener('click', function() {
+      self.is_running ? self.bumpUp() : self.start()
+    })
 
-var counter_update_all = function() {
-  // Iterate over all running timers
-  for (var i in counters.timer) {
-    // Stop if passed end time
-    console.log(counters.timer[i].id)
-    counters.timer[i].value--;
-    if (counters.timer[i].value <= 0) {
-      counters.timer[i].min.innerHTML = "00";
-      counters.timer[i].sec.innerHTML = "00";
-      counters.timer[i].div.className = counters.timer[i].div.className.replace("running", "finished");
-      counters.timer[i].running = false;
+    const minutes = el.querySelector('.minutes') || '0'
+    const seconds = el.querySelector('.seconds') || '0'
+    const duration = parseInt(minutes.innerHTML) * 60 + parseInt(seconds.innerHTML)
+
+    function attrIsTrue (x) {
+      if (x === true) return true
+      return x === 'true' || x === '' || x === '1' ? true : false
+    }
+
+    this.element = el
+    this.duration = duration
+    this.end = null
+    this.is_running = false
+    this.warn_when = parseInt(el.dataset.warnWhen) || -1
+    this.update_every = parseInt(el.dataset.updateEvery) || 1
+    this.play_sound = attrIsTrue(el.dataset.playSound)
+    this.blink_colon = attrIsTrue(el.dataset.blinkColon)
+    this.timeout = null
+  }
+
+  remainingTime () {
+    const remaining = (this.end - Date.now()) / 1000
+
+    let minutes = Math.floor(remaining / 60)
+    let seconds = Math.round(remaining - minutes * 60)
+    if (seconds > 59) {
+      minutes = minutes + 1
+      seconds = seconds - 60
+    }
+
+    return {remaining, minutes, seconds}
+  }
+
+  start () {
+    this.is_running = true
+    this.end = Date.now() + this.duration * 1000
+    this.element.classList.remove('finished')
+    this.element.classList.add('running')
+    this.tick()
+  }
+
+  tick (run_again) {
+    if (typeof run_again === 'undefined') {
+      run_again = true
+    }
+
+    if (!this.is_running) return
+
+    this.update()
+
+    if (run_again) {
+      this.timeout = setTimeout(this.tick.bind(this), 1000 - Date.now() % 1000)
+    }
+  }
+
+  update (force) {
+    if (typeof force === 'undefined') {
+      force = false
+    }
+
+    const { remaining, minutes, seconds } = this.remainingTime()
+
+    const setRemainingTime = (selector, time) => {
+      const timeContainer = this.element.querySelector(selector)
+      if (!timeContainer) return
+      time = Math.max(time, 0)
+      timeContainer.innerText = String(time).padStart(2, 0)
+    }
+
+    if (remaining < 0.5) {
+      this.stop()
+      setRemainingTime('.minutes', 0)
+      setRemainingTime('.seconds', 0)
+      this.playSound()
+      return
+    }
+
+    if (this.blink_colon) {
+      this.element.classList.toggle('blink-colon')
+    }
+
+    const should_update = force ||
+      Math.round(remaining) < this.warn_when ||
+      Math.round(remaining) % this.update_every == 0
+
+    console.log({ remaining, should_update })
+
+    if (should_update) {
+      this.element.classList.toggle('warning', remaining <= this.warn_when)
+      setRemainingTime('.minutes', minutes)
+      setRemainingTime('.seconds', seconds)
+    }
+  }
+
+  stop () {
+    this.element.classList.remove('running')
+    this.element.classList.remove('blink-colon')
+    this.element.classList.add('finished')
+    this.is_running = false
+    this.timeout = clearTimeout(this.timeout)
+  }
+
+  bumpUp (val) {
+    if (!this.is_running) {
+      console.error('timer is not running')
+      return
+    }
+    val = val || this.bumpIncrementValue()
+    this.end += val * 1000
+    this.update(true)
+  }
+
+  bumpDown (val) {
+    if (!this.is_running) {
+      console.error('timer is not running')
+      return
+    }
+    val = val || this.bumpIncrementValue()
+    this.end -= val * 1000
+    this.update(true)
+  }
+
+  setRemaining (val) {
+    if (!this.is_running) {
+      console.error('timer is not running')
+      return
+    }
+    this.end = Date.now() + val * 1000
+    this.update(true)
+  }
+
+  playSound () {
+    let url = this.play_sound
+    if (!url) return
+    if (typeof url === 'boolean') {
+      url = 'libs/countdown/smb_stage_clear.mp3'
+    }
+    const sound = new Audio(url)
+    sound.play()
+  }
+
+  bumpIncrementValue (val) {
+    val = val || this.remainingTime().remaining
+    if (val <= 30) {
+      return 5;
+    } else if (val <= 300) {
+      return 15;
+    } else if (val <= 3000) {
+      return 30;
     } else {
-      // Update
-      update_timer(counters.timer[i]);
-
-      // Play countdown sound if data-audio=true on container div
-      let audio = counters.timer[i].div.dataset.audio
-      if (audio && counters.timer[i].value == 5) {
-        counter_play_sound(audio);
-      }
+      return 60;
     }
   }
-
-  // If no more running timers, then clear ticker
-  var timerIsRunning = false;
-  for (var t in counters.timer) {
-    timerIsRunning = timerIsRunning || counters.timer[t].running
-  }
-  if (!timerIsRunning) {
-    clearInterval(counters.ticker);
-    counters.ticker = null;
-  }
 }
 
-var counter_play_sound = function(url) {
-  if (typeof url === 'boolean') {
-    url = 'libs/countdown/smb_stage_clear.mp3';
-  }
-  sound = new Audio(url);
-  sound.play();
-}
-
-var counter_addEventListener = function() {
-  if (!document.getElementsByClassName("countdown").length) {
-    setTimeout(counter_addEventListener, 2);
+document.addEventListener('DOMContentLoaded', function() {
+  const els = document.querySelectorAll('.countdown')
+  if (!els || !els.length) {
     return;
   }
-  var counter_divs = document.getElementsByClassName("countdown");
-  console.log(counter_divs);
-  for (var i = 0; i < counter_divs.length; i++) {
-    counter_divs[i].addEventListener("click", countdown, false);
-  }
-};
-
-counter_addEventListener();
+  els.forEach(function(el) {
+    el.countdown = new CountdownTimer(el)
+  })
+})

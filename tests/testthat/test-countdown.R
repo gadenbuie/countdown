@@ -12,7 +12,7 @@ test_that("countdown html_dependency", {
 
 })
 
-dir.create(here::here("tests", "testthat", "css_template"), showWarnings = FALSE)
+dir.create(test_path("css_template"), showWarnings = FALSE)
 
 test_that("countdown css template", {
   test_template_file <- function(x, compare_to_filename) {
@@ -46,7 +46,7 @@ test_that("countdown()", {
   expect_equal(x$name, "div")
   expect_equal(x$attribs$class, "countdown extra-class")
   expect_equal(x$attribs$id, "timer_1")
-  expect_equal(x$attribs$`data-audio`, "true")
+  expect_equal(x$attribs$`data-play-sound`, "true")
   expect_equal(x$children[[1]]$name, "code")
 
   test_inner_html <- function(counter, ...) {
@@ -83,16 +83,16 @@ test_that("countdown() with `style`", {
 test_that("countdown() with update_every", {
   x <- countdown(1, 30, id = "timer_1", update_every = 15)
 
-  expect_true(grepl("blink-colon", x$attribs$class))
-  expect_true(grepl("noupdate-15", x$attribs$class))
+  expect_equal(x$attribs[["data-blink-colon"]], "true")
+  expect_equal(x$attribs[["data-update-every"]], 15)
 })
 
 test_that("countdown() sets up timer correctly with warn_when", {
   x <- countdown(1, 30, warn_when = 15)
-  expect_equal(x$attribs$`data-warnwhen`, 15L)
+  expect_equal(x$attribs$`data-warn-when`, 15L)
 
   x <- countdown(1, 30, warn_when = 15.25)
-  expect_equal(x$attribs$`data-warnwhen`, 15L)
+  expect_equal(x$attribs$`data-warn-when`, 15L)
 
   expect_error(countdown(warn_when = 'after'))
 })
@@ -100,6 +100,7 @@ test_that("countdown() sets up timer correctly with warn_when", {
 test_that("countdown dependencies are included", {
   html_doc <- c(
     "---",
+    "pagetitle: countdown test",
     "output: html_document",
     "---\n",
     "```{r}",
@@ -133,7 +134,7 @@ test_that("make_unique_id is always unique", {
   id2 <- make_unique_id()
 
   expect_true(id1 != id2)
-  expect_true(make_unique_id(FALSE) != make_unique_id(FALSE))
+  expect_true(make_unique_id() != make_unique_id())
 })
 
 test_that("validates HTML ids", {
