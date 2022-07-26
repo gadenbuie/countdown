@@ -2,6 +2,8 @@ library(shiny)
 library(countdown)
 options(htmltools.dir.version = FALSE)
 
+enableBookmarking("url")
+
 utc0 <- function(x) {
   x <- as.integer(x)
   as.POSIXct(x, tz = "UTC", origin = "1970-01-01")
@@ -14,99 +16,101 @@ update_every_choices <- setNames(
   c(paste(c(1, 5, 10, 15, 30), "sec"), "1 min")
 )
 
-ui <- basicPage(
-  tags$head(tags$style(
-    "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
-    "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
-    ".countdown .digits { font-family: 'Roboto Mono'; }",
-    "iframe { height: 99vh; border: none; }",
-    "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
-    "#about { font-family: 'Nova Square'; color: #4389A0; }",
-    ".countdown-container { width: calc(100vw - 1px); height: 100vh; position: relative; margin: 0; }"
-  )),
-  includeCSS("www/bootstrap.min.css"), # https://bootswatch.com/3/slate/
-  tags$head(tags$style(
-    ".form-control { background: #3E444C !important; color: #ddd !important; }"
-  )),
-  fluidRow(
-    style = "padding-top: 1em; padding-bottom: 1em;",
-    column(
-      class = "text-center col-md-3",
-      width = 4,
-      h1(actionLink("about", "countdown", class = "text-info"), style = "line-height: 35px")
-    ),
-    column(
-      class = "text-left col-md-9",
-      width = 8,
-      fluidRow(
-        column(
-          width = 12,
-          class = inputs_col_class,
-          textInput("time", "Time", value = "5:00", placeholder = "MM:SS"),
-          uiOutput("timer_error_ui")
-        ),
-        column(
-          width = 12,
-          class = inputs_col_class,
-          textInput("warn_time", "Warn Time Remaining", value = "1:00", placeholder = "MM:SS"),
-          uiOutput("warn_time_error_ui")
-        ),
-        column(
-          width = 12,
-          class = inputs_col_class,
-          selectInput(
-            "update_every", "Update Every",
-            choices = update_every_choices,
-            selected = "1 sec",
-            selectize = FALSE
+ui <- function(req) {
+  basicPage(
+    tags$head(tags$style(
+      "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
+      "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
+      ".countdown .digits { font-family: 'Roboto Mono'; }",
+      "iframe { height: 99vh; border: none; }",
+      "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
+      "#about { font-family: 'Nova Square'; color: #4389A0; }",
+      ".countdown-container { width: calc(100vw - 1px); height: 100vh; position: relative; margin: 0; }"
+    )),
+    includeCSS("www/bootstrap.min.css"), # https://bootswatch.com/3/slate/
+    tags$head(tags$style(
+      ".form-control { background: #3E444C !important; color: #ddd !important; }"
+    )),
+    fluidRow(
+      style = "padding-top: 1em; padding-bottom: 1em;",
+      column(
+        class = "text-center col-md-3",
+        width = 4,
+        h1(actionLink("about", "countdown", class = "text-info"), style = "line-height: 35px")
+      ),
+      column(
+        class = "text-left col-md-9",
+        width = 8,
+        fluidRow(
+          column(
+            width = 12,
+            class = inputs_col_class,
+            textInput("time", "Time", value = "5:00", placeholder = "MM:SS"),
+            uiOutput("timer_error_ui")
+          ),
+          column(
+            width = 12,
+            class = inputs_col_class,
+            textInput("warn_time", "Warn Time Remaining", value = "1:00", placeholder = "MM:SS"),
+            uiOutput("warn_time_error_ui")
+          ),
+          column(
+            width = 12,
+            class = inputs_col_class,
+            selectInput(
+              "update_every", "Update Every",
+              choices = update_every_choices,
+              selected = "1 sec",
+              selectize = FALSE
+            )
+          ),
+          column(
+            width = 12,
+            class = "col-md-2 col-xs-12 text-center",
+            style = "padding-top: 18px",
+            actionButton("start", "Start", class = "btn-success"),
+            actionButton("reset", "Reset", class = "btn-danger")
           )
-        ),
-        column(
-          width = 12,
-          class = "col-md-2 col-xs-12 text-center",
-          style = "padding-top: 18px",
-          actionButton("start", "Start", class = "btn-success"),
-          actionButton("reset", "Reset", class = "btn-danger")
         )
       )
-    )
-  ),
-  fluidRow(
-    column(
-      width = 12,
-      class = "countdown-container",
-      countdown_fullscreen(
-        id = "countdown_timer",
-        minutes = 5L,
-        seconds = 0L,
-        warn_when = 60L,
-        update_every = 1L,
-        line_height = "94vh",
-        border_width = "5px",
-        color_border = "#7A8288",
-        color_background = "#272B30",
-        color_text = "#C8C8C8",
-        # color_running_background = "#102B1A",
-        color_running_text = "#43AC6A",
-        color_running_background = "#272B30",
-        color_running_border = "#272B30",
-        color_warning_text = "#E6C229",
-        color_warning_background = "#272B30",
-        color_warning_border = "#E6C229",
-        # color_warning_background = darken("#E6C229", 0.6),
-        color_finished_background = "#F04124",
-        color_finished_text = "#272B30"
+    ),
+    fluidRow(
+      column(
+        width = 12,
+        class = "countdown-container",
+        countdown_fullscreen(
+          id = "countdown_timer",
+          minutes = 5L,
+          seconds = 0L,
+          warn_when = 60L,
+          update_every = 1L,
+          line_height = "94vh",
+          border_width = "5px",
+          color_border = "#7A8288",
+          color_background = "#272B30",
+          color_text = "#C8C8C8",
+          # color_running_background = "#102B1A",
+          color_running_text = "#43AC6A",
+          color_running_background = "#272B30",
+          color_running_border = "#272B30",
+          color_warning_text = "#E6C229",
+          color_warning_background = "#272B30",
+          color_warning_border = "#E6C229",
+          # color_warning_background = darken("#E6C229", 0.6),
+          color_finished_background = "#F04124",
+          color_finished_text = "#272B30"
+        )
       )
-    )
-  ),
-  tags$script(HTML(
-    "$('#start').on('click', function() {
+    ),
+    tags$script(HTML(
+      "$('#start').on('click', function() {
       $('html,body').animate({
         scrollTop: $('.countdown-container').offset().top
       }, 500);
     })"
-  ))
-)
+    ))
+  )
+}
 
 server <- function(input, output, session) {
 
@@ -119,6 +123,15 @@ server <- function(input, output, session) {
     x <- countdown:::parse_mmss(input$warn_time)
     x$seconds <- x$minutes * 60 + x$seconds
     x
+  })
+
+  observe({
+    # update bookmark when these inputs change
+    list(input$minutes, input$seconds, input$warn_when, input$update_every)
+    session$doBookmark()
+  })
+  onBookmarked(function(url) {
+    updateQueryString(url)
   })
 
   output$timer_error_ui <- renderUI({
