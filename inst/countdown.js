@@ -31,6 +31,10 @@ class CountdownTimer {
     this.play_sound = attrIsTrue(el.dataset.playSound)
     this.blink_colon = attrIsTrue(el.dataset.blinkColon)
     this.timeout = null
+
+    if (attrIsTrue(el.dataset.startImmediately)) {
+      this.start()
+    }
   }
 
   remainingTime () {
