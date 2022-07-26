@@ -91,6 +91,8 @@
 #'   may fall out of sync with the timer. For this reason, the blink animation
 #'   is only shown, by default, when `update_every` is greater than 1, i.e. when
 #'   the countdown time is updated periodically rather than each second.
+#' @param start_immediately If `TRUE`, the countdown timer starts as soon as its
+#'   created (or as soon as the slides, document or Shiny app are loaded).
 #' @param box_shadow Shadow specification for the timer, set to `NULL` to remove
 #'   the shadow.
 #' @param border_width Width of the timer border (all states).
@@ -146,6 +148,7 @@ countdown <- function(
   warn_when = 0L,
   update_every = 1L,
   blink_colon = update_every > 1L,
+  start_immediately = FALSE,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
   border_width = "3px",
   border_radius = "15px",
@@ -198,6 +201,7 @@ countdown <- function(
     `data-update-every` = update_every,
     `data-play-sound` = play_sound,
     `data-blink-colon` = if (isTRUE(blink_colon)) "true",
+    `data-start-immediately` = if (isTRUE(start_immediately)) "true",
     style = paste0(
       top %:?% "top",
       right %:?% "right",
@@ -262,6 +266,7 @@ countdown_fullscreen <- function(
   minutes = 1,
   seconds = 0,
   ...,
+  start_immedately = FALSE,
   font_size = "30vw",
   border_width = "0",
   border_radius = "0",
@@ -279,6 +284,7 @@ countdown_fullscreen <- function(
     border_radius = border_radius,
     margin = margin,
     padding = padding,
+    start_immediately = FALSE,
     top = top, right = right, bottom = bottom, left = left,
     ...
   )
