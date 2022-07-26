@@ -34,7 +34,9 @@ class CountdownTimer {
   }
 
   remainingTime () {
-    const remaining = (this.end - Date.now()) / 1000
+    const remaining = this.is_running
+      ? (this.end - Date.now()) / 1000
+      : this.duration
 
     let minutes = Math.floor(remaining / 60)
     let seconds = Math.round(remaining - minutes * 60)
@@ -47,8 +49,18 @@ class CountdownTimer {
   }
 
   start () {
+    if (this.is_running) return
+
     this.is_running = true
-    this.end = Date.now() + this.duration * 1000
+
+    if (this.remaining) {
+      // Having a static remaining time indicates timer was paused
+      this.end = Date.now() + this.remaining * 1000
+      this.remaining = null
+    } else {
+      this.end = Date.now() + this.duration * 1000
+    }
+
     this.element.classList.remove('finished')
     this.element.classList.add('running')
     this.tick()
@@ -82,7 +94,7 @@ class CountdownTimer {
       timeContainer.innerText = String(time).padStart(2, 0)
     }
 
-    if (remaining < 0.5) {
+    if (this.is_running && remaining < 0.5) {
       this.stop()
       setRemainingTime('.minutes', 0)
       setRemainingTime('.seconds', 0)
@@ -90,7 +102,7 @@ class CountdownTimer {
       return
     }
 
-    if (this.blink_colon) {
+    if (!force && this.blink_colon) {
       this.element.classList.toggle('blink-colon')
     }
 
@@ -108,11 +120,48 @@ class CountdownTimer {
   }
 
   stop () {
+    const { remaining } = this.remainingTime()
+    if (remaining > 1) {
+      this.remaining = remaining
+    }
     this.element.classList.remove('running')
+    this.element.classList.remove('warning')
     this.element.classList.remove('blink-colon')
     this.element.classList.add('finished')
     this.is_running = false
+    this.end = null
     this.timeout = clearTimeout(this.timeout)
+  }
+
+  reset () {
+    this.stop()
+    this.remaining = null
+    this.update(true)
+    this.element.classList.remove('finished')
+    this.element.classList.remove('warning')
+  }
+
+  setValues (opts) {
+    if (typeof opts.warn_when !== 'undefined') {
+      this.warn_when = opts.warn_when
+    }
+    if (typeof opts.update_every !== 'undefined') {
+      this.update_every = opts.update_every
+    }
+    if (typeof opts.blink_colon !== 'undefined') {
+      this.blink_colon = opts.blink_colon
+    }
+    if (typeof opts.play_sound !== 'undefined') {
+      this.play_sound = opts.play_sound
+    }
+    if (typeof opts.duration !== 'undefined') {
+      this.duration = opts.duration
+      if (this.is_running) {
+        this.reset()
+        this.start()
+      }
+    }
+    this.update(true)
   }
 
   bumpUp (val) {
@@ -176,4 +225,45 @@ document.addEventListener('DOMContentLoaded', function() {
   els.forEach(function(el) {
     el.countdown = new CountdownTimer(el)
   })
+
+  if (window.Shiny) {
+    Shiny.addCustomMessageHandler('countdown:update', function(x) {
+      if (!x.id) {
+        console.error('No `id` provided, cannot update countdown')
+        return
+      }
+      const el = document.getElementById(x.id)
+      el.countdown.setValues(x)
+    })
+
+    Shiny.addCustomMessageHandler('countdown:start', function(id) {
+      const el = document.getElementById(id)
+      if (!el) return;
+      el.countdown.start()
+    })
+
+    Shiny.addCustomMessageHandler('countdown:stop', function(id) {
+      const el = document.getElementById(id)
+      if (!el) return;
+      el.countdown.stop()
+    })
+
+    Shiny.addCustomMessageHandler('countdown:reset', function(id) {
+      const el = document.getElementById(id)
+      if (!el) return;
+      el.countdown.reset()
+    })
+
+    Shiny.addCustomMessageHandler('countdown:bumpUp', function(id) {
+      const el = document.getElementById(id)
+      if (!el) return;
+      el.countdown.bumpUp()
+    })
+
+    Shiny.addCustomMessageHandler('countdown:bumpDown', function(id) {
+      const el = document.getElementById(id)
+      if (!el) return;
+      el.countdown.bumpDown()
+    })
+  }
 })
