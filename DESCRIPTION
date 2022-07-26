@@ -19,6 +19,7 @@ Imports:
     utils,
     whisker
 Suggests: 
+    rmarkdown,
     shiny,
     testthat
 Encoding: UTF-8
