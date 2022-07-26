@@ -14,16 +14,13 @@ License: MIT + file LICENSE
 URL: https://github.com/gadenbuie/countdown
 BugReports: https://github.com/gadenbuie/countdown/issues
 Imports: 
-    callr,
-    grDevices,
     htmltools,
-    stats,
+    prismatic (>= 1.1.0),
     utils,
     whisker
 Suggests: 
     shiny,
     testthat
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.2.0
