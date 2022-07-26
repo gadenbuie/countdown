@@ -31,13 +31,13 @@ countdown(
   color_background = "inherit",
   color_text = "inherit",
   color_running_background = "#43AC6A",
-  color_running_border = darken(color_running_background, 0.1),
+  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
   color_running_text = NULL,
   color_finished_background = "#F04124",
-  color_finished_border = darken(color_finished_background, 0.1),
+  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
   color_finished_text = NULL,
   color_warning_background = "#E6C229",
-  color_warning_border = darken(color_warning_background, 0.1),
+  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
   color_warning_text = NULL
 )
 
@@ -177,7 +177,7 @@ A vanilla JavaScript countdown timer as HTML, with dependencies.
 \description{
 Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
 for use in web-based presentations, such as those created by
-\code{\link[xaringan:infinite_moon_reader]{xaringan::infinite_moon_reader()}}.
+\code{\link[xaringan:inf_mr]{xaringan::infinite_moon_reader()}}.
 }
 \section{Functions}{
 \itemize{

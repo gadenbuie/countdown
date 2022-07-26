@@ -154,13 +154,13 @@ countdown <- function(
   color_background = "inherit",
   color_text = "inherit",
   color_running_background = "#43AC6A",
-  color_running_border = darken(color_running_background, 0.1),
+  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
   color_running_text = NULL,
   color_finished_background = "#F04124",
-  color_finished_border = darken(color_finished_background, 0.1),
+  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
   color_finished_text = NULL,
   color_warning_background = "#E6C229",
-  color_warning_border = darken(color_warning_background, 0.1),
+  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
   color_warning_text = NULL
 ) {
   time <- minutes * 60 + seconds
@@ -285,13 +285,12 @@ countdown_fullscreen <- function(
 }
 
 
-make_unique_id <- function(safe = TRUE) {
-  uniqid <- function() as.hexmode(as.integer(Sys.time() + stats::runif(1) * 1000))
-
-  if (!safe) return(uniqid())
-  callr::r_safe(
-    function() countdown:::make_unique_id(safe = FALSE)
-  )
+make_unique_id <- function() {
+  with_private_seed <- utils::getFromNamespace("withPrivateSeed", "htmltools")
+  with_private_seed({
+    rand_id <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
+    paste(format(rand_id, width=2), collapse = "")
+  })
 }
 
 validate_html_id <- function(id) {

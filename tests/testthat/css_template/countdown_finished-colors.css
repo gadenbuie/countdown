@@ -26,43 +26,29 @@
 }
 .countdown-digits {
   color: inherit;
-  vertical-align: unset;
 }
 .countdown.running {
-  border-color: #3C9A5F;
+  border-color: #2A9B59FF;
   background-color: #43AC6A;
 }
 .countdown.running .countdown-digits {
-  color: #102B1A;
+  color: #002F14FF;
 }
 .countdown.finished {
-  border-color: #D600D6;
+  border-color: #D505D5FF;
   background-color: magenta2;
 }
 .countdown.finished .countdown-digits {
-  color: #3B003B;
+  color: #460046FF;
 }
 .countdown.running.warning {
-  border-color: #CFAE24;
+  border-color: #CEAC04FF;
   background-color: #E6C229;
 }
 .countdown.running.warning .countdown-digits {
-  color: #39300A;
-}
-
-@-webkit-keyframes blink {
-	from {opacity: 1}
-	50%  {opacity: 0.1}
-	to   {opacity: 1}
-}
-
-@keyframes blink {
-	from {opacity: 1}
-	50%  {opacity: 0.1}
-	to   {opacity: 1}
+  color: #3A2F02FF;
 }
 
 .countdown.running.blink-colon .countdown-digits.colon {
-  -webkit-animation: blink 2s steps(1, end) 0s infinite;
-          animation: blink 2s steps(1, end) 0s infinite;
+  opacity: 0.1;
 }
