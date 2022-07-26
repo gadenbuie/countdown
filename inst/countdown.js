@@ -150,6 +150,9 @@ class CountdownTimer {
     }
     if (typeof opts.blink_colon !== 'undefined') {
       this.blink_colon = opts.blink_colon
+      if (!opts.blink_colon) {
+        this.element.classList.remove('blink-colon')
+      }
     }
     if (typeof opts.play_sound !== 'undefined') {
       this.play_sound = opts.play_sound
