@@ -13,10 +13,13 @@ countdown_app(...)
     \item{\code{port}}{The TCP port that the application should listen on. If the
 \code{port} is not specified, and the \code{shiny.port} option is set (with
 \code{options(shiny.port = XX)}), then that port will be used. Otherwise,
-use a random port.}
+use a random port between 3000:8000, excluding ports that are blocked
+by Google Chrome for being considered unsafe: 3659, 4045, 5060,
+5061, 6000, 6566, 6665:6669 and 6697. Up to twenty random
+ports will be tried.}
     \item{\code{launch.browser}}{If true, the system's default web browser will be
 launched automatically after the app is started. Defaults to true in
-interactive sessions only. This value of this parameter can also be a
+interactive sessions only. The value of this parameter can also be a
 function to call with the application's URL.}
     \item{\code{host}}{The IPv4 address that the application should listen on. Defaults
 to the \code{shiny.host} option, if set, or \code{"127.0.0.1"} if not. See
