@@ -17,9 +17,12 @@ update_every_choices <- setNames(
 ui <- basicPage(
   tags$head(tags$style(
     "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
+    "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
+    ".countdown .digits { font-family: 'Roboto Mono'; }",
     "iframe { height: 99vh; border: none; }",
     "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
-    "#about { font-family: 'Nova Square'; color: #4389A0; }"
+    "#about { font-family: 'Nova Square'; color: #4389A0; }",
+    ".countdown-container { width: calc(100vw - 1px); height: 100vh; position: relative; margin: 0; }"
   )),
   includeCSS("www/bootstrap.min.css"), # https://bootswatch.com/3/slate/
   tags$head(tags$style(
@@ -61,7 +64,9 @@ ui <- basicPage(
         column(
           width = 12,
           class = "col-md-2 col-xs-12 text-center",
-          actionButton("reset", "Reset", class = "btn-primary", style = "margin-top: 18px")
+          style = "padding-top: 18px",
+          actionButton("start", "Start", class = "btn-success"),
+          actionButton("reset", "Reset", class = "btn-danger")
         )
       )
     )
@@ -69,22 +74,41 @@ ui <- basicPage(
   fluidRow(
     column(
       width = 12,
-      uiOutput("timer")
+      class = "countdown-container",
+      countdown_fullscreen(
+        id = "countdown_timer",
+        minutes = 5L,
+        seconds = 0L,
+        warn_when = 60L,
+        update_every = 1L,
+        line_height = "94vh",
+        border_width = "5px",
+        color_border = "#7A8288",
+        color_background = "#272B30",
+        color_text = "#C8C8C8",
+        # color_running_background = "#102B1A",
+        color_running_text = "#43AC6A",
+        color_running_background = "#272B30",
+        color_running_border = "#272B30",
+        color_warning_text = "#E6C229",
+        color_warning_background = "#272B30",
+        color_warning_border = "#E6C229",
+        # color_warning_background = darken("#E6C229", 0.6),
+        color_finished_background = "#F04124",
+        color_finished_text = "#272B30"
+      )
     )
-  )
+  ),
+  tags$script(HTML(
+    "$('#start').on('click', function() {
+      $('html,body').animate({
+        scrollTop: $('.countdown-container').offset().top
+      }, 500);
+    })"
+  ))
 )
 
 server <- function(input, output, session) {
-  session_token <- session$token
-
-  session_dir <- file.path("www", "tmp", session_token)
-  dir.create(session_dir)
-  clean_session_files <- function() {
-    message("Cleaning up session files: ", session_dir)
-    unlink(session_dir, recursive = TRUE)
-  }
-
-  onStop(clean_session_files)
 
   timer <- reactive({
     req(input$time)
@@ -107,64 +131,58 @@ server <- function(input, output, session) {
     p(class = "text-danger small text-left", warn_when()$error)
   })
 
-  output$timer <- renderUI({
-    req(timer()$minutes, warn_when()$seconds)
+  observeEvent(input$reset, countdown_action("countdown_timer", "reset"))
+  observeEvent(input$start, countdown_action("countdown_timer", "start"))
+
+  observe({
+    req(timer()$minutes)
     req(timer()$minutes + timer()$seconds > 0)
     validate(need(
       timer()$minutes + timer()$seconds / 60 < 100,
       "Timer must be less than 100 minutes."
     ))
-    input$reset
-    tmpfile <- tempfile("countdown", session_dir, ".html")
-    htmltools::save_html(
-      htmltools::tagList(
-        htmltools::tags$head(htmltools::tags$style(
-          "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
-          ".countdown .digits { font-family: 'Roboto Mono'; }"
-        )),
-        countdown_fullscreen(
-          minutes = as.integer(timer()$minutes),
-          seconds = as.integer(timer()$seconds),
-          warn_when = as.integer(warn_when()$seconds),
-          update_every = as.integer(input$update_every),
-          line_height = "94vh",
-          border_width = "5px",
-          color_border = "#7A8288",
-          color_background = "#272B30",
-          color_text = "#C8C8C8",
-          # color_running_background = "#102B1A",
-          color_running_text = "#43AC6A",
-          color_running_background = "#272B30",
-          color_running_border = "#272B30",
-          color_warning_text = "#E6C229",
-          color_warning_background = "#272B30",
-          color_warning_border = "#E6C229",
-          # color_warning_background = darken("#E6C229", 0.6),
-          color_finished_background = "#F04124",
-          color_finished_text = "#272B30"
-        )
-      ),
-      file = file.path(getwd(), tmpfile)
-    )
 
-    tmpfile <- sub("www/", "", tmpfile)
-    tags$iframe(src = tmpfile, width = "100%", height = "100vh")
+    countdown_update(
+      id = "countdown_timer",
+      minutes = timer()$minutes,
+      seconds = timer()$seconds
+    )
   })
 
-  observe({
+  observeEvent(warn_when(), {
+    req(warn_when()$seconds, warn_when()$seconds > 0)
+    countdown_update(
+      id = "countdown_timer",
+      warn_when = warn_when()$seconds
+    )
+  })
+
+  observeEvent(input$update_every, {
+    countdown_update(
+      id = "countdown_timer",
+      update_every = input$update_every,
+      blink_colon = input$update_every > 1
+    )
+  })
+
+  observeEvent(timer(), {
     req(timer()$minutes)
     req(timer()$minutes + timer()$seconds > 0)
-    s_update_every <- isolate(input$update_every)
+    s_update_every <- input$update_every
     s <- timer()$minutes * 60 + timer()$seconds
     c_update_every <- update_every_choices[update_every_choices <= s]
     if (!s_update_every %in% c_update_every) {
       s_update_every <- c_update_every[length(c_update_every)]
     }
-    updateSelectInput(session, "update_every", choices = c_update_every,
-                      selected = s_update_every)
+    updateSelectInput(
+      session = session,
+      inputId = "update_every",
+      choices = c_update_every,
+      selected = s_update_every
+    )
   })
 
-  observe({
+  observeEvent(timer(), {
     req(timer()$minutes)
     if (input$update_every == 1L) {
       min <- timer()$minutes
