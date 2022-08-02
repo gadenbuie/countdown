@@ -1,5 +1,5 @@
 class CountdownTimer {
-  constructor (el) {
+  constructor (el, opts) {
     if (typeof el === 'string' || el instanceof String) {
       el = document.querySelector(el)
     }
@@ -31,6 +31,10 @@ class CountdownTimer {
     this.play_sound = attrIsTrue(el.dataset.playSound)
     this.blink_colon = attrIsTrue(el.dataset.blinkColon)
     this.timeout = null
+
+    if (opts.src_location) {
+      this.src_location = opts.src_location
+    }
 
     if (attrIsTrue(el.dataset.startImmediately)) {
       this.start()
@@ -204,7 +208,10 @@ class CountdownTimer {
     let url = this.play_sound
     if (!url) return
     if (typeof url === 'boolean') {
-      url = 'libs/countdown/smb_stage_clear.mp3'
+      const src = this.src_location
+        ? this.src_location.replace('/countdown.js', '')
+        : 'libs/countdown'
+      url = src + '/smb_stage_clear.mp3'
     }
     const sound = new Audio(url)
     sound.play()
@@ -224,53 +231,57 @@ class CountdownTimer {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const els = document.querySelectorAll('.countdown')
-  if (!els || !els.length) {
-    return;
-  }
-  els.forEach(function(el) {
-    el.countdown = new CountdownTimer(el)
+(function() {
+  const CURRENT_SCRIPT = document.currentScript.getAttribute('src')
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const els = document.querySelectorAll('.countdown')
+    if (!els || !els.length) {
+      return;
+    }
+    els.forEach(function(el) {
+      el.countdown = new CountdownTimer(el, { src_location: CURRENT_SCRIPT })
+    })
+
+    if (window.Shiny) {
+      Shiny.addCustomMessageHandler('countdown:update', function(x) {
+        if (!x.id) {
+          console.error('No `id` provided, cannot update countdown')
+          return
+        }
+        const el = document.getElementById(x.id)
+        el.countdown.setValues(x)
+      })
+
+      Shiny.addCustomMessageHandler('countdown:start', function(id) {
+        const el = document.getElementById(id)
+        if (!el) return;
+        el.countdown.start()
+      })
+
+      Shiny.addCustomMessageHandler('countdown:stop', function(id) {
+        const el = document.getElementById(id)
+        if (!el) return;
+        el.countdown.stop()
+      })
+
+      Shiny.addCustomMessageHandler('countdown:reset', function(id) {
+        const el = document.getElementById(id)
+        if (!el) return;
+        el.countdown.reset()
+      })
+
+      Shiny.addCustomMessageHandler('countdown:bumpUp', function(id) {
+        const el = document.getElementById(id)
+        if (!el) return;
+        el.countdown.bumpUp()
+      })
+
+      Shiny.addCustomMessageHandler('countdown:bumpDown', function(id) {
+        const el = document.getElementById(id)
+        if (!el) return;
+        el.countdown.bumpDown()
+      })
+    }
   })
-
-  if (window.Shiny) {
-    Shiny.addCustomMessageHandler('countdown:update', function(x) {
-      if (!x.id) {
-        console.error('No `id` provided, cannot update countdown')
-        return
-      }
-      const el = document.getElementById(x.id)
-      el.countdown.setValues(x)
-    })
-
-    Shiny.addCustomMessageHandler('countdown:start', function(id) {
-      const el = document.getElementById(id)
-      if (!el) return;
-      el.countdown.start()
-    })
-
-    Shiny.addCustomMessageHandler('countdown:stop', function(id) {
-      const el = document.getElementById(id)
-      if (!el) return;
-      el.countdown.stop()
-    })
-
-    Shiny.addCustomMessageHandler('countdown:reset', function(id) {
-      const el = document.getElementById(id)
-      if (!el) return;
-      el.countdown.reset()
-    })
-
-    Shiny.addCustomMessageHandler('countdown:bumpUp', function(id) {
-      const el = document.getElementById(id)
-      if (!el) return;
-      el.countdown.bumpUp()
-    })
-
-    Shiny.addCustomMessageHandler('countdown:bumpDown', function(id) {
-      const el = document.getElementById(id)
-      if (!el) return;
-      el.countdown.bumpDown()
-    })
-  }
-})
+})()
