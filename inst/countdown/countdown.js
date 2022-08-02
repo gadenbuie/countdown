@@ -1,3 +1,4 @@
+/* globals Shiny,Audio */
 class CountdownTimer {
   constructor (el, opts) {
     if (typeof el === 'string' || el instanceof String) {
@@ -9,7 +10,7 @@ class CountdownTimer {
     }
 
     const self = this
-    el.addEventListener('click', function() {
+    el.addEventListener('click', function () {
       self.is_running ? self.bumpUp() : self.start()
     })
 
@@ -19,7 +20,7 @@ class CountdownTimer {
 
     function attrIsTrue (x) {
       if (x === true) return true
-      return x === 'true' || x === '' || x === '1' ? true : false
+      return !!(x === 'true' || x === '' || x === '1')
     }
 
     this.element = el
@@ -53,7 +54,7 @@ class CountdownTimer {
       seconds = seconds - 60
     }
 
-    return {remaining, minutes, seconds}
+    return { remaining, minutes, seconds }
   }
 
   start () {
@@ -116,9 +117,7 @@ class CountdownTimer {
 
     const should_update = force ||
       Math.round(remaining) < this.warn_when ||
-      Math.round(remaining) % this.update_every == 0
-
-    console.log({ remaining, should_update })
+      Math.round(remaining) % this.update_every === 0
 
     if (should_update) {
       this.element.classList.toggle('warning', remaining <= this.warn_when)
@@ -220,31 +219,31 @@ class CountdownTimer {
   bumpIncrementValue (val) {
     val = val || this.remainingTime().remaining
     if (val <= 30) {
-      return 5;
+      return 5
     } else if (val <= 300) {
-      return 15;
+      return 15
     } else if (val <= 3000) {
-      return 30;
+      return 30
     } else {
-      return 60;
+      return 60
     }
   }
 }
 
-(function() {
+(function () {
   const CURRENT_SCRIPT = document.currentScript.getAttribute('src')
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const els = document.querySelectorAll('.countdown')
     if (!els || !els.length) {
-      return;
+      return
     }
-    els.forEach(function(el) {
+    els.forEach(function (el) {
       el.countdown = new CountdownTimer(el, { src_location: CURRENT_SCRIPT })
     })
 
     if (window.Shiny) {
-      Shiny.addCustomMessageHandler('countdown:update', function(x) {
+      Shiny.addCustomMessageHandler('countdown:update', function (x) {
         if (!x.id) {
           console.error('No `id` provided, cannot update countdown')
           return
@@ -253,33 +252,33 @@ class CountdownTimer {
         el.countdown.setValues(x)
       })
 
-      Shiny.addCustomMessageHandler('countdown:start', function(id) {
+      Shiny.addCustomMessageHandler('countdown:start', function (id) {
         const el = document.getElementById(id)
-        if (!el) return;
+        if (!el) return
         el.countdown.start()
       })
 
-      Shiny.addCustomMessageHandler('countdown:stop', function(id) {
+      Shiny.addCustomMessageHandler('countdown:stop', function (id) {
         const el = document.getElementById(id)
-        if (!el) return;
+        if (!el) return
         el.countdown.stop()
       })
 
-      Shiny.addCustomMessageHandler('countdown:reset', function(id) {
+      Shiny.addCustomMessageHandler('countdown:reset', function (id) {
         const el = document.getElementById(id)
-        if (!el) return;
+        if (!el) return
         el.countdown.reset()
       })
 
-      Shiny.addCustomMessageHandler('countdown:bumpUp', function(id) {
+      Shiny.addCustomMessageHandler('countdown:bumpUp', function (id) {
         const el = document.getElementById(id)
-        if (!el) return;
+        if (!el) return
         el.countdown.bumpUp()
       })
 
-      Shiny.addCustomMessageHandler('countdown:bumpDown', function(id) {
+      Shiny.addCustomMessageHandler('countdown:bumpDown', function (id) {
         const el = document.getElementById(id)
-        if (!el) return;
+        if (!el) return
         el.countdown.bumpDown()
       })
     }
