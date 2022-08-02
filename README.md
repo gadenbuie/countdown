@@ -1,6 +1,7 @@
 # countdown
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 **countdown** makes it easy to drop in a simple countdown timer in slides and HTML documents written in R Markdown.
