@@ -1,7 +1,7 @@
-context("test-shiny")
 # test_that()
 
 describe("countdown_app()", {
+  local_edition(2)
 
   it("errors if shiny not available", {
     with_mock(

@@ -1,5 +1,3 @@
-context("test-countdown")
-
 test_that("countdown html_dependency", {
   x <- countdown(1)
 
@@ -15,11 +13,10 @@ test_that("countdown html_dependency", {
 dir.create(test_path("css_template"), showWarnings = FALSE)
 
 test_that("countdown css template", {
-  test_template_file <- function(x, compare_to_filename) {
+  test_template_file <- function(x, variant) {
     x_deps <- htmltools::htmlDependencies(x)[[1]]
     css_template <- readLines(file.path(x_deps$src, x_deps$stylesheet))
-    expect_known_output(cat(css_template, sep = "\n"),
-                        test_path("css_template", compare_to_filename))
+    expect_snapshot_output(cat(css_template, sep = "\n"), variant = variant)
   }
 
   test_template_file(countdown(), "countdown_default.css")
