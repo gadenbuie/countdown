@@ -7,14 +7,16 @@
 #' [xaringan::infinite_moon_reader()].
 #'
 #' @examples
-#'
 #' \dontrun{
 #' countdown(minutes = 0, seconds = 42)
 #'
 #' countdown(
-#'   minutes = 1, seconds = 30,
-#'   left = 0, right = 0,
-#'   padding = "15px", margin = "5%",
+#'   minutes = 1,
+#'   seconds = 30,
+#'   left = 0,
+#'   right = 0,
+#'   padding = "15px",
+#'   margin = "5%",
 #'   font_size = "6em"
 #' )
 #'
@@ -27,7 +29,8 @@
 #' # If you need to nudge the text up or down vertically, increase or decrease
 #' # `line_height`.
 #' countdown_fullscreen(
-#'   minutes = 0, seconds = 90,
+#'   minutes = 0,
+#'   seconds = 90,
 #'   margin = "5%",
 #'   font_size = "8em",
 #' )
@@ -225,15 +228,11 @@ countdown <- function(
     )
   )
 
-  tmpdir <- tempfile("countdown")
+  tmpdir <- tempfile("countdown_")
   dir.create(tmpdir)
   file.copy(
-    system.file("countdown.js", package = "countdown"),
-    file.path(tmpdir, "countdown.js")
-  )
-  file.copy(
-    system.file("smb_stage_clear.mp3", package = "countdown"),
-    file.path(tmpdir, "smb_stage_clear.mp3")
+    dir(system.file("countdown", package = "countdown"), full.names = TRUE),
+    tmpdir
   )
 
   # Set text based on background color
@@ -241,15 +240,14 @@ countdown <- function(
   color_finished_text <- color_finished_text %||% choose_dark_or_light(color_finished_background)
   color_warning_text  <- color_warning_text  %||% choose_dark_or_light(color_warning_background)
 
-  css_template <- readLines(system.file("countdown.css", package = "countdown"))
+  css_template <- readLines(system.file("countdown", "countdown.css", package = "countdown"))
   css <- whisker::whisker.render(css_template)
-  css_file <- file.path(tmpdir, "countdown.css")
-  writeLines(css, css_file)
+  writeLines(css, file.path(tmpdir, "countdown.css"))
 
   htmltools::htmlDependencies(x) <- htmlDependency(
     "countdown",
     version = utils::packageVersion("countdown"),
-    src = gsub("//", "/", dirname(css_file)),
+    src = tmpdir,
     script = "countdown.js",
     stylesheet = "countdown.css",
     all_files = TRUE
@@ -278,14 +276,18 @@ countdown_fullscreen <- function(
   left = 0
 ) {
   countdown(
-    minutes, seconds,
+    minutes,
+    seconds,
     font_size = font_size,
     border_width = border_width,
     border_radius = border_radius,
     margin = margin,
     padding = padding,
     start_immediately = FALSE,
-    top = top, right = right, bottom = bottom, left = left,
+    top = top,
+    right = right,
+    bottom = bottom,
+    left = left,
     ...
   )
 }
@@ -312,8 +314,11 @@ validate_html_id <- function(id) {
     invalid <- unique(invalid)
     invalid[invalid == " "] <- "' '"
     invalid <- paste(invalid, collapse = ", ")
-    stop_because('Cannot contain the character',
-                 if (nchar(invalid) > 1) "s: ", invalid)
+    stop_because(
+      "Cannot contain the character",
+      if (nchar(invalid) > 1) "s: ",
+      invalid
+    )
   }
   id
 }
