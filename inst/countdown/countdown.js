@@ -13,6 +13,9 @@ class CountdownTimer {
     el.addEventListener('click', function () {
       self.is_running ? self.bumpUp() : self.start()
     })
+    el.addEventListener('dblclick', function () {
+      if (self.is_running) self.reset()
+    })
 
     const minutes = el.querySelector('.minutes') || '0'
     const seconds = el.querySelector('.seconds') || '0'
