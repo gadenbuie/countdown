@@ -264,7 +264,7 @@ countdown_fullscreen <- function(
   minutes = 1,
   seconds = 0,
   ...,
-  start_immedately = FALSE,
+  start_immediately = FALSE,
   font_size = "30vw",
   border_width = "0",
   border_radius = "0",

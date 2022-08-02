@@ -46,7 +46,7 @@ countdown_fullscreen(
   minutes = 1,
   seconds = 0,
   ...,
-  start_immedately = FALSE,
+  start_immediately = FALSE,
   font_size = "30vw",
   border_width = "0",
   border_radius = "0",
@@ -194,14 +194,16 @@ and uses the largest reasonable font size.
 }}
 
 \examples{
-
 \dontrun{
 countdown(minutes = 0, seconds = 42)
 
 countdown(
-  minutes = 1, seconds = 30,
-  left = 0, right = 0,
-  padding = "15px", margin = "5\%",
+  minutes = 1,
+  seconds = 30,
+  left = 0,
+  right = 0,
+  padding = "15px",
+  margin = "5\%",
   font_size = "6em"
 )
 
@@ -214,7 +216,8 @@ countdown_fullscreen(1, 30)
 # If you need to nudge the text up or down vertically, increase or decrease
 # `line_height`.
 countdown_fullscreen(
-  minutes = 0, seconds = 90,
+  minutes = 0,
+  seconds = 90,
   margin = "5\%",
   font_size = "8em",
 )
