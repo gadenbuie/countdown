@@ -64,17 +64,16 @@ class: center middle
 
 ```{r first-timer, echo=FALSE}
 library(countdown)
-solarized <- xaringanthemer:::solarized
 countdown(
   minutes = 0, seconds = 42,
   top = "26%", right = "33%",
   play_sound = TRUE,
-  color_border              = solarized$magenta,
-  color_text                = solarized$magenta,
-  color_running_background  = solarized$cyan,
-  color_running_text        = solarized$base02,
-  color_finished_background = solarized$red,
-  color_finished_text       = solarized$base3
+  color_border              = "#d33682", #solarized$magenta,
+  color_text                = "#d33682", #solarized$magenta,
+  color_running_background  = "#2aa198", #solarized$cyan,
+  color_running_text        = "#073642", #solarized$base02,
+  color_finished_background = "#dc322f", #solarized$red,
+  color_finished_text       = "#fdf6e3"  #solarized$base3
 )
 ```
 
