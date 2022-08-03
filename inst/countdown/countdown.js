@@ -11,10 +11,24 @@ class CountdownTimer {
 
     const self = this
     el.addEventListener('click', function () {
-      self.is_running ? self.bumpUp() : self.start()
+      self.is_running ? self.stop() : self.start()
     })
     el.addEventListener('dblclick', function () {
       if (self.is_running) self.reset()
+    })
+    el.querySelector('.countdown-bump-down').addEventListener('click', function(ev) {
+      ev.preventDefault()
+      ev.stopPropagation()
+      if (self.is_running) self.bumpDown()
+    })
+    el.querySelector('.countdown-bump-up').addEventListener('click', function(ev) {
+      ev.preventDefault()
+      ev.stopPropagation()
+      if (self.is_running) self.bumpUp()
+    })
+    el.querySelector('.countdown-controls').addEventListener('dblclick', function(ev) {
+      ev.preventDefault()
+      ev.stopPropagation()
     })
 
     const minutes = el.querySelector('.minutes') || '0'
