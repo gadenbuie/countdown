@@ -195,37 +195,37 @@ and uses the largest reasonable font size.
 }}
 
 \examples{
-\dontrun{
-countdown(minutes = 0, seconds = 42)
+if (interactive()) {
+  countdown(minutes = 0, seconds = 42)
 
-countdown(
-  minutes = 1,
-  seconds = 30,
-  left = 0,
-  right = 0,
-  padding = "15px",
-  margin = "5\%",
-  font_size = "6em"
-)
+  countdown(
+    minutes = 1,
+    seconds = 30,
+    left = 0,
+    right = 0,
+    padding = "15px",
+    margin = "5\%",
+    font_size = "6em"
+  )
 
-# For a stand-alone full-screen countdown timer, use countdown_fullscreen()
-# with default parameters.
-countdown_fullscreen(1, 30)
+  # For a stand-alone full-screen countdown timer, use countdown_fullscreen()
+  # with default parameters.
+  countdown_fullscreen(1, 30)
 
-# For xaringan slides, use percentages for `margin` to set the distance from
-# the edge of the slide and use `font_size` to adjust the size of the digits.
-# If you need to nudge the text up or down vertically, increase or decrease
-# `line_height`.
-countdown_fullscreen(
-  minutes = 0,
-  seconds = 90,
-  margin = "5\%",
-  font_size = "8em",
-)
+  # For xaringan slides, use percentages for `margin` to set the distance from
+  # the edge of the slide and use `font_size` to adjust the size of the digits.
+  # If you need to nudge the text up or down vertically, increase or decrease
+  # `line_height`.
+  countdown_fullscreen(
+    minutes = 0,
+    seconds = 90,
+    margin = "5\%",
+    font_size = "8em",
+  )
 
-# To position the timer "inline" in R Markdown documents,
-# use the `style` argument on each timer:
-countdown(1, 30, style = "position: relative; width: min-content;")
+  # To position the timer "inline" in R Markdown documents,
+  # use the `style` argument on each timer:
+  countdown(1, 30, style = "position: relative; width: min-content;")
 }
 
 }
