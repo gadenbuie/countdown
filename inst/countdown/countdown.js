@@ -104,7 +104,8 @@ class CountdownTimer {
     this.update()
 
     if (run_again) {
-      this.timeout = setTimeout(this.tick.bind(this), 1000 - Date.now() % 1000)
+      const delay = (Date.now() - this.end) > 10 ? 1000 : 250
+      this.timeout = setTimeout(this.tick.bind(this), delay)
     }
   }
 
@@ -122,7 +123,7 @@ class CountdownTimer {
       timeContainer.innerText = String(time).padStart(2, 0)
     }
 
-    if (this.is_running && remaining < 0.5) {
+    if (this.is_running && remaining < 0.25) {
       this.stop()
       setRemainingTime('.minutes', 0)
       setRemainingTime('.seconds', 0)
