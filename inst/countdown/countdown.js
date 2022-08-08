@@ -62,7 +62,7 @@ class CountdownTimer {
   remainingTime () {
     const remaining = this.is_running
       ? (this.end - Date.now()) / 1000
-      : this.duration
+      : this.remaining || this.duration
 
     let minutes = Math.floor(remaining / 60)
     let seconds = Math.round(remaining - minutes * 60)
@@ -86,6 +86,8 @@ class CountdownTimer {
     } else {
       this.end = Date.now() + this.duration * 1000
     }
+
+    this.reportStateToShiny('start')
 
     this.element.classList.remove('finished')
     this.element.classList.add('running')
@@ -154,6 +156,7 @@ class CountdownTimer {
     this.element.classList.add('finished')
     this.is_running = false
     this.end = null
+    this.reportStateToShiny('stop')
     this.timeout = clearTimeout(this.timeout)
   }
 
@@ -161,6 +164,7 @@ class CountdownTimer {
     this.stop()
     this.remaining = null
     this.update(true)
+    this.reportStateToShiny('reset')
     this.element.classList.remove('finished')
     this.element.classList.remove('warning')
   }
@@ -188,6 +192,7 @@ class CountdownTimer {
         this.start()
       }
     }
+    this.reportStateToShiny('update')
     this.update(true)
   }
 
@@ -198,6 +203,7 @@ class CountdownTimer {
     }
     val = val || this.bumpIncrementValue()
     this.end += val * 1000
+    this.reportStateToShiny('bumpUp')
     this.update(true)
   }
 
@@ -208,6 +214,7 @@ class CountdownTimer {
     }
     val = val || this.bumpIncrementValue()
     this.end -= val * 1000
+    this.reportStateToShiny('bumpDown')
     this.update(true)
   }
 
@@ -244,6 +251,21 @@ class CountdownTimer {
     } else {
       return 60
     }
+  }
+
+  reportStateToShiny (action) {
+    if (!window.Shiny) return
+    Shiny.setInputValue(this.element.id, {
+      event: {
+        action,
+        time: new Date().toISOString()
+      },
+      timer: {
+        is_running: this.is_running,
+        end: this.end ? new Date(this.end).toISOString() : null,
+        remaining: this.remainingTime()
+      }
+    })
   }
 }
 
