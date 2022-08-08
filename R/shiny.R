@@ -3,8 +3,17 @@
 #' Launches a full screen, interactive countdown timer as a
 #' \link[shiny]{shiny-package} app.
 #'
+#' @examples
+#' if (interactive()) {
+#'   countdown_app()
+#' }
+#'
 #' @inheritDotParams shiny::runApp port launch.browser host workerId quiet
 #'   display.mode test.mode
+#'
+#' @return Runs the countdown timer Shiny app in the current R session.
+#'
+#' @family Shiny functions
 #' @export
 countdown_app <- function(...) {
   require_shiny("`countdown_app()`")
@@ -28,7 +37,8 @@ countdown_app <- function(...) {
 #' Update a Countdown Timer in a Shiny App
 #'
 #' Updates the settings of a countdown timer dynamically in a Shiny app via
-#' server logic.
+#' server logic. See [countdown_shiny_example()] for an example app
+#' demonstrating the usage of `countdown_update()`.
 #'
 #' @param id A character vector with one or more `id` values for timers created
 #'   with [countdown()] or [countdown_fullscreen()]. Be sure to set the `id`
@@ -40,7 +50,7 @@ countdown_app <- function(...) {
 #'
 #' @return Invisibly returns the options sent to update the countdown timer(s).
 #'
-#' @seealso [countdown_action()]
+#' @family Shiny functions
 #' @export
 countdown_update <- function(
   id,
@@ -96,7 +106,7 @@ countdown_update <- function(
 #'
 #' @return Invisibly returns the `id` of the updated countdown timer(s).
 #'
-#' @seealso [countdown_update()]
+#' @family Shiny functions
 #' @export
 countdown_action <- function(
   id,
@@ -113,6 +123,29 @@ countdown_action <- function(
   }
 
   invisible(id)
+}
+
+#' Example Countdown Shiny App
+#'
+#' An example app that demonstrates the ways that countdown timers can be
+#' integrated into Shiny apps.
+#'
+#' @examples
+#' if (interactive()) {
+#'   countdown_shiny_example()
+#' }
+#'
+#' @inheritParams shiny::runApp
+#'
+#' @return Runs the example Shiny app in the current R session.
+#'
+#' @family Shiny functions
+#' @export
+countdown_shiny_example <- function(display.mode = c("showcase", "normal", "auto")) {
+  shiny::runApp(
+    system.file("examples", "shiny-app", package = "countdown"),
+    display.mode = match.arg(display.mode)
+  )
 }
 
 countdown_app_file <- function(...) {

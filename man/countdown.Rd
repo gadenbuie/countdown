@@ -46,6 +46,7 @@ countdown_fullscreen(
   minutes = 1,
   seconds = 0,
   ...,
+  class = NULL,
   start_immediately = FALSE,
   font_size = "30vw",
   border_width = "0",

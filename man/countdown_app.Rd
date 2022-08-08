@@ -32,7 +32,23 @@ only used for recording or running automated tests. Defaults to the
 \code{shiny.testmode} option, or FALSE if the option is not set.}
   }}
 }
+\value{
+Runs the countdown timer Shiny app in the current R session.
+}
 \description{
 Launches a full screen, interactive countdown timer as a
 \link[shiny]{shiny-package} app.
 }
+\examples{
+if (interactive()) {
+  countdown_app()
+}
+
+}
+\seealso{
+Other Shiny functions: 
+\code{\link{countdown_action}()},
+\code{\link{countdown_shiny_example}()},
+\code{\link{countdown_update}()}
+}
+\concept{Shiny functions}
