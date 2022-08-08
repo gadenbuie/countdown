@@ -59,8 +59,13 @@ Invisibly returns the options sent to update the countdown timer(s).
 }
 \description{
 Updates the settings of a countdown timer dynamically in a Shiny app via
-server logic.
+server logic. See \code{\link[=countdown_shiny_example]{countdown_shiny_example()}} for an example app
+demonstrating the usage of \code{countdown_update()}.
 }
 \seealso{
-\code{\link[=countdown_action]{countdown_action()}}
+Other Shiny functions: 
+\code{\link{countdown_action}()},
+\code{\link{countdown_app}()},
+\code{\link{countdown_shiny_example}()}
 }
+\concept{Shiny functions}

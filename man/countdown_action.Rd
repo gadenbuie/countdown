@@ -30,5 +30,9 @@ logic. You can start, stop, reset, or bump time time (when the timer is
 running) up or down.
 }
 \seealso{
-\code{\link[=countdown_update]{countdown_update()}}
+Other Shiny functions: 
+\code{\link{countdown_app}()},
+\code{\link{countdown_shiny_example}()},
+\code{\link{countdown_update}()}
 }
+\concept{Shiny functions}
