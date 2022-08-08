@@ -13,6 +13,7 @@
   margin: {{margin}};
   padding: {{padding}};
   text-align: center;
+  z-index: 10;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -57,6 +58,11 @@
   opacity: 0.1;
 }
 
+/* ------ Controls ------ */
+.countdown:not(.running) .countdown-controls {
+  display: none;
+}
+
 .countdown-controls {
   position: absolute;
   top: -0.25em;
@@ -83,11 +89,12 @@
   background: inherit;
   border: 2px solid;
   border-radius: 100%;
-  transition: 150ms transform ease-in-out, 250ms opacity ease-in;
+  transition: 50ms transform ease-in-out, 150ms opacity ease-in;
+  --countdown-transition-distance: 10px;
 }
 
 .countdown .countdown-controls > button:last-child {
-  transform: translate(-10px, 10px);
+  transform: translate(calc(-1 * var(--countdown-transition-distance)), var(--countdown-transition-distance));
   opacity: 0;
   color: {{color_running_text}};
   background-color: {{color_running_background}};
@@ -95,7 +102,7 @@
 }
 
 .countdown .countdown-controls > button:first-child {
-  transform: translate(10px, 10px);
+  transform: translate(var(--countdown-transition-distance), var(--countdown-transition-distance));
   opacity: 0;
   color: {{color_finished_text}};
   background-color: {{color_finished_background}};
@@ -108,11 +115,27 @@
 }
 
 .countdown.running:hover .countdown-controls > button:hover {
-  transform: translate(0, -5px);
+  transform: translate(0, calc(var(--countdown-transition-distance) / -2));
   box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.4);
   -webkit-box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.4);
 }
 
 .countdown.running:hover .countdown-controls > button:active {
-  transform: translate(0, -2px);
+  transform: translate(0, calc(var(--coutndown-transition-distance) / -5));
+}
+
+/* ----- Fullscreen ----- */
+.countdown.countdown-fullscreen {
+  z-index: 0;
+}
+
+.countdown-fullscreen.running .countdown-controls {
+  top: 1rem;
+  left: 0;
+  right: 0;
+  justify-content: center;
+}
+
+.countdown-fullscreen.running .countdown-controls > button + button {
+  margin-left: 1rem;
 }
