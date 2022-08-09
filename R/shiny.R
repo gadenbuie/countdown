@@ -98,7 +98,8 @@ countdown_update <- function(
 #'
 #' Performs an action in a countdown timer dynamically in a Shiny app via server
 #' logic. You can start, stop, reset, or bump time time (when the timer is
-#' running) up or down.
+#' running) up or down. See [countdown_shiny_example()] for an example app
+#' demonstrating the usage of `countdown_action()`.
 #'
 #' @inheritParams countdown_update
 #' @param action The action to perform, one of `"start"`, `"stop"`, `"reset"`,
