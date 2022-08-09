@@ -49,6 +49,9 @@ class CountdownTimer {
     function isSpaceOrEnter (ev) {
       return ev.code === 'Space' || ev.code === 'Enter'
     }
+    function isArrowUpOrDown (ev) {
+      return ev.code === 'ArrowUp' || ev.code === 'ArrowDown'
+    }
 
     ;['click', 'touchend'].forEach(function(eventType) {
       self.element.addEventListener(eventType, function (ev) {
@@ -57,9 +60,20 @@ class CountdownTimer {
       })
     })
     this.element.addEventListener('keydown', function(ev) {
-      if (!isSpaceOrEnter(ev)) return
+      if (!isSpaceOrEnter(ev) && !isArrowUpOrDown(ev)) return
       haltEvent(ev)
-      self.is_running ? self.stop() : self.start()
+      if (isSpaceOrEnter(ev)) {
+        self.is_running ? self.stop() : self.start()
+        return
+      }
+
+      if (!self.is_running) return
+
+      if (ev.code == 'ArrowUp') {
+        self.bumpUp()
+      } else if (ev.code == 'ArrowDown') {
+        self.bumpDown()
+      }
     })
     this.element.addEventListener('dblclick', function (ev) {
       haltEvent(ev)
