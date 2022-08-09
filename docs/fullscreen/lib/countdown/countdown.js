@@ -9,9 +9,9 @@ class CountdownTimer {
       return el.counter
     }
 
-    const minutes = el.querySelector('.minutes') || '0'
-    const seconds = el.querySelector('.seconds') || '0'
-    const duration = parseInt(minutes.innerHTML) * 60 + parseInt(seconds.innerHTML)
+    const minutes = parseInt(el.querySelector('.minutes').innerText || '0')
+    const seconds = parseInt(el.querySelector('.seconds').innerText || '0')
+    const duration = minutes * 60 + seconds
 
     function attrIsTrue (x) {
       if (x === true) return true
@@ -27,6 +27,7 @@ class CountdownTimer {
     this.play_sound = attrIsTrue(el.dataset.playSound)
     this.blink_colon = attrIsTrue(el.dataset.blinkColon)
     this.timeout = null
+    this.display = { minutes, seconds }
 
     if (opts.src_location) {
       this.src_location = opts.src_location
@@ -48,6 +49,9 @@ class CountdownTimer {
     function isSpaceOrEnter (ev) {
       return ev.code === 'Space' || ev.code === 'Enter'
     }
+    function isArrowUpOrDown (ev) {
+      return ev.code === 'ArrowUp' || ev.code === 'ArrowDown'
+    }
 
     ;['click', 'touchend'].forEach(function(eventType) {
       self.element.addEventListener(eventType, function (ev) {
@@ -56,9 +60,20 @@ class CountdownTimer {
       })
     })
     this.element.addEventListener('keydown', function(ev) {
-      if (!isSpaceOrEnter(ev)) return
+      if (!isSpaceOrEnter(ev) && !isArrowUpOrDown(ev)) return
       haltEvent(ev)
-      self.is_running ? self.stop() : self.start()
+      if (isSpaceOrEnter(ev)) {
+        self.is_running ? self.stop() : self.start()
+        return
+      }
+
+      if (!self.is_running) return
+
+      if (ev.code == 'ArrowUp') {
+        self.bumpUp()
+      } else if (ev.code == 'ArrowDown') {
+        self.bumpDown()
+      }
     })
     this.element.addEventListener('dblclick', function (ev) {
       haltEvent(ev)
@@ -102,7 +117,8 @@ class CountdownTimer {
       : this.remaining || this.duration
 
     let minutes = Math.floor(remaining / 60)
-    let seconds = Math.round(remaining - minutes * 60)
+    let seconds = Math.ceil(remaining - minutes * 60)
+
     if (seconds > 59) {
       minutes = minutes + 1
       seconds = seconds - 60
@@ -128,6 +144,7 @@ class CountdownTimer {
 
     this.element.classList.remove('finished')
     this.element.classList.add('running')
+    this.update(true)
     this.tick()
   }
 
@@ -138,31 +155,28 @@ class CountdownTimer {
 
     if (!this.is_running) return
 
+    const { seconds: secondsWas } = this.display
     this.update()
 
     if (run_again) {
       const delay = (this.end - Date.now() > 10000) ? 1000 : 250
-      this.blinkColon(delay)
+      this.blinkColon(secondsWas)
       this.timeout = setTimeout(this.tick.bind(this), delay)
     }
   }
 
-  blinkColon (delay) {
-    delay = delay / 1000
+  blinkColon (secondsWas) {
+    // don't blink unless option is set
     if (!this.blink_colon) return
-    if (this.warn_when > 0 && Date.now() + this.warn_when > this.end) return
-    if (delay > 0.5) {
-      this.element.classList.toggle('blink-colon')
+    // warn_when always updates the seconds
+    if (this.warn_when > 0 && Date.now() + this.warn_when > this.end) {
+      this.element.classList.remove('blink-colon')
       return
     }
-    const { remaining } = this.remainingTime()
-    let show_colon = this.element.classList.contains('blink-colon')
-    if (Math.ceil(remaining) - delay < remaining) {
-      // If we've rolled into a new second, flip visibility
-      show_colon = !show_colon
+    const { seconds: secondsIs } = this.display
+    if (secondsIs > 10 || secondsWas !== secondsIs) {
+      this.element.classList.toggle('blink-colon')
     }
-
-    this.element.classList.toggle('blink-colon', show_colon)
   }
 
   update (force) {
@@ -193,6 +207,7 @@ class CountdownTimer {
 
     if (should_update) {
       this.element.classList.toggle('warning', remaining <= this.warn_when)
+      this.display = { minutes, seconds }
       setRemainingTime('.minutes', minutes)
       setRemainingTime('.seconds', seconds)
     }
