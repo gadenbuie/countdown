@@ -16,7 +16,7 @@ countdown(minutes = 0, seconds = 15)
 
 ### Want to know more?
 
-Check out countdown in its native environment in the [countdown presentation](https://pkg.garrickadenbuie.com/countdown).
+Check out countdown in its native environment in the [countdown presentation](https://pkg.garrickadenbuie.com/countdown/).
 
 ## Installation
 
