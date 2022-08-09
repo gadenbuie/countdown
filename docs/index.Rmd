@@ -355,7 +355,7 @@ countdown(minutes = 1, update_every = 15, right = "33%")
 Warn your audience that time is about to run out. The warning style is applied to the timer for the last _N_ seconds by setting `warn_when = N`.
 
 ```{r}
-countdown(0, 10, warn_when = 5, right = "33%", bottom = "33%")
+countdown(0, 10, warn_when = 5, right = "33%", bottom = "33%", blink_colon = TRUE)
 ```
 
 <p style="padding-top: 10em"><p>
