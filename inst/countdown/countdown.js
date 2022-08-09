@@ -49,9 +49,11 @@ class CountdownTimer {
       return ev.code === 'Space' || ev.code === 'Enter'
     }
 
-    this.element.addEventListener('click', function (ev) {
-      haltEvent(ev)
-      self.is_running ? self.stop() : self.start()
+    ;['click', 'touchend'].forEach(function(eventType) {
+      self.element.addEventListener(eventType, function (ev) {
+        haltEvent(ev)
+        self.is_running ? self.stop() : self.start()
+      })
     })
     this.element.addEventListener('keydown', function(ev) {
       if (!isSpaceOrEnter(ev)) return
@@ -62,11 +64,14 @@ class CountdownTimer {
       haltEvent(ev)
       if (self.is_running) self.reset()
     })
+    this.element.addEventListener('touchmove', haltEvent)
 
     const btnBumpDown = this.element.querySelector('.countdown-bump-down')
-    btnBumpDown.addEventListener('click', function(ev) {
-      haltEvent(ev)
-      if (self.is_running) self.bumpDown()
+    ;['click', 'touchend'].forEach(function(eventType) {
+      btnBumpDown.addEventListener(eventType, function(ev) {
+        haltEvent(ev)
+        if (self.is_running) self.bumpDown()
+      })
     })
     btnBumpDown.addEventListener('keydown', function(ev) {
       if (!isSpaceOrEnter(ev) || !self.is_running) return
@@ -75,9 +80,11 @@ class CountdownTimer {
     })
 
     const btnBumpUp = this.element.querySelector('.countdown-bump-up')
-    btnBumpUp.addEventListener('click', function(ev) {
-      haltEvent(ev)
-      if (self.is_running) self.bumpUp()
+    ;['click', 'touchend'].forEach(function(eventType) {
+      btnBumpUp.addEventListener(eventType, function(ev) {
+        haltEvent(ev)
+        if (self.is_running) self.bumpUp()
+      })
     })
     btnBumpUp.addEventListener('keydown', function(ev) {
       if (!isSpaceOrEnter(ev) || !self.is_running) return

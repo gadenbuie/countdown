@@ -86,8 +86,6 @@ Click while running to **bump** it up.
 
 Click when complete to **restart** it.
 
-.small.subtle[&#x1F4F5; Timers don't work on mobile &#x1F625;]
-
 ---
 # Easily add a timer to your slides!
 
