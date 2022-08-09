@@ -44,10 +44,10 @@ test_that("countdown()", {
   expect_equal(x$attribs$class, "countdown extra-class")
   expect_equal(x$attribs$id, "timer_1")
   expect_equal(x$attribs$`data-play-sound`, "true")
-  expect_equal(x$children[[1]]$name, "code")
+  expect_equal(x$children[[2]]$name, "code")
 
   test_inner_html <- function(counter, ...) {
-    counter_inner <- as.character(counter$children[[1]]$children[[1]])
+    counter_inner <- as.character(counter$children[[2]]$children[[1]])
     expect_equal(counter_inner, paste0(...))
   }
 
