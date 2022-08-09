@@ -1,14 +1,14 @@
 Package: countdown
-Title: A Countdown Timer for 'R Markdown' HTML Presentations and Documents
+Title: A Countdown Timer for HTML Presentations, Documents, and Web Apps
 Version: 0.3.5.9000
 Authors@R: 
-    person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre"),
+    person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-7111-0077"))
-Description: Countdown to something amazing. Countdown makes it easy to
+Description: Countdown to something amazing. 'countdown' makes it easy to
     drop a simple countdown timer into slides and HTML documents written
-    in 'R Markdown'.
+    in 'R Markdown'. Integrates fully into 'Shiny' apps.
 License: MIT + file LICENSE
-URL: https://pkg.garrickadenbuie.com/countdown,
+URL: https://pkg.garrickadenbuie.com/countdown/,
     https://github.com/gadenbuie/countdown
 BugReports: https://github.com/gadenbuie/countdown/issues
 Imports: 
