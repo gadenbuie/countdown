@@ -1,5 +1,6 @@
 library(shiny)
 library(countdown)
+# pkgload::load_all()
 options(htmltools.dir.version = FALSE)
 
 enableBookmarking("url")
@@ -113,6 +114,7 @@ ui <- function(req) {
 }
 
 server <- function(input, output, session) {
+  setBookmarkExclude(c("countdown_timer", "about", "start", "reset"))
 
   timer <- reactive({
     req(input$time)
@@ -125,6 +127,7 @@ server <- function(input, output, session) {
     x
   })
 
+
   observe({
     # update bookmark when these inputs change
     list(input$minutes, input$seconds, input$warn_when, input$update_every)
@@ -132,6 +135,10 @@ server <- function(input, output, session) {
   })
   onBookmarked(function(url) {
     updateQueryString(url)
+  })
+  ignore_warn_time <- FALSE
+  onRestore(function(state) {
+    ignore_warn_time <<- TRUE
   })
 
   output$timer_error_ui <- renderUI({
@@ -197,19 +204,21 @@ server <- function(input, output, session) {
 
   observeEvent(timer(), {
     req(timer()$minutes)
-    if (input$update_every == 1L) {
-      min <- timer()$minutes
-      sec <- timer()$seconds
-      s <- (min * 60 + sec)
-      if (s > 60) {
-        s <- ceiling(s * 0.2 / 30) * 30
-      } else {
-        s_opts <- seq(0, 60, 5)
-        s <- max(s_opts[s_opts <= (s / 2)])
-      }
-    } else {
-      s <- as.integer(input$update_every) * 2
+    if (ignore_warn_time) {
+      ignore_warn_time <<- FALSE
+      return()
     }
+    min <- timer()$minutes
+    sec <- timer()$seconds
+    s <- (min * 60 + sec)
+    if (s > 60) {
+      s <- ceiling(s * 0.2 / 30) * 30
+    } else {
+      s_opts <- seq(0, 60, 5)
+      s <- max(s_opts[s_opts <= (s / 2)])
+    }
+    # make sure warn_time is at least twice the update_every interval
+    s <- max(s, as.integer(input$update_every) * 2)
     min <- floor(s/ 60)
     sec <- s - min*60
     updateTextInput(session, "warn_time", value = sprintf("%02d:%02d", min, sec))
