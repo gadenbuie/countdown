@@ -53,6 +53,10 @@ style_solarized_light(
 )
 ```
 
+```{r eval = requireNamespace("xaringanExtra", quietly = TRUE), echo = FALSE}
+xaringanExtra::use_tile_view()
+```
+
 class: center middle
 
 [xaringan]: https://github.com/yihui/xaringan#readme
@@ -63,7 +67,7 @@ class: center middle
 
 <p style="margin: 11em 0;"></p>
 
-```{r first-timer, echo=FALSE}
+```{r first-timer, echo=FALSE, message=FALSE}
 library(countdown)
 countdown(
   minutes = 0, seconds = 42,
