@@ -253,7 +253,12 @@ class CountdownTimer {
     round = typeof round === 'boolean' ? round : true
     const { remaining } = this.remainingTime()
     let newRemaining = remaining + val
-    if (round & newRemaining > 10) {
+    if (newRemaining <= 0) {
+      this.setRemaining(0)
+      this.stop()
+      return
+    }
+    if (round && newRemaining > 10) {
       newRemaining = Math.round(newRemaining / 5) * 5
     }
     this.setRemaining(newRemaining)
