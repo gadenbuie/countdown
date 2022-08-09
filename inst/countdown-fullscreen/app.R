@@ -18,7 +18,8 @@ update_every_choices <- setNames(
 )
 
 ui <- function(req) {
-  basicPage(
+    basicPage(
+    title = "{countdown} timer",
     tags$head(tags$style(
       "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
       "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
