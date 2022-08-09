@@ -27,7 +27,8 @@ Invisibly returns the \code{id} of the updated countdown timer(s).
 \description{
 Performs an action in a countdown timer dynamically in a Shiny app via server
 logic. You can start, stop, reset, or bump time time (when the timer is
-running) up or down.
+running) up or down. See \code{\link[=countdown_shiny_example]{countdown_shiny_example()}} for an example app
+demonstrating the usage of \code{countdown_action()}.
 }
 \seealso{
 Other Shiny functions: 
