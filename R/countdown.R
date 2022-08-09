@@ -217,11 +217,12 @@ countdown <- function(
       if (!missing(line_height)) line_height %:?% "line-height",
       paste(style, collapse = "; ")
     ),
-    div(
-      class = "countdown-controls",
-      htmltools::tags$button(class = "countdown-bump-down", "–"),
-      htmltools::tags$button(class = "countdown-bump-up", "+")
-    ),
+    HTML(paste0(
+      '<div class="countdown-controls">',
+      '<button class="countdown-bump-down">&minus;</button>',
+      '<button class="countdown-bump-up">&plus;</button>',
+      '</div>'
+    )),
     code(
       class = "countdown-time",
       HTML(
