@@ -6,7 +6,7 @@ ui <- fluidPage(
     class = "container",
     h2("Simple {countdown} Timer App"),
     p("Here's a simple timer, created with the {countdown} package."),
-    withTags(.noWS = "inside", pre(code('countdown(id = "countdown")'))),
+    HTML('<pre><code>countdown(id = "countdown")</code></pre>'),
     countdown(
       id = "countdown",
       style = "position:relative;width: 5em;max-width: 100%;"
