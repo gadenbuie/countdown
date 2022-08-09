@@ -19,16 +19,18 @@ update_every_choices <- setNames(
 
 ui <- function(req) {
     basicPage(
-    title = "{countdown} timer",
-    tags$head(tags$style(
-      "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
-      "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
-      ".countdown .digits { font-family: 'Roboto Mono'; }",
-      "iframe { height: 99vh; border: none; }",
-      "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
-      "#about { font-family: 'Nova Square'; color: #4389A0; }",
-      ".countdown-container { width: calc(100vw - 1px); height: 100vh; position: relative; margin: 0; }"
-    )),
+    tags$head(
+      tags$title("{countdown} timer"),
+      tags$style(
+        "@import url('https://fonts.googleapis.com/css?family=Nova+Square');",
+        "@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');",
+        ".countdown .digits { font-family: 'Roboto Mono'; }",
+        "iframe { height: 99vh; border: none; }",
+        "#about:hover, #about:active, #about:focus { text-decoration: none; color: #28A5CA; }",
+        "#about { font-family: 'Nova Square'; color: #4389A0; }",
+        ".countdown-container { width: calc(100vw - 1px); height: 100vh; position: relative; margin: 0; }"
+      )
+    ),
     includeCSS("www/bootstrap.min.css"), # https://bootswatch.com/3/slate/
     tags$head(tags$style(
       ".form-control { background: #3E444C !important; color: #ddd !important; }"
