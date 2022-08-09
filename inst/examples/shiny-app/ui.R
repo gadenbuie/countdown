@@ -2,6 +2,7 @@ library(shiny)
 library(countdown)
 
 ui <- fluidPage(
+  title = "countdown - Example Shiny App",
   div(
     class = "container",
     h2("Simple {countdown} Timer App"),
