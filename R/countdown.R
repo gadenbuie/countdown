@@ -126,7 +126,6 @@
 #'   `warn_when` seconds.
 #' @param color_warning_text Color of the timer text when the timer is below
 #'   `warn_when` seconds.
-#' @importFrom htmltools HTML htmlDependency div code span
 #' @name countdown
 NULL
 
