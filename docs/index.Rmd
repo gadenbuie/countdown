@@ -437,6 +437,12 @@ countdown(0, 10, play_sound = TRUE)
 Check out [beepr](https://github.com/rasmusab/beepr) if you want awesome sound alerts in your R session!
 
 ---
+class: inverse center middle
+name: shiny
+
+# &#x2728; &#x23F2;&#xFE0F;<br>Shiny Timers
+
+---
 
 # A Shiny countdown app
 
@@ -455,6 +461,20 @@ or use the version hosted online at [apps.garrickadenbuie.com/countdown](https:/
 <img src="img/countdown-app.png" width="75%" />
 </a>
 ]
+
+---
+
+# Use timers inside Shiny apps
+
+**countdown** ships with out-of-the-box Shiny integration:
+
+* Interact with timers in Shiny apps using `countdown_update()`
+
+* Set the `id` of a countdown timer to receive updates in the Shiny app
+  (use `input$<timer-id>`)
+  
+* Try the demo app to learn more: `countdown_shiny_example()`
+
 
 ---
 
