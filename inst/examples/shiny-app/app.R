@@ -6,7 +6,10 @@ ui <- fluidPage(
     h2("Simple {countdown} Timer App"),
     p("Here's a simple timer, created with the {countdown} package."),
     withTags(.noWS = "inside", pre(code('countdown(id = "countdown")'))),
-    countdown(id = "countdown", style = "position:relative;width: 5em;max-width: 100%;"),
+    countdown(
+      id = "countdown",
+      style = "position:relative;width: 5em;max-width: 100%;"
+    ),
     p(
       "The countdown timer reports the state of the timer whenever key actions",
       "are perfomed. On the Shiny side, the input ID is the same as the timer's",
@@ -20,15 +23,26 @@ ui <- fluidPage(
       "actions with the timer from Shiny. Interact with the timer directly or",
       "use the buttons below to start, stop, reset, or bump the timer up or down."
     ),
-    uiOutput("buttons", inline = TRUE)
+    uiOutput("buttons", inline = TRUE),
+    tags$style("body, pre, .btn { font-size: 16px }")
   )
 )
 
 server <- function(input, output, session) {
   output$debug <- renderPrint(str(input$countdown))
 
+  timer_is_running <- reactiveVal(FALSE)
+
+  observeEvent(input$countdown, {
+    req(input$countdown)
+    is_running <- input$countdown$timer$is_running
+    if (is_running != timer_is_running()) {
+      timer_is_running(is_running)
+    }
+  })
+
   output$buttons <- renderUI({
-    is_running <- !is.null(input$countdown) && input$countdown$timer$is_running
+    is_running <- timer_is_running()
 
     div(
       class = "btn-group",

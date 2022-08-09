@@ -65,9 +65,9 @@
 
 .countdown-controls {
   position: absolute;
-  top: -0.25em;
-  right: -0.25em;
-  left: -0.25em;
+  top: -0.5rem;
+  right: -0.5rem;
+  left: -0.5rem;
   display: flex;
   justify-content: space-between;
   margin: 0;
@@ -76,8 +76,8 @@
 
 .countdown-controls > button {
   font-size: 1.5rem;
-  width: 1em;
-  height: 1em;
+  width: 1rem;
+  height: 1rem;
   display: inline-block;
   display: flex;
   flex-direction: column;
@@ -109,18 +109,21 @@
   border-color: {{color_finished_border}};
 }
 
-.countdown.running:hover .countdown-controls > button {
+.countdown.running:hover .countdown-controls > button,
+.countdown.running:focus-within .countdown-controls > button{
   transform: translate(0, 0);
   opacity: 1;
 }
 
-.countdown.running:hover .countdown-controls > button:hover {
+.countdown.running:hover .countdown-controls > button:hover,
+.countdown.running:focus-within .countdown-controls > button:hover{
   transform: translate(0, calc(var(--countdown-transition-distance) / -2));
   box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.4);
   -webkit-box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.4);
 }
 
-.countdown.running:hover .countdown-controls > button:active {
+.countdown.running:hover .countdown-controls > button:active,
+.countdown.running:focus-within .countdown-controls > button:active{
   transform: translate(0, calc(var(--coutndown-transition-distance) / -5));
 }
 
