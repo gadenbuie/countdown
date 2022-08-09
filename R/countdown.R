@@ -205,6 +205,7 @@ countdown <- function(
     `data-play-sound` = play_sound,
     `data-blink-colon` = if (isTRUE(blink_colon)) "true",
     `data-start-immediately` = if (isTRUE(start_immediately)) "true",
+    tabindex = 0,
     style = paste0(
       top %:?% "top",
       right %:?% "right",
@@ -216,7 +217,7 @@ countdown <- function(
       if (!missing(line_height)) line_height %:?% "line-height",
       paste(style, collapse = "; ")
     ),
-    span(
+    div(
       class = "countdown-controls",
       htmltools::tags$button(class = "countdown-bump-down", "–"),
       htmltools::tags$button(class = "countdown-bump-up", "+")
