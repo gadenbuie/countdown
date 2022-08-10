@@ -1,3 +1,43 @@
+# countdown 0.4.0
+
+* {countdown} now uses {prismatic} for color calculations.
+
+* The JavaScript implementation of countdown has been completely rewritten. It
+  now supports a wide range of new interactions:
+  
+    * Start, pause, and reset the timer (click, click again, double click).
+  
+    * `+` or `-` buttons to bump timer up or down.
+    
+    * Keyboard shortcuts: Space/Enter to start/stop, Escape to reset, and up/down
+      arrows to bump timer.
+      
+    * The timers now work on mobile devices (in particular in xaringan slides).
+    
+* countdown timers can now be used in or controlled by Shiny apps:
+
+    * Use `countdown_update()` to update key initial timer settings.
+    
+    * Use `countdown_action()` to trigger common action: start, stop, reset,
+      bump up or bump down.
+      
+    * State changes are reported back to the Shiny app, e.g. Shiny apps can
+      use `input$timer` to receive event data from the timer with
+      `id = "timer"`.
+      
+    * `countdown_shiny_example()` runs a Shiny app that demonstrates key
+      Shiny app features.
+      
+* Timers can now start immediately by setting the argument
+  `start_immediately = TRUE`. When `TRUE`, timers will start as soon as they
+  are visible. This feature works in xaringan slides, Quarto slides and general
+  HTML web pages (thanks @Dr-Joe-Roberts, @davidkane9, #12).
+  
+* The `countdown_app()` now supports bookmarking, making it possible to share
+  pre-configured timer URLs. This feature improves the usability of the
+  timer available at <https://apps.garrickadenbuie.com/countdown>.
+  
+
 # countdown 0.3.5
 
 * Any sound file hosted online can no be played in place of the default sound
