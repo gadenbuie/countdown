@@ -292,6 +292,20 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 
 ---
 
+# Start Immediately
+
+```{r}
+countdown(start_immediately = TRUE)
+```
+
+Inside **xaringan** slides, when `start_immediately = TRUE`,
+the timer will start when you land on the slide.
+
+When used with other web pages,
+the timer starts as soon as it's visible.
+
+---
+
 # Customize your timers
 
 `top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
