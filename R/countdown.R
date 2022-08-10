@@ -140,7 +140,7 @@ countdown <- function(
   class = NULL,
   style = NULL,
   play_sound = FALSE,
-  font_size = "3em",
+  font_size = "3rem",
   margin = "0.6em",
   padding = "10px 15px",
   bottom = if (is.null(top)) "0",
