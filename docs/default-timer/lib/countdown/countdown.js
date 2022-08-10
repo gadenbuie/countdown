@@ -26,6 +26,7 @@ class CountdownTimer {
     this.update_every = parseInt(el.dataset.updateEvery) || 1
     this.play_sound = attrIsTrue(el.dataset.playSound)
     this.blink_colon = attrIsTrue(el.dataset.blinkColon)
+    this.startImmediately = attrIsTrue(el.dataset.startImmediately)
     this.timeout = null
     this.display = { minutes, seconds }
 
@@ -34,14 +35,43 @@ class CountdownTimer {
     }
 
     this.addEventListeners()
-
-    if (attrIsTrue(el.dataset.startImmediately)) {
-      this.start()
-    }
   }
 
   addEventListeners () {
     const self = this
+    function onVisible(element, callback) {
+      new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if(entry.intersectionRatio > 0) {
+            callback(element)
+            observer.disconnect()
+          }
+        });
+      }).observe(element)
+    }
+
+    if (this.startImmediately) {
+      if (window.remark && window.slideshow) {
+        function isOnVisibleSlide () {
+          return document.querySelector('.remark-visible').contains(self.element)
+        }
+        if (isOnVisibleSlide()) {
+          self.start()
+        } else {
+          let started_once = 0
+          window.slideshow.on('afterShowSlide', function () {
+            if (started_once > 0) return
+            if (isOnVisibleSlide()) {
+              self.start()
+              started_once = 1
+            }
+          })
+        }
+      } else {
+        onVisible(this.element, el => el.countdown.start())
+      }
+    }
+
     function haltEvent (ev) {
       ev.preventDefault()
       ev.stopPropagation()
