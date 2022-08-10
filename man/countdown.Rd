@@ -187,13 +187,13 @@ for use in web-based presentations, such as those created by
 }
 \section{Functions}{
 \itemize{
-\item \code{countdown}: Create a countdown timer for use in presentations and
+\item \code{countdown()}: Create a countdown timer for use in presentations and
 HTML documents.
 
-\item \code{countdown_fullscreen}: A full-screen timer that takes up the entire view port
+\item \code{countdown_fullscreen()}: A full-screen timer that takes up the entire view port
 and uses the largest reasonable font size.
-}}
 
+}}
 \examples{
 if (interactive()) {
   countdown(minutes = 0, seconds = 42)
