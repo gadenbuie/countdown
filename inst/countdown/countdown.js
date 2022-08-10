@@ -105,13 +105,13 @@ class CountdownTimer {
       return ev.code === 'ArrowUp' || ev.code === 'ArrowDown'
     }
 
-    ;['click', 'touchend'].forEach(function(eventType) {
+    ;['click', 'touchend'].forEach(function (eventType) {
       self.element.addEventListener(eventType, function (ev) {
         haltEvent(ev)
         self.is_running ? self.stop() : self.start()
       })
     })
-    this.element.addEventListener('keydown', function(ev) {
+    this.element.addEventListener('keydown', function (ev) {
       if (!isSpaceOrEnter(ev) && !isArrowUpOrDown(ev)) return
       haltEvent(ev)
       if (isSpaceOrEnter(ev)) {
@@ -121,9 +121,9 @@ class CountdownTimer {
 
       if (!self.is_running) return
 
-      if (ev.code == 'ArrowUp') {
+      if (ev.code === 'ArrowUp') {
         self.bumpUp()
-      } else if (ev.code == 'ArrowDown') {
+      } else if (ev.code === 'ArrowDown') {
         self.bumpDown()
       }
     })
@@ -134,31 +134,31 @@ class CountdownTimer {
     this.element.addEventListener('touchmove', haltEvent)
 
     const btnBumpDown = this.element.querySelector('.countdown-bump-down')
-    ;['click', 'touchend'].forEach(function(eventType) {
-      btnBumpDown.addEventListener(eventType, function(ev) {
+    ;['click', 'touchend'].forEach(function (eventType) {
+      btnBumpDown.addEventListener(eventType, function (ev) {
         haltEvent(ev)
         if (self.is_running) self.bumpDown()
       })
     })
-    btnBumpDown.addEventListener('keydown', function(ev) {
+    btnBumpDown.addEventListener('keydown', function (ev) {
       if (!isSpaceOrEnter(ev) || !self.is_running) return
       haltEvent(ev)
       self.bumpDown()
     })
 
     const btnBumpUp = this.element.querySelector('.countdown-bump-up')
-    ;['click', 'touchend'].forEach(function(eventType) {
-      btnBumpUp.addEventListener(eventType, function(ev) {
+    ;['click', 'touchend'].forEach(function (eventType) {
+      btnBumpUp.addEventListener(eventType, function (ev) {
         haltEvent(ev)
         if (self.is_running) self.bumpUp()
       })
     })
-    btnBumpUp.addEventListener('keydown', function(ev) {
+    btnBumpUp.addEventListener('keydown', function (ev) {
       if (!isSpaceOrEnter(ev) || !self.is_running) return
       haltEvent(ev)
       self.bumpUp()
     })
-    this.element.querySelector('.countdown-controls').addEventListener('dblclick', function(ev) {
+    this.element.querySelector('.countdown-controls').addEventListener('dblclick', function (ev) {
       haltEvent(ev)
     })
   }
