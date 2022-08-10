@@ -2,8 +2,8 @@
 % Please edit documentation in R/countdown-package.R
 \docType{package}
 \name{countdown-package}
-\alias{countdown}
 \alias{countdown-package}
+\alias{_PACKAGE}
 \title{countdown: A Countdown Timer for HTML Presentations, Documents, and Web Apps}
 \description{
 Countdown to something amazing. 'countdown' makes it easy to drop a simple countdown timer into slides and HTML documents written in 'R Markdown'. Integrates fully into 'Shiny' apps.
