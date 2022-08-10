@@ -1,4 +1,5 @@
 #' @keywords internal
+#' @aliases countdown-package
 "_PACKAGE"
 
 ## usethis namespace: start
