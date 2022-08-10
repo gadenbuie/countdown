@@ -48,7 +48,15 @@ style_solarized_light(
       "margin" = "0 -2px"
     ),
     blockquote = list("margin-left" = 0),
-    "em" = list(color = "#2aa198")
+    "em" = list(color = "#2aa198"),
+    kbd = list(
+      "font-size" = "0.7em",
+      "color" = "var(--background-color)",
+      "background-color" = "var(--inverse-background-color)",
+      "padding" = "3px",
+      "border-radius" = "3px",
+      "box-shadow" = "3px 3px 0px rgba(0,0,0, 0.2)"
+    )
   )
 )
 ```
@@ -85,11 +93,12 @@ countdown(
 
 ### How to use your new countdown timer
 
-Click on the timer to **start** it.
+Click or <kbd>Space</kbd> on the timer to **start** or **stop** it.
 
-Click while running to **bump** it up.
+Double click or <kbd>Esc</kbd> anytime to **reset** it.
 
-Click when complete to **restart** it.
+Use the **&plus;** and **&minus;** buttons or <kbd>&uarr;</kbd> <kbd>&darr;</kbd> to **bump** the timer **up** or **down**.
+
 
 ---
 # Easily add a timer to your slides!
