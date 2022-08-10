@@ -112,6 +112,10 @@ class CountdownTimer {
       })
     })
     this.element.addEventListener('keydown', function (ev) {
+      if (ev.code === "Escape") {
+        self.reset()
+        haltEvent(ev)
+      }
       if (!isSpaceOrEnter(ev) && !isArrowUpOrDown(ev)) return
       haltEvent(ev)
       if (isSpaceOrEnter(ev)) {

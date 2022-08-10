@@ -302,3 +302,11 @@ blockquote {
 em {
   color: #2aa198;
 }
+kbd {
+  font-size: 0.7em;
+  color: var(--background-color);
+  background-color: var(--inverse-background-color);
+  padding: 3px;
+  border-radius: 3px;
+  box-shadow: 3px 3px 0px rgba(0,0,0, 0.2);
+}
