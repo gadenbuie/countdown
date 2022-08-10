@@ -72,23 +72,25 @@ class CountdownTimer {
               self.start()
               window.Reveal.off('slidechanged', revealStartTimer)
             }
-
           }
           window.Reveal.on('slidechanged', revealStartTimer)
         }
-      } else {
+      } else if (window.IntersectionObserver) {
         // All other situtations use IntersectionObserver
         const onVisible = (element, callback) => {
-          new IntersectionObserver((entries, observer) => {
+          new window.IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
-              if(entry.intersectionRatio > 0) {
+              if (entry.intersectionRatio > 0) {
                 callback(element)
                 observer.disconnect()
               }
-            });
+            })
           }).observe(element)
         }
         onVisible(this.element, el => el.countdown.start())
+      } else {
+        // or just start the timer as soon as it's initialized
+        this.start()
       }
     }
 
