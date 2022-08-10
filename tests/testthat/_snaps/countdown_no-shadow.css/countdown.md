@@ -4,7 +4,7 @@
       background: inherit;
       position: absolute;
       cursor: pointer;
-      font-size: 3em;
+      font-size: 3rem;
       line-height: 1;
       border-color: #ddd;
       border-width: 3px;
