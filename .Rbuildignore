@@ -7,3 +7,4 @@
 ^\.Rhistory$
 ^_dev$
 ^\.github$
+^cran-comments\.md$
