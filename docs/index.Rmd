@@ -1,19 +1,36 @@
 ---
-title: "<code style='font-size: 200%'>{countdown}</code>"
-subtitle: "&#x23F2; :: &#x1F4AD; &#x1F4AC; &#x1F469;&#x200D;&#x1F4BB; :: &#x23F0;"
-author: "<a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>"
-date: '<span style="color: #b58900;">`r packageVersion("countdown")`</span><br/><span style="color: #2aa198">`r Sys.Date()`</span>'
+title: "{countdown}"
+subtitle: '`r packageVersion("countdown")`'
+author: "Garrick Aden-Buie"
+date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:
     lib_dir: libs
     css: xaringan-themer.css
+    seal: false
     nature:
-      titleSlideClass: ["middle", "left"]
       highlightStyle: solarized-dark
       highlightLines: true
       slideNumberFormat: "%current%"
       countIncrementalSlides: true
 ---
+
+class: middle left inverse
+
+# <code style='font-size: 200%'>{countdown}</code>
+
+### &#x23F2; :: &#x1F4AD; &#x1F4AC; &#x1F469;&#x200D;&#x1F4BB; :: &#x23F0;<br/><a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>
+
+Version: <span style="color: #b58900;">`r packageVersion("countdown")`</span>
+
+Updated: <span style="color: #2aa198;">`r Sys.Date()`</span>
+
+.footnote[
+[![CRAN status](https://www.r-pkg.org/badges/version/countdown)](https://CRAN.R-project.org/package=countdown)
+[![countdown on r-universe/gadenbuie](https://gadenbuie.r-universe.dev/badges/countdown)](https://gadenbuie.r-universe.dev)
+[![R-CMD-check](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml)
+]
+
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -47,6 +64,7 @@ style_solarized_light(
       "padding" = "2px 2px",
       "margin" = "0 -2px"
     ),
+    ".footnote" = list(bottom = 0),
     blockquote = list("margin-left" = 0),
     "em" = list(color = "#2aa198"),
     kbd = list(
@@ -64,6 +82,8 @@ style_solarized_light(
 ```{r eval = requireNamespace("xaringanExtra", quietly = TRUE), echo = FALSE}
 xaringanExtra::use_tile_view()
 ```
+
+---
 
 class: center middle
 
