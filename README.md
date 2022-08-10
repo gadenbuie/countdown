@@ -1,6 +1,8 @@
 # countdown
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/countdown)](https://CRAN.R-project.org/package=countdown)
+[![countdown on r-universe/gadenbuie](https://gadenbuie.r-universe.dev/badges/countdown)](https://gadenbuie.r-universe.dev)
 [![R-CMD-check](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/countdown/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
