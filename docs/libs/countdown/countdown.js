@@ -277,7 +277,7 @@ class CountdownTimer {
       newRemaining = Math.round(newRemaining / 5) * 5
     }
     this.setRemaining(newRemaining)
-    this.reportStateToShiny(val < 0 ? 'bumpUp' : 'bumpDown')
+    this.reportStateToShiny(val > 0 ? 'bumpUp' : 'bumpDown')
     this.update(true)
   }
 

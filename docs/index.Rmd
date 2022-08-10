@@ -475,7 +475,7 @@ or use the version hosted online at [apps.garrickadenbuie.com/countdown](https:/
 * Interact with timers in Shiny apps using `countdown_update()`
 
 * Set the `id` of a countdown timer to receive updates in the Shiny app
-  (use `input$<timer-id>`)
+  (use `input$<id>`)
   
 * Try the demo app to learn more: `countdown_shiny_example()`
 
