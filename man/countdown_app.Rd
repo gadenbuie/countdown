@@ -19,7 +19,7 @@ by Google Chrome for being considered unsafe: 3659, 4045, 5060,
 ports will be tried.}
     \item{\code{launch.browser}}{If true, the system's default web browser will be
 launched automatically after the app is started. Defaults to true in
-interactive sessions only. This value of this parameter can also be a
+interactive sessions only. The value of this parameter can also be a
 function to call with the application's URL.}
     \item{\code{host}}{The IPv4 address that the application should listen on. Defaults
 to the \code{shiny.host} option, if set, or \code{"127.0.0.1"} if not. See
