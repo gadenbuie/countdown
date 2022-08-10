@@ -296,6 +296,9 @@ p .remark-inline-code {
   padding: 2px 2px;
   margin: 0 -2px;
 }
+.footnote {
+  bottom: 0;
+}
 blockquote {
   margin-left: 0;
 }
