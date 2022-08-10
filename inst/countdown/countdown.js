@@ -39,20 +39,11 @@ class CountdownTimer {
 
   addEventListeners () {
     const self = this
-    function onVisible(element, callback) {
-      new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if(entry.intersectionRatio > 0) {
-            callback(element)
-            observer.disconnect()
-          }
-        });
-      }).observe(element)
-    }
 
     if (this.startImmediately) {
       if (window.remark && window.slideshow) {
-        function isOnVisibleSlide () {
+        // Remark (xaringan) support
+        const isOnVisibleSlide = () => {
           return document.querySelector('.remark-visible').contains(self.element)
         }
         if (isOnVisibleSlide()) {
@@ -67,7 +58,36 @@ class CountdownTimer {
             }
           })
         }
+      } else if (window.Reveal) {
+        // Revealjs (quarto) support
+        const isOnVisibleSlide = () => {
+          const currentSlide = document.querySelector('.reveal .slide.present')
+          return currentSlide ? currentSlide.contains(self.element) : false
+        }
+        if (isOnVisibleSlide()) {
+          self.start()
+        } else {
+          const revealStartTimer = () => {
+            if (isOnVisibleSlide()) {
+              self.start()
+              window.Reveal.off('slidechanged', revealStartTimer)
+            }
+
+          }
+          window.Reveal.on('slidechanged', revealStartTimer)
+        }
       } else {
+        // All other situtations use IntersectionObserver
+        const onVisible = (element, callback) => {
+          new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if(entry.intersectionRatio > 0) {
+                callback(element)
+                observer.disconnect()
+              }
+            });
+          }).observe(element)
+        }
         onVisible(this.element, el => el.countdown.start())
       }
     }
