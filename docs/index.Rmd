@@ -1,5 +1,5 @@
 ---
-title: "<code style='font-size: 200%'>countdown</code>"
+title: "<code style='font-size: 200%'>{countdown}</code>"
 subtitle: "&#x23F2; :: &#x1F4AD; &#x1F4AC; &#x1F469;&#x200D;&#x1F4BB; :: &#x23F0;"
 author: "<a href='https://github.com/gadenbuie/countdown' style='color: #d33682;'>github.com/gadenbuie/countdown</a>"
 date: '<span style="color: #b58900;">`r packageVersion("countdown")`</span><br/><span style="color: #2aa198">`r Sys.Date()`</span>'
@@ -254,7 +254,7 @@ countdown(minutes = 0, seconds = 15)
 ```
 
 .center[
-<iframe src="default-timer/index.html" width="210px" height="128px" style="border:3px solid #002b36;"></iframe>
+<iframe src="default-timer/index.html" width="240px" height="128px" style="border:3px solid #002b36;"></iframe>
 ]
 
 ---
