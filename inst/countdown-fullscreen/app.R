@@ -1,7 +1,6 @@
 library(shiny)
 library(countdown)
 # pkgload::load_all()
-options(htmltools.dir.version = FALSE)
 
 enableBookmarking("url")
 
