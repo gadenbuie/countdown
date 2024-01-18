@@ -1,0 +1,35 @@
+// Config options: https://github.com/rocker-org/devcontainer-templates/tree/main/src/r-ver
+{
+    "name": "R (rocker/r-ver base)",
+    "image": "ghcr.io/rocker-org/devcontainer/r-ver:4.3",
+    // Add software
+    "features": {
+    // Required to test with knitr
+    // R package config: https://github.com/rocker-org/devcontainer-features/blob/main/src/r-rig/README.md
+    "ghcr.io/rocker-org/devcontainer-features/r-rig:1": {
+        "version": "none",
+        "installRMarkdown": true,
+        "installJupyterlab": true,
+        "installRadian": true
+    },
+    // You may wish to switch prerelease to latest for stable development
+    // Quarto configuration : https://github.com/rocker-org/devcontainer-features/blob/main/src/quarto-cli/README.md
+    "ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {
+        "version": "prerelease"
+    }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+            "r.rterm.linux": "/usr/local/bin/radian",
+            "r.bracketedPaste": true,
+            "r.plot.useHttpgd": true,
+            "[r]": {
+                "editor.wordSeparators": "`~!@#%$^&*()-=+[{]}\\|;:'\",<>/?"
+            }
+            },
+            // Enable a development set of extensions for Lua and Quarto
+            "extensions": ["quarto.quarto", "sumneko.lua", "GitHub.copilot"]
+        }
+    }
+}
