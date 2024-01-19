@@ -1,0 +1,9 @@
+---
+title: "Countdown Example"
+---
+
+## Heading
+
+{{< countdown >}}
+
+
