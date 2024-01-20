@@ -39,6 +39,7 @@
   background: none;
   font-size: 100%;
   padding: 0;
+  color: currentColor;
 }
 
 .countdown-digits {
