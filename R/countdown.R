@@ -152,8 +152,8 @@ countdown <- function(
   blink_colon = update_every > 1L,
   start_immediately = FALSE,
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px",
-  border_radius = "15px",
+  border_width = "0.1875 rem",
+  border_radius = "0.9rem",
   line_height = "1",
   color_border = "#ddd",
   color_background = "inherit",
@@ -253,7 +253,8 @@ countdown <- function(
   htmltools::htmlDependencies(x) <- htmlDependency(
     "countdown",
     version = utils::packageVersion("countdown"),
-    src = tmpdir,
+    package = "countdown",
+    src = "countdown",
     script = "countdown.js",
     stylesheet = "countdown.css",
     all_files = TRUE
