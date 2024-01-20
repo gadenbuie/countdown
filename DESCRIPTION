@@ -1,6 +1,6 @@
 Package: countdown
 Title: A Countdown Timer for HTML Presentations, Documents, and Web Apps
-Version: 0.4.0
+Version: 0.4.0.9000
 Authors@R:
     person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-7111-0077"))
