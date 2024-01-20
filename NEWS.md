@@ -13,6 +13,9 @@
   makes it easier to customize and use countdown in other projects and
   settings. (#36)
 
+* Set `class = "inline"` in `countdown()` to create an inline, rather than
+  absolute-positioned, countdown timer. (#36)
+
 # countdown 0.4.0
 
 * {countdown} now uses {prismatic} for color calculations.
