@@ -76,7 +76,7 @@ class CountdownTimer {
           window.Reveal.on('slidechanged', revealStartTimer)
         }
       } else if (window.IntersectionObserver) {
-        // All other situtations use IntersectionObserver
+        // All other situations use IntersectionObserver
         const onVisible = (element, callback) => {
           new window.IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -108,7 +108,7 @@ class CountdownTimer {
     ;['click', 'touchend'].forEach(function (eventType) {
       self.element.addEventListener(eventType, function (ev) {
         haltEvent(ev)
-        self.is_running ? self.stop() : self.start()
+        self.is_running ? self.stop({manual: true}) : self.start()
       })
     })
     this.element.addEventListener('keydown', function (ev) {
@@ -119,7 +119,7 @@ class CountdownTimer {
       if (!isSpaceOrEnter(ev) && !isArrowUpOrDown(ev)) return
       haltEvent(ev)
       if (isSpaceOrEnter(ev)) {
-        self.is_running ? self.stop() : self.start()
+        self.is_running ? self.stop({manual: true}) : self.start()
         return
       }
 
@@ -196,7 +196,7 @@ class CountdownTimer {
       this.end = Date.now() + this.duration * 1000
     }
 
-    this.reportStateToShiny('start')
+    this.emitStateEvent('start')
 
     this.element.classList.remove('finished')
     this.element.classList.add('running')
@@ -269,7 +269,7 @@ class CountdownTimer {
     }
   }
 
-  stop () {
+  stop ({manual = false} = {}) {
     const { remaining } = this.remainingTime()
     if (remaining > 1) {
       this.remaining = remaining
@@ -280,17 +280,19 @@ class CountdownTimer {
     this.element.classList.add('finished')
     this.is_running = false
     this.end = null
-    this.reportStateToShiny('stop')
+    this.emitStateEvent(manual ? 'stop' : 'finished')
     this.timeout = clearTimeout(this.timeout)
   }
 
   reset () {
-    this.stop()
+    this.stop({manual: true})
     this.remaining = null
     this.update(true)
-    this.reportStateToShiny('reset')
+
     this.element.classList.remove('finished')
     this.element.classList.remove('warning')
+    this.emitEvents = true
+    this.emitStateEvent('reset')
   }
 
   setValues (opts) {
@@ -316,7 +318,7 @@ class CountdownTimer {
         this.start()
       }
     }
-    this.reportStateToShiny('update')
+    this.emitStateEvent('update')
     this.update(true)
   }
 
@@ -333,7 +335,7 @@ class CountdownTimer {
       newRemaining = Math.round(newRemaining / 5) * 5
     }
     this.setRemaining(newRemaining)
-    this.reportStateToShiny(val > 0 ? 'bumpUp' : 'bumpDown')
+    this.emitStateEvent(val > 0 ? 'bumpUp' : 'bumpDown')
     this.update(true)
   }
 
@@ -394,15 +396,10 @@ class CountdownTimer {
     }
   }
 
-  reportStateToShiny (action) {
-    if (!window.Shiny) return
-
-    const inputId = this.element.id
+  emitStateEvent (action) {
     const data = {
-      event: {
-        action,
-        time: new Date().toISOString()
-      },
+      action,
+      time: new Date().toISOString(),
       timer: {
         is_running: this.is_running,
         end: this.end ? new Date(this.end).toISOString() : null,
@@ -410,15 +407,24 @@ class CountdownTimer {
       }
     }
 
-    function shinySetInputValue () {
-      if (!window.Shiny.setInputValue) {
-        setTimeout(shinySetInputValue, 100)
-        return
-      }
-      window.Shiny.setInputValue(inputId, data)
+    this.reportStateToShiny(data)
+    this.element.dispatchEvent(new CustomEvent('countdown', { detail: data, bubbles: true }))
+  }
+
+  reportStateToShiny (data) {
+    if (!window.Shiny) return
+
+    if (!window.Shiny.setInputValue) {
+      // We're in Shiny but it isn't ready for input updates yet
+      setTimeout(() => this.reportStateToShiny(data), 100)
+      return
     }
 
-    shinySetInputValue()
+    const { action, time, timer } = data
+
+    const shinyData = { event: { action, time }, timer }
+
+    window.Shiny.setInputValue(this.element.id, shinyData)
   }
 }
 
@@ -453,7 +459,7 @@ class CountdownTimer {
       Shiny.addCustomMessageHandler('countdown:stop', function (id) {
         const el = document.getElementById(id)
         if (!el) return
-        el.countdown.stop()
+        el.countdown.stop({manual: true})
       })
 
       Shiny.addCustomMessageHandler('countdown:reset', function (id) {
