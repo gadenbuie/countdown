@@ -168,16 +168,19 @@ local function ensureHTMLDependency(meta)
   needsToExportDependencies = false
 end
 
+local function getOption(values, key, default)
+  return pandoc.utils.stringify(values[key]) or default
+end
 
 local function countdown(args, kwargs, meta)
   
   -- Retrieve named time arguments and fallback on default values if missing
-  local minutes = tonumber(pandoc.utils.stringify(kwargs["data-minutes"])) or 1
-  local seconds = tonumber(pandoc.utils.stringify(kwargs["data-seconds"])) or 0
+  local minutes = tonumber(pandoc.utils.stringify(kwargs["minutes"])) or 1
+  local seconds = tonumber(pandoc.utils.stringify(kwargs["seconds"])) or 0
 
   -- Calculate total time in seconds
   local time = minutes * 60 + seconds
-  
+
   -- Calculate minutes by dividing total time by 60 and rounding down
   minutes = math.floor(time / 60)
 
@@ -197,6 +200,8 @@ local function countdown(args, kwargs, meta)
   -- Determine if a warning should be given
   local warn_when = tonumber(pandoc.utils.stringify(kwargs["data-warn-when"])) or 0
   
+  quarto.log.output(kwargs["data-warn-when"])
+  
   -- Retrieve the ID given by the user or attempt to create a unique ID by timestamp (possible switch over to running counter)
   local id = pandoc.utils.stringify(kwargs["id"]) or ("timer_" .. pandoc.utils.sha1(tostring(os.time())))
 
@@ -210,26 +215,21 @@ local function countdown(args, kwargs, meta)
   local play_sound = pandoc.utils.stringify(kwargs["data-play-sound"]) or "false"
   
   -- Retrieve "data-blink-colon" attribute and set 'blink_colon' to true if it equals "true", otherwise false
-  local blink_colon = pandoc.utils.stringify(kwargs["data-blink-colon"]) == "true"
+  local blink_colon = pandoc.utils.stringify(kwargs["data-blink-colon"]) or "false"
 
   -- Retrieve "data-start-immediately" attribute and set 'start_immediately' to true if it equals "true", otherwise false
-  local start_immediately = pandoc.utils.stringify(kwargs["data-start-immediately"]) == "true"
+  local start_immediately = pandoc.utils.stringify(kwargs["data-start-immediately"]) or "true"
 
   -- Construct the style attribute based on element attributes
-  local style =  (pandoc.utils.stringify(kwargs["style"]) or "")
+  local style = pandoc.utils.stringify(kwargs["style"]) or ""
 
   -- Concatenate style properties with their values using %:?% from kwargs
-  style = style ..
-        safeStyle(kwargs["top"], "top") ..
-        safeStyle(kwargs["right"], "right") ..
-        safeStyle(kwargs["bottom"], "bottom") ..
-        safeStyle(kwargs["left"], "left") ..
-        safeStyle(kwargs["margin"], "margin") .. 
-        safeStyle(kwargs["padding"], "padding") ..
-        safeStyle(kwargs["font_size"], "font_size") ..
-        safeStyle(kwargs["line_height"], "line_height") ..
-        ";"
-
+  local styleKeys = {"top", "right", "bottom", "left", "margin", "padding", "font_size", "line_height"}
+  local style = ""
+  
+  for _, key in ipairs(styleKeys) do
+      style = style .. safeStyle(kwargs[key], key)
+  end
 
   local rawHtml = [[<div id="]] .. id .. [[" class="]] .. class .. [[" 
       data-warn-when="]] .. warn_when .. [["

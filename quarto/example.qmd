@@ -1,9 +1,21 @@
 ---
 title: "Countdown Example"
+format: revealjs
 ---
 
-## Heading
+# A note before we begin...
+
+:::{.callout-important}
+Please make sure you are on Quarto version 1.4.545 or greater.
+:::
+
+
+# Default timer
 
 {{< countdown >}}
 
+
+# More time
+
+{{< countdown minutes=2 seconds=20 >}}
 
