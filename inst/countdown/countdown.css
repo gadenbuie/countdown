@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: var(--countdown-color-background);
+  background: var(--countdown-color-background, inherit);
   font-size: var(--countdown-font-size, 3rem);
   line-height: var(--countdown-line-height, 1);
   border-color: var(--countdown-color-border, #ddd);
