@@ -1,7 +1,7 @@
 Package: countdown
 Title: A Countdown Timer for HTML Presentations, Documents, and Web Apps
 Version: 0.4.0
-Authors@R: 
+Authors@R:
     person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-7111-0077"))
 Description: A simple countdown timer for slides and HTML documents
@@ -11,12 +11,11 @@ License: MIT + file LICENSE
 URL: https://pkg.garrickadenbuie.com/countdown/,
     https://github.com/gadenbuie/countdown
 BugReports: https://github.com/gadenbuie/countdown/issues
-Imports: 
+Imports:
     htmltools,
     prismatic (>= 1.1.0),
-    utils,
-    whisker
-Suggests: 
+    utils
+Suggests:
     rmarkdown,
     shiny,
     testthat (>= 3.0.0)
