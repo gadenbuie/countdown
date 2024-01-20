@@ -1,8 +1,8 @@
 .countdown {
-  --_running-color: var(--countdown-color-running-text);
+  --_running-color: var(--countdown-color-running-text, rgba(0, 0, 0, 0.8));
   --_running-background: var(--countdown-color-running-background, #43AC6A);
   --_running-border-color: var(--countdown-color-running-border, rgba(0, 0, 0, 0.1));
-  --_finished-color: var(--countdown-color-finished-text);
+  --_finished-color: var(--countdown-color-finished-text, rgba(0, 0, 0, 0.7));
   --_finished-background: var(--countdown-color-finished-background, #F04124);
   --_finished-border-color: var(--countdown-color-finished-border, rgba(0, 0, 0, 0.1));
 
@@ -39,7 +39,7 @@
   background: none;
   font-size: 100%;
   padding: 0;
-  color: inherit;
+  color: currentColor;
 }
 
 .countdown-digits {
@@ -70,7 +70,7 @@
 }
 
 .countdown.running.warning .countdown-digits {
-  color: var(--countdown-color-warning-text);
+  color: var(--countdown-color-warning-text, rgba(0, 0, 0, 0.7));
 }
 
 .countdown.running.blink-colon .countdown-digits.colon {
