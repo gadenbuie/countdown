@@ -260,7 +260,7 @@ html_dependency_countdown <- function() {
     src = "countdown",
     script = "countdown.js",
     stylesheet = "countdown.css",
-    all_files = FALSE
+    all_files = TRUE
   )
 }
 
