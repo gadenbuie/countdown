@@ -1,7 +1,8 @@
 library(shiny)
+library(bslib)
 library(countdown)
 
-ui <- fluidPage(
+ui <- page_fixed(
   title = "{countdown} - Example Shiny App",
   div(
     class = "container",
