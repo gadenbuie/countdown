@@ -127,7 +127,7 @@
   border-color: var(--_finished-border-color);
 }
 
-.countdown.running:hover, countdown.running:focus-within {
+.countdown.running:hover, .countdown.running:focus-within {
   --_opacity: 1;
 }
 
