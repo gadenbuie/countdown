@@ -1,5 +1,3 @@
-`%||%` <- function(x, y) if (is.null(x)) y else x
-
 #' Countdown Timer
 #'
 #' Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
@@ -266,6 +264,48 @@ html_dependency_countdown <- function() {
   )
 }
 
+# ---- Countdown Full Screen ----
+
+#' @describeIn countdown A full-screen timer that takes up the entire view port
+#'   and uses the largest reasonable font size.
+#'
+#' @export
+countdown_fullscreen <- function(
+  minutes = 1,
+  seconds = 0,
+  ...,
+  class = NULL,
+  start_immediately = FALSE,
+  font_size = "30vw",
+  border_width = "0",
+  border_radius = "0",
+  margin = "0",
+  padding = "0",
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0
+) {
+  countdown(
+    minutes,
+    seconds,
+    class = c("countdown-fullscreen", NULL),
+    font_size = font_size,
+    border_width = border_width,
+    border_radius = border_radius,
+    margin = margin,
+    padding = padding,
+    start_immediately = FALSE,
+    top = top,
+    right = right,
+    bottom = bottom,
+    left = left,
+    ...
+  )
+}
+
+# ---- Style Countdown ----
+
 #' @describeIn countdown Set global default countdown timer styles using CSS.
 #'   Use this function to globally style all countdown timers in a document or
 #'   app. Individual timers can still be customized.
@@ -327,73 +367,4 @@ make_countdown_css_vars <- function(..., .list = list()) {
     gsub("_", "-", names(dots))
   )
   dots
-}
-
-#' @describeIn countdown A full-screen timer that takes up the entire view port
-#'   and uses the largest reasonable font size.
-#'
-#' @export
-countdown_fullscreen <- function(
-  minutes = 1,
-  seconds = 0,
-  ...,
-  class = NULL,
-  start_immediately = FALSE,
-  font_size = "30vw",
-  border_width = "0",
-  border_radius = "0",
-  margin = "0",
-  padding = "0",
-  top = 0,
-  right = 0,
-  bottom = 0,
-  left = 0
-) {
-  countdown(
-    minutes,
-    seconds,
-    class = c("countdown-fullscreen", NULL),
-    font_size = font_size,
-    border_width = border_width,
-    border_radius = border_radius,
-    margin = margin,
-    padding = padding,
-    start_immediately = FALSE,
-    top = top,
-    right = right,
-    bottom = bottom,
-    left = left,
-    ...
-  )
-}
-
-
-make_unique_id <- function() {
-  with_private_seed <- utils::getFromNamespace("withPrivateSeed", "htmltools")
-  with_private_seed({
-    rand_id <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
-    paste(format(rand_id, width=2), collapse = "")
-  })
-}
-
-validate_html_id <- function(id) {
-  stop_because <- function(...) {
-    stop(paste0('"', id, '" is not a valid HTML ID: ', ...))
-  }
-  if (!grepl("^[a-zA-Z]", id)) {
-    stop_because("Must start with a letter")
-  }
-  if (grepl("[^0-9a-zA-Z_:.-]", id)) {
-    invalid <- gsub("[0-9a-zA-Z_:.-]", "", id)
-    invalid <- strsplit(invalid, character(0))[[1]]
-    invalid <- unique(invalid)
-    invalid[invalid == " "] <- "' '"
-    invalid <- paste(invalid, collapse = ", ")
-    stop_because(
-      "Cannot contain the character",
-      if (nchar(invalid) > 1) "s: ",
-      invalid
-    )
-  }
-  id
 }
