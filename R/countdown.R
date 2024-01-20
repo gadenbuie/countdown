@@ -231,11 +231,13 @@ countdown <- function(
       !!!css_vars,
     ),
     style = style,
-    div(
-      class = "countdown-controls",
-      tags$button(class = "countdown-bump-down", HTML("&minus;")),
-      tags$button(class = "countdown-bump-up", HTML("&plus;"))
-    ),
+    # This looks weird but it keeps pandoc from adding paragraph tags
+    HTML(paste0(
+      '<div class="countdown-controls">',
+      '<button class="countdown-bump-down">&minus;</button>',
+      '<button class="countdown-bump-up">&plus;</button>',
+      '</div>'
+    )),
     code(
       class = "countdown-time",
       HTML(
