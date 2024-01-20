@@ -29,6 +29,12 @@
           user-select: none;
 }
 
+.countdown.inline {
+  position: relative;
+  width: 150px;
+  max-width: 100%;
+}
+
 .countdown .countdown-time {
   background: none;
   font-size: 100%;
