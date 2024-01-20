@@ -140,9 +140,6 @@ countdown <- function(
   class = NULL,
   style = NULL,
   play_sound = FALSE,
-  font_size = "3rem",
-  margin = "0.6em",
-  padding = "10px 15px",
   bottom = if (is.null(top)) "0",
   right = if (is.null(left)) "0",
   top = NULL,
@@ -151,21 +148,24 @@ countdown <- function(
   update_every = 1L,
   blink_colon = update_every > 1L,
   start_immediately = FALSE,
-  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "0.1875 rem",
-  border_radius = "0.9rem",
-  line_height = "1",
-  color_border = "#ddd",
-  color_background = "inherit",
-  color_text = "inherit",
-  color_running_background = "#43AC6A",
-  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
+  font_size = NULL,
+  margin = NULL,
+  padding = NULL,
+  box_shadow = NULL,
+  border_width = NULL,
+  border_radius = NULL,
+  line_height = NULL,
+  color_border = NULL,
+  color_background = NULL,
+  color_text = NULL,
+  color_running_background = NULL,
+  color_running_border = NULL,
   color_running_text = NULL,
-  color_finished_background = "#F04124",
-  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
+  color_finished_background = NULL,
+  color_finished_border = NULL,
   color_finished_text = NULL,
-  color_warning_background = "#E6C229",
-  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
+  color_warning_background = NULL,
+  color_warning_border = NULL,
   color_warning_text = NULL
 ) {
   time <- minutes * 60 + seconds
@@ -194,10 +194,27 @@ countdown <- function(
   warn_when <- if (warn_when > 0) warn_when
   update_every <- as.integer(update_every)
 
-  # Set text based on background color
-  color_running_text  <- color_running_text  %||% choose_dark_or_light(color_running_background)
-  color_finished_text <- color_finished_text %||% choose_dark_or_light(color_finished_background)
-  color_warning_text  <- color_warning_text  %||% choose_dark_or_light(color_warning_background)
+  css_vars <- make_countdown_css_vars(
+    margin = margin,
+    padding = padding,
+    font_size = font_size,
+    box_shadow = box_shadow,
+    border_width = border_width,
+    border_radius = border_radius,
+    line_height = line_height,
+    color_border = color_border,
+    color_background = color_background,
+    color_text = color_text,
+    color_running_background = color_running_background,
+    color_running_border = color_running_border,
+    color_running_text = color_running_text,
+    color_finished_background = color_finished_background,
+    color_finished_border = color_finished_border,
+    color_finished_text = color_finished_text,
+    color_warning_background = color_warning_background,
+    color_warning_border = color_warning_border,
+    color_warning_text = color_warning_text
+  )
 
   x <- div(
     class = class,
@@ -213,13 +230,7 @@ countdown <- function(
       right = right,
       bottom = bottom,
       left = left,
-      margin = margin,
-      padding = padding,
-      font_size = font_size,
-      line_height = line_height,
-      "--countdown-color-running-text" = color_running_text,
-      "--countdown-color-finished-text" = color_finished_text,
-      "--countdown-color-warning-text" = color_warning_text
+      !!!css_vars,
     ),
     style = style,
     div(
@@ -253,6 +264,69 @@ html_dependency_countdown <- function() {
     stylesheet = "countdown.css",
     all_files = FALSE
   )
+}
+
+#' @describeIn countdown Set global default countdown timer styles using CSS.
+#'   Use this function to globally style all countdown timers in a document or
+#'   app. Individual timers can still be customized.
+#' @export
+style_countdown <- function(
+  font_size = "3rem",
+  margin = "0.6em",
+  padding = "10px 15px",
+  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
+  border_width = "0.1875 rem",
+  border_radius = "0.9rem",
+  line_height = "1",
+  color_border = "#ddd",
+  color_background = "inherit",
+  color_text = "inherit",
+  color_running_background = "#43AC6A",
+  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
+  color_running_text = NULL,
+  color_finished_background = "#F04124",
+  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
+  color_finished_text = NULL,
+  color_warning_background = "#E6C229",
+  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
+  color_warning_text = NULL
+) {
+  # get all arguments of current call
+  arg_names <- names(formals(style_countdown))
+  dots <- lapply(arg_names, get, envir = environment())
+  names(dots) <- arg_names
+
+  css_vars <- make_countdown_css_vars(.list = dots)
+  declarations <- css(!!!css_vars)
+
+  tags$style(HTML(sprintf(":root {%s}", declarations)))
+}
+
+make_countdown_css_vars <- function(..., .list = list()) {
+  dots <- compact(c(list(...), .list))
+
+  if (length(dots) == 0) {
+    return(NULL)
+  }
+
+  # Set text based on background color, if provided
+  # Users can set the text color to "" (empty string to disable this)
+  states <- c("running", "finished", "warning")
+  for (state in states) {
+    fg <- paste0("color_", state, "_text")
+    bg <- paste0("color_", state, "_background")
+
+    if (is.null(dots[[fg]]) && !is.null(dots[[bg]])) {
+      dots[[fg]] <- choose_dark_or_light(dots[[bg]])
+    }
+  }
+
+
+  names(dots) <- paste0(
+    "--countdown-",
+    gsub("_", "-", names(dots))
+  )
+  dots
 }
 
 #' @describeIn countdown A full-screen timer that takes up the entire view port

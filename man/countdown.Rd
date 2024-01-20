@@ -2,6 +2,7 @@
 % Please edit documentation in R/countdown.R
 \name{countdown}
 \alias{countdown}
+\alias{style_countdown}
 \alias{countdown_fullscreen}
 \title{Countdown Timer}
 \usage{
@@ -13,9 +14,6 @@ countdown(
   class = NULL,
   style = NULL,
   play_sound = FALSE,
-  font_size = "3rem",
-  margin = "0.6em",
-  padding = "10px 15px",
   bottom = if (is.null(top)) "0",
   right = if (is.null(left)) "0",
   top = NULL,
@@ -24,9 +22,34 @@ countdown(
   update_every = 1L,
   blink_colon = update_every > 1L,
   start_immediately = FALSE,
+  font_size = NULL,
+  margin = NULL,
+  padding = NULL,
+  box_shadow = NULL,
+  border_width = NULL,
+  border_radius = NULL,
+  line_height = NULL,
+  color_border = NULL,
+  color_background = NULL,
+  color_text = NULL,
+  color_running_background = NULL,
+  color_running_border = NULL,
+  color_running_text = NULL,
+  color_finished_background = NULL,
+  color_finished_border = NULL,
+  color_finished_text = NULL,
+  color_warning_background = NULL,
+  color_warning_border = NULL,
+  color_warning_text = NULL
+)
+
+style_countdown(
+  font_size = "3rem",
+  margin = "0.6em",
+  padding = "10px 15px",
   box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px",
-  border_radius = "15px",
+  border_width = "0.1875 rem",
+  border_radius = "0.9rem",
   line_height = "1",
   color_border = "#ddd",
   color_background = "inherit",
@@ -90,13 +113,6 @@ absolutely, as in the default), set
 Alternatively, \code{play_sound} can be a relative or absolute URL to a sound
 file, such as an \code{mp3}, \code{wav}, \code{ogg}, or other audio file type.}
 
-\item{font_size}{The font size of the time displayed in the timer.}
-
-\item{margin}{The margin applied to the timer container, default is
-\code{"0.5em"}.}
-
-\item{padding}{The padding within the timer container, default is \code{"10px 15px"}.}
-
 \item{bottom}{Position of the timer within its container. By default the
 timer is bottom-aligned using \code{bottom = "0"}. If \code{top} is set, \code{bottom}
 defaults to \code{NULL}.}
@@ -130,6 +146,13 @@ the countdown time is updated periodically rather than each second.}
 
 \item{start_immediately}{If \code{TRUE}, the countdown timer starts as soon as its
 created (or as soon as the slides, document or Shiny app are loaded).}
+
+\item{font_size}{The font size of the time displayed in the timer.}
+
+\item{margin}{The margin applied to the timer container, default is
+\code{"0.5em"}.}
+
+\item{padding}{The padding within the timer container, default is \code{"10px 15px"}.}
 
 \item{box_shadow}{Shadow specification for the timer, set to \code{NULL} to remove
 the shadow.}
@@ -189,6 +212,10 @@ for use in web-based presentations, such as those created by
 \itemize{
 \item \code{countdown()}: Create a countdown timer for use in presentations and
 HTML documents.
+
+\item \code{style_countdown()}: Set global default countdown timer styles using CSS.
+Use this function to globally style all countdown timers in a document or
+app. Individual timers can still be customized.
 
 \item \code{countdown_fullscreen()}: A full-screen timer that takes up the entire view port
 and uses the largest reasonable font size.
