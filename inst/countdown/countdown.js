@@ -262,7 +262,11 @@ class CountdownTimer {
       Math.round(remaining) % this.update_every === 0
 
     if (should_update) {
-      this.element.classList.toggle('warning', remaining <= this.warn_when)
+      const is_warning = remaining <= this.warn_when
+      if (is_warning && !this.element.classList.contains('warning')) {
+        this.emitStateEvent('warning')
+      }
+      this.element.classList.toggle('warning', is_warning)
       this.display = { minutes, seconds }
       setRemainingTime('.minutes', minutes)
       setRemainingTime('.seconds', seconds)
