@@ -2,8 +2,8 @@
 % Please edit documentation in R/countdown.R
 \name{countdown}
 \alias{countdown}
-\alias{style_countdown}
 \alias{countdown_fullscreen}
+\alias{style_countdown}
 \title{Countdown Timer}
 \usage{
 countdown(
@@ -43,6 +43,23 @@ countdown(
   color_warning_text = NULL
 )
 
+countdown_fullscreen(
+  minutes = 1,
+  seconds = 0,
+  ...,
+  class = NULL,
+  start_immediately = FALSE,
+  font_size = "30vw",
+  border_width = "0",
+  border_radius = "0",
+  margin = "0",
+  padding = "0",
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0
+)
+
 style_countdown(
   font_size = "3rem",
   margin = "0.6em",
@@ -63,23 +80,6 @@ style_countdown(
   color_warning_background = "#E6C229",
   color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
   color_warning_text = NULL
-)
-
-countdown_fullscreen(
-  minutes = 1,
-  seconds = 0,
-  ...,
-  class = NULL,
-  start_immediately = FALSE,
-  font_size = "30vw",
-  border_width = "0",
-  border_radius = "0",
-  margin = "0",
-  padding = "0",
-  top = 0,
-  right = 0,
-  bottom = 0,
-  left = 0
 )
 }
 \arguments{
@@ -213,12 +213,12 @@ for use in web-based presentations, such as those created by
 \item \code{countdown()}: Create a countdown timer for use in presentations and
 HTML documents.
 
+\item \code{countdown_fullscreen()}: A full-screen timer that takes up the entire view port
+and uses the largest reasonable font size.
+
 \item \code{style_countdown()}: Set global default countdown timer styles using CSS.
 Use this function to globally style all countdown timers in a document or
 app. Individual timers can still be customized.
-
-\item \code{countdown_fullscreen()}: A full-screen timer that takes up the entire view port
-and uses the largest reasonable font size.
 
 }}
 \examples{
