@@ -236,32 +236,23 @@ countdown <- function(
           span(class = "countdown-digits seconds", sprintf("%02d", seconds))
         )
       )
-    )
+    ),
+    html_dependency_countdown()
   )
 
-  tmpdir <- tempfile("countdown_")
-  dir.create(tmpdir)
-  file.copy(
-    dir(system.file("countdown", package = "countdown"), full.names = TRUE),
-    tmpdir
-  )
+  htmltools::browsable(x)
+}
 
-
-  css_template <- readLines(system.file("countdown", "countdown.css", package = "countdown"))
-  css <- whisker::whisker.render(css_template)
-  writeLines(css, file.path(tmpdir, "countdown.css"))
-
-  htmltools::htmlDependencies(x) <- htmlDependency(
+html_dependency_countdown <- function() {
+  htmlDependency(
     "countdown",
     version = utils::packageVersion("countdown"),
     package = "countdown",
     src = "countdown",
     script = "countdown.js",
     stylesheet = "countdown.css",
-    all_files = TRUE
+    all_files = FALSE
   )
-
-  htmltools::browsable(x)
 }
 
 #' @describeIn countdown A full-screen timer that takes up the entire view port
