@@ -222,12 +222,11 @@ countdown <- function(
       "--countdown-color-warning-text" = color_warning_text
     ),
     style = style,
-    HTML(paste0(
-      '<div class="countdown-controls">',
-      '<button class="countdown-bump-down">&minus;</button>',
-      '<button class="countdown-bump-up">&plus;</button>',
-      '</div>'
-    )),
+    div(
+      class = "countdown-controls",
+      tags$button(class = "countdown-bump-down", HTML("&minus;")),
+      tags$button(class = "countdown-bump-up", HTML("&plus;"))
+    ),
     code(
       class = "countdown-time",
       HTML(
