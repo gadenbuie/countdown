@@ -1,38 +1,30 @@
 test_that("countdown html_dependency", {
   x <- countdown(1)
 
-  x_deps <- htmltools::htmlDependencies(x)[[1]]
+  x_deps <- htmltools::findDependencies(x)[[1]]
 
   expect_equal(x_deps$name, "countdown")
   expect_equal(x_deps$script, "countdown.js")
   expect_equal(x_deps$stylesheet, "countdown.css")
   expect_true(inherits(x_deps, "html_dependency"))
-
 })
 
-dir.create(test_path("css_template"), showWarnings = FALSE)
-
-test_that("countdown css template", {
-  test_template_file <- function(x, variant) {
-    x_deps <- htmltools::htmlDependencies(x)[[1]]
-    css_template <- readLines(file.path(x_deps$src, x_deps$stylesheet))
-    expect_snapshot_output(cat(css_template, sep = "\n"), variant = variant)
-  }
-
-  test_template_file(countdown(), "countdown_default.css")
-  test_template_file(countdown(top = 0, left = 0), "countdown_top-left.css")
-  test_template_file(countdown(font_size = "1em",
-                               color_border = "#123abc",
-                               border_width = "2px",
-                               border_radius = "5px"),
-                     "countdown_font-and-border.css")
-  test_template_file(countdown(box_shadow = NULL), "countdown_no-shadow.css")
-  test_template_file(countdown(margin = 0, padding = "12px"), "countdown_margin-padding.css")
-
-  test_template_file(countdown(color_running_background = "firebrick3"), "countdown_running-colors.css")
-  test_template_file(countdown(color_finished_background = "magenta2"), "countdown_finished-colors.css")
-
-  test_template_file(countdown_fullscreen(), "countdown_fullscreen.css")
+test_that("countdown() structure snapshot", {
+  expect_snapshot(
+    cat(format(
+      countdown(
+        minutes = 1,
+        seconds = 30,
+        id = "timer_1",
+        class = "extra-class",
+        warn_when = 15,
+        update_every = 10,
+        start_immediately = TRUE,
+        blink_colon = TRUE,
+        play_sound = TRUE
+      )
+    ))
+  )
 })
 
 test_that("countdown()", {
@@ -69,11 +61,8 @@ test_that("countdown()", {
   expect_error(countdown(100), "minutes")
 })
 
-test_that("countdown() with `style`", {
+test_that("countdown() with user `style`", {
   x <- countdown(id = "test", style = "position: relative; width: 100%")
-  y <- countdown(id = "test", style = c("position: relative", "width: 100%"))
-
-  expect_identical(as.character(x), as.character(y))
   expect_true(grepl("style=\".+?position: relative;", as.character(x)))
 })
 
