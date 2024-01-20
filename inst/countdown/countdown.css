@@ -14,7 +14,7 @@
   background: var(--countdown-color-background);
   font-size: var(--countdown-font-size, 3rem);
   line-height: var(--countdown-line-height, 1);
-  border-color: var(--countdown-border-color, #ddd);
+  border-color: var(--countdown-color-border, #ddd);
   border-width: var(--countdown-border-width, 0.1875rem);
   border-style: solid;
   border-radius: var(--countdown-border-radius, 0.9rem);
