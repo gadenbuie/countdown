@@ -194,8 +194,6 @@ countdown <- function(
   warn_when <- if (warn_when > 0) warn_when
   update_every <- as.integer(update_every)
 
-  `%:?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
-
   x <- div(
     class = class,
     id = id,
@@ -205,17 +203,17 @@ countdown <- function(
     `data-blink-colon` = if (isTRUE(blink_colon)) "true",
     `data-start-immediately` = if (isTRUE(start_immediately)) "true",
     tabindex = 0,
-    style = paste0(
-      top %:?% "top",
-      right %:?% "right",
-      bottom %:?% "bottom",
-      left %:?% "left",
-      if (!missing(margin)) margin %:?% "margin",
-      if (!missing(padding)) padding %:?% "padding",
-      if (!missing(font_size)) font_size %:?% "font-size",
-      if (!missing(line_height)) line_height %:?% "line-height",
-      paste(style, collapse = "; ")
+    style = css(
+      top = top,
+      right = right,
+      bottom = bottom,
+      left = left,
+      margin = margin,
+      padding = padding,
+      font_size = font_size,
+      line_height = line_height
     ),
+    style = style,
     HTML(paste0(
       '<div class="countdown-controls">',
       '<button class="countdown-bump-down">&minus;</button>',
