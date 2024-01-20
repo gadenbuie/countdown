@@ -79,7 +79,8 @@ style_countdown(
   color_finished_text = NULL,
   color_warning_background = "#E6C229",
   color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
-  color_warning_text = NULL
+  color_warning_text = NULL,
+  .selector = "root"
 )
 }
 \arguments{
@@ -199,6 +200,10 @@ warning timer border and text (\code{color_warning_border} and
 
 \item{color_warning_text}{Color of the timer text when the timer is below
 \code{warn_when} seconds.}
+
+\item{.selector}{In \code{style_countdown()}: the CSS selector to which the styles
+should be applied. The default is \verb{:root} for global styles, but you can
+also provide a custom class name to create styles for a particular class.}
 }
 \value{
 A vanilla JavaScript countdown timer as HTML, with dependencies.

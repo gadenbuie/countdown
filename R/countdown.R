@@ -311,6 +311,9 @@ countdown_fullscreen <- function(
 #' @describeIn countdown Set global default countdown timer styles using CSS.
 #'   Use this function to globally style all countdown timers in a document or
 #'   app. Individual timers can still be customized.
+#' @param .selector In `style_countdown()`: the CSS selector to which the styles
+#'   should be applied. The default is `:root` for global styles, but you can
+#'   also provide a custom class name to create styles for a particular class.
 #' @export
 style_countdown <- function(
   font_size = "3rem",
@@ -331,17 +334,19 @@ style_countdown <- function(
   color_finished_text = NULL,
   color_warning_background = "#E6C229",
   color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
-  color_warning_text = NULL
+  color_warning_text = NULL,
+  .selector = "root"
 ) {
-  # get all arguments of current call
+  # get user args and defaults of current call
   arg_names <- names(formals(style_countdown))
+  arg_names <- setdiff(arg_names, ".selector")
   dots <- lapply(arg_names, get, envir = environment())
   names(dots) <- arg_names
 
   css_vars <- make_countdown_css_vars(.list = dots)
   declarations <- css(!!!css_vars)
 
-  tags$style(HTML(sprintf(":root {%s}", declarations)))
+  tags$style(HTML(sprintf(":%s {%s}", .selector, declarations)))
 }
 
 make_countdown_css_vars <- function(..., .list = list()) {
