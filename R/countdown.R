@@ -194,6 +194,11 @@ countdown <- function(
   warn_when <- if (warn_when > 0) warn_when
   update_every <- as.integer(update_every)
 
+  # Set text based on background color
+  color_running_text  <- color_running_text  %||% choose_dark_or_light(color_running_background)
+  color_finished_text <- color_finished_text %||% choose_dark_or_light(color_finished_background)
+  color_warning_text  <- color_warning_text  %||% choose_dark_or_light(color_warning_background)
+
   x <- div(
     class = class,
     id = id,
@@ -211,7 +216,10 @@ countdown <- function(
       margin = margin,
       padding = padding,
       font_size = font_size,
-      line_height = line_height
+      line_height = line_height,
+      "--countdown-color-running-text" = color_running_text,
+      "--countdown-color-finished-text" = color_finished_text,
+      "--countdown-color-warning-text" = color_warning_text
     ),
     style = style,
     HTML(paste0(
@@ -239,10 +247,6 @@ countdown <- function(
     tmpdir
   )
 
-  # Set text based on background color
-  color_running_text  <- color_running_text  %||% choose_dark_or_light(color_running_background)
-  color_finished_text <- color_finished_text %||% choose_dark_or_light(color_finished_background)
-  color_warning_text  <- color_warning_text  %||% choose_dark_or_light(color_warning_background)
 
   css_template <- readLines(system.file("countdown", "countdown.css", package = "countdown"))
   css <- whisker::whisker.render(css_template)
