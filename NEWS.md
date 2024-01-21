@@ -21,6 +21,9 @@
 * Set `class = "inline"` in `countdown()` to create an inline, rather than
   absolute-positioned, countdown timer. (#36)
 
+* Set `class = "no-controls"` in `countdown()` to create a countdown timer
+  without the controls. (#40)
+
 ## Bug fixes
 
 * Fixed an issue where custom URLs for `play_sound` were not used for the timer

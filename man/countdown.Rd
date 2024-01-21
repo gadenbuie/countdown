@@ -101,7 +101,14 @@ specific reason, it would probably be best to leave this unset.}
 \item{class}{Optional additional classes to be added to the \verb{<div>}
 containing the timer. The \code{"countdown"} class is added automatically. If
 you want to modify the style of the timer, you can modify the \code{"countdown"}
-class or specify additional styles here that extend the base CSS.}
+class or specify additional styles here that extend the base CSS.
+
+\code{countdown()} provides two built-in classes:
+\itemize{
+\item Use \code{"inline"} to create an inline, rather than absolutely-positioned,
+timer. This is useful for timers in prose or documents.
+\item Use \code{"no-controls"} for a timer without the up/down controls.
+}}
 
 \item{style}{CSS rules to be applied inline to the timer. Use \code{style} to
 override any global CSS rules for the timer. For example, to display the

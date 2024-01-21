@@ -55,6 +55,12 @@
 #'   containing the timer. The `"countdown"` class is added automatically. If
 #'   you want to modify the style of the timer, you can modify the `"countdown"`
 #'   class or specify additional styles here that extend the base CSS.
+#'
+#'   `countdown()` provides two built-in classes:
+#'
+#'    * Use `"inline"` to create an inline, rather than absolutely-positioned,
+#'      timer. This is useful for timers in prose or documents.
+#'    * Use `"no-controls"` for a timer without the up/down controls.
 #' @param style CSS rules to be applied inline to the timer. Use `style` to
 #'   override any global CSS rules for the timer. For example, to display the
 #'   timer relative to the position where it is called (rather than positioned
