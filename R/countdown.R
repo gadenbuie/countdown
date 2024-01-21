@@ -1,5 +1,3 @@
-`%||%` <- function(x, y) if (is.null(x)) y else x
-
 #' Countdown Timer
 #'
 #' Creates a countdown timer using HTML, CSS, and vanilla JavaScript, suitable
@@ -140,9 +138,6 @@ countdown <- function(
   class = NULL,
   style = NULL,
   play_sound = FALSE,
-  font_size = "3rem",
-  margin = "0.6em",
-  padding = "10px 15px",
   bottom = if (is.null(top)) "0",
   right = if (is.null(left)) "0",
   top = NULL,
@@ -151,21 +146,24 @@ countdown <- function(
   update_every = 1L,
   blink_colon = update_every > 1L,
   start_immediately = FALSE,
-  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  border_width = "3px",
-  border_radius = "15px",
-  line_height = "1",
-  color_border = "#ddd",
-  color_background = "inherit",
-  color_text = "inherit",
-  color_running_background = "#43AC6A",
-  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
+  font_size = NULL,
+  margin = NULL,
+  padding = NULL,
+  box_shadow = NULL,
+  border_width = NULL,
+  border_radius = NULL,
+  line_height = NULL,
+  color_border = NULL,
+  color_background = NULL,
+  color_text = NULL,
+  color_running_background = NULL,
+  color_running_border = NULL,
   color_running_text = NULL,
-  color_finished_background = "#F04124",
-  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
+  color_finished_background = NULL,
+  color_finished_border = NULL,
   color_finished_text = NULL,
-  color_warning_background = "#E6C229",
-  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
+  color_warning_background = NULL,
+  color_warning_border = NULL,
   color_warning_text = NULL
 ) {
   time <- minutes * 60 + seconds
@@ -194,7 +192,27 @@ countdown <- function(
   warn_when <- if (warn_when > 0) warn_when
   update_every <- as.integer(update_every)
 
-  `%:?%` <- function(x, y) if (!is.null(x)) paste0(y, ":", x, ";")
+  css_vars <- make_countdown_css_vars(
+    margin = margin,
+    padding = padding,
+    font_size = font_size,
+    box_shadow = box_shadow,
+    border_width = border_width,
+    border_radius = border_radius,
+    line_height = line_height,
+    color_border = color_border,
+    color_background = color_background,
+    color_text = color_text,
+    color_running_background = color_running_background,
+    color_running_border = color_running_border,
+    color_running_text = color_running_text,
+    color_finished_background = color_finished_background,
+    color_finished_border = color_finished_border,
+    color_finished_text = color_finished_text,
+    color_warning_background = color_warning_background,
+    color_warning_border = color_warning_border,
+    color_warning_text = color_warning_text
+  )
 
   x <- div(
     class = class,
@@ -205,17 +223,15 @@ countdown <- function(
     `data-blink-colon` = if (isTRUE(blink_colon)) "true",
     `data-start-immediately` = if (isTRUE(start_immediately)) "true",
     tabindex = 0,
-    style = paste0(
-      top %:?% "top",
-      right %:?% "right",
-      bottom %:?% "bottom",
-      left %:?% "left",
-      if (!missing(margin)) margin %:?% "margin",
-      if (!missing(padding)) padding %:?% "padding",
-      if (!missing(font_size)) font_size %:?% "font-size",
-      if (!missing(line_height)) line_height %:?% "line-height",
-      paste(style, collapse = "; ")
+    style = css(
+      top = top,
+      right = right,
+      bottom = bottom,
+      left = left,
+      !!!css_vars,
     ),
+    style = style,
+    # This looks weird but it keeps pandoc from adding paragraph tags
     HTML(paste0(
       '<div class="countdown-controls">',
       '<button class="countdown-bump-down">&minus;</button>',
@@ -231,36 +247,26 @@ countdown <- function(
           span(class = "countdown-digits seconds", sprintf("%02d", seconds))
         )
       )
-    )
-  )
-
-  tmpdir <- tempfile("countdown_")
-  dir.create(tmpdir)
-  file.copy(
-    dir(system.file("countdown", package = "countdown"), full.names = TRUE),
-    tmpdir
-  )
-
-  # Set text based on background color
-  color_running_text  <- color_running_text  %||% choose_dark_or_light(color_running_background)
-  color_finished_text <- color_finished_text %||% choose_dark_or_light(color_finished_background)
-  color_warning_text  <- color_warning_text  %||% choose_dark_or_light(color_warning_background)
-
-  css_template <- readLines(system.file("countdown", "countdown.css", package = "countdown"))
-  css <- whisker::whisker.render(css_template)
-  writeLines(css, file.path(tmpdir, "countdown.css"))
-
-  htmltools::htmlDependencies(x) <- htmlDependency(
-    "countdown",
-    version = utils::packageVersion("countdown"),
-    src = tmpdir,
-    script = "countdown.js",
-    stylesheet = "countdown.css",
-    all_files = TRUE
+    ),
+    html_dependency_countdown()
   )
 
   htmltools::browsable(x)
 }
+
+html_dependency_countdown <- function() {
+  htmlDependency(
+    "countdown",
+    version = utils::packageVersion("countdown"),
+    package = "countdown",
+    src = "countdown",
+    script = "countdown.js",
+    stylesheet = "countdown.css",
+    all_files = TRUE
+  )
+}
+
+# ---- Countdown Full Screen ----
 
 #' @describeIn countdown A full-screen timer that takes up the entire view port
 #'   and uses the largest reasonable font size.
@@ -300,33 +306,72 @@ countdown_fullscreen <- function(
   )
 }
 
+# ---- Style Countdown ----
 
-make_unique_id <- function() {
-  with_private_seed <- utils::getFromNamespace("withPrivateSeed", "htmltools")
-  with_private_seed({
-    rand_id <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
-    paste(format(rand_id, width=2), collapse = "")
-  })
+#' @describeIn countdown Set global default countdown timer styles using CSS.
+#'   Use this function to globally style all countdown timers in a document or
+#'   app. Individual timers can still be customized.
+#' @param .selector In `countdown_style()`: the CSS selector to which the styles
+#'   should be applied. The default is `:root` for global styles, but you can
+#'   also provide a custom class name to create styles for a particular class.
+#' @export
+countdown_style <- function(
+  font_size = "3rem",
+  margin = "0.6em",
+  padding = "10px 15px",
+  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
+  border_width = "0.1875 rem",
+  border_radius = "0.9rem",
+  line_height = "1",
+  color_border = "#ddd",
+  color_background = "inherit",
+  color_text = "inherit",
+  color_running_background = "#43AC6A",
+  color_running_border = prismatic::clr_darken(color_running_background, 0.1),
+  color_running_text = NULL,
+  color_finished_background = "#F04124",
+  color_finished_border = prismatic::clr_darken(color_finished_background, 0.1),
+  color_finished_text = NULL,
+  color_warning_background = "#E6C229",
+  color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
+  color_warning_text = NULL,
+  .selector = "root"
+) {
+  # get user args and defaults of current call
+  arg_names <- names(formals(countdown_style))
+  arg_names <- setdiff(arg_names, ".selector")
+  dots <- lapply(arg_names, get, envir = environment())
+  names(dots) <- arg_names
+
+  css_vars <- make_countdown_css_vars(.list = dots)
+  declarations <- css(!!!css_vars)
+
+  tags$style(HTML(sprintf(":%s {%s}", .selector, declarations)))
 }
 
-validate_html_id <- function(id) {
-  stop_because <- function(...) {
-    stop(paste0('"', id, '" is not a valid HTML ID: ', ...))
+make_countdown_css_vars <- function(..., .list = list()) {
+  dots <- compact(c(list(...), .list))
+
+  if (length(dots) == 0) {
+    return(NULL)
   }
-  if (!grepl("^[a-zA-Z]", id)) {
-    stop_because("Must start with a letter")
+
+  # Set text based on background color, if provided
+  # Users can set the text color to "" (empty string to disable this)
+  states <- c("running", "finished", "warning")
+  for (state in states) {
+    fg <- paste0("color_", state, "_text")
+    bg <- paste0("color_", state, "_background")
+
+    if (is.null(dots[[fg]]) && !is.null(dots[[bg]])) {
+      dots[[fg]] <- choose_dark_or_light(dots[[bg]])
+    }
   }
-  if (grepl("[^0-9a-zA-Z_:.-]", id)) {
-    invalid <- gsub("[0-9a-zA-Z_:.-]", "", id)
-    invalid <- strsplit(invalid, character(0))[[1]]
-    invalid <- unique(invalid)
-    invalid[invalid == " "] <- "' '"
-    invalid <- paste(invalid, collapse = ", ")
-    stop_because(
-      "Cannot contain the character",
-      if (nchar(invalid) > 1) "s: ",
-      invalid
-    )
-  }
-  id
+
+
+  names(dots) <- paste0(
+    "--countdown-",
+    gsub("_", "-", names(dots))
+  )
+  dots
 }

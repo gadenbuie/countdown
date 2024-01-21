@@ -100,7 +100,9 @@ library(countdown)
 countdown(
   minutes = 0, seconds = 42,
   top = "26%", right = "33%",
-  play_sound = TRUE,
+  play_sound = TRUE
+)
+countdown_style(
   color_border              = "#d33682", #solarized$magenta,
   color_text                = "#d33682", #solarized$magenta,
   color_running_background  = "#2aa198", #solarized$cyan,
@@ -160,7 +162,7 @@ countdown(minutes = 0, seconds = 42)
 .pull-left[
 If your slides support your teaching materials, on-screen timers are a great way to bracket group activities.
 
-Put your prompt on the screen and ask the group: 
+Put your prompt on the screen and ask the group:
 
 > _Take 4 minutes to discuss with your partner_
 
@@ -171,12 +173,12 @@ Then click on your timer to keep everyone on track!
 
 .pull-right[
 .center[
-I learned this from [&commat;StatGarrett](https://twitter.com/StatGarrett)'s  
+I learned this from [&commat;StatGarrett](https://twitter.com/StatGarrett)'s
 rad `rstudio::conf` workshop!
 
 <img src="img/teach-tidyverse-timer.png" style="border:3px solid #002b36;border-radius:10px;"/>
 
-Here's an example from his  
+Here's an example from his
 [Master the Tidyverse materials](https://github.com/rstudio-education/master-the-tidyverse/).
 ]
 ]
@@ -211,13 +213,13 @@ Settings of individual timers
 - .subtle[`margin`]
 - .subtle[`padding`]
 
-.footnote[Faded arguments inherit from first timer &#x27A1;]
+.footnote[Faded arguments inherit from global styles &#x27A1;]
 ]
 
 .pull-right[
-### The first-time timer
+### countdown_style()
 
-Sets defaults for all other timers
+Style all timers at once
 
 - `font_size`
 - `margin`
@@ -226,7 +228,7 @@ Sets defaults for all other timers
 - `border_width`
 - `border_radius`
 - `line_height`
-- `color` options for 
+- `color` options for
   - `_background`, `_border`, `_text`
   - and for `running`, `finished`, `warning`
 ]
@@ -247,10 +249,12 @@ library(countdown)
 solarized <- xaringanthemer:::solarized
 
 countdown(
-  minutes = 0, 
+  minutes = 0,
   seconds = 42,
-  # Fanfare when it's over
-  play_sound = TRUE,
+  play_sound = TRUE # Fanfare when it's over
+)
+
+countdown_style(
   # Set timer theme to match solarized colors
   color_border              = solarized$magenta,
   color_text                = solarized$magenta,
@@ -263,8 +267,8 @@ countdown(
 
 ---
 
-If you customize your timer's styles, **you only have to do it the first time**.  
-The theme of your first timer sets the theme for all timers.  
+If you customize your timer's styles,<br>
+**you only have to do it once with `style_timer()`**.
 
 --
 
@@ -276,7 +280,7 @@ After that, you only ever _need_ to specify `minutes` and `seconds`<sup>&#x2731;
 
 --
 
-The default timer looks pretty good, so try it first!
+The default timer looks pretty good in most cases, so try it first!
 
 ```r
 countdown(minutes = 0, seconds = 15)
@@ -292,7 +296,7 @@ layout: false
 # Moar timers!
 
 
-You can have as many timers as you want, even on the same screen.  
+You can have as many timers as you want, even on the same screen.
 --
 
 Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
@@ -315,7 +319,7 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
 
 .center.big[
-&#x1F446;&#x1F3FC;  
+&#x1F446;&#x1F3FC;
 &#x1F448;&#x1F3FC; Go ahead, click them! &#x1F449;&#x1F3FC;
 ]
 
@@ -342,7 +346,7 @@ the timer starts as soon as it's visible.
 You can also override the global timer `font_size`, `padding`, and `margin`.
 
 ```{r}
-countdown(minutes = 1, seconds = 30, 
+countdown(minutes = 1, seconds = 30,
           left = 0, right = 0,
           padding = "50px",
           margin = "5%",
@@ -366,7 +370,7 @@ Here's the code. I made the the `font_size` bigger and adjusted the `margin`
 around the timer so it takes up the whole screen.
 
 ```{r full-screen, eval=FALSE}
-countdown(minutes = 0, seconds = 90, 
+countdown(minutes = 0, seconds = 90,
           top = 0, bottom = 0,
           left = 0, right = 0,
           margin = "5%",
@@ -414,7 +418,7 @@ Modify the `background`, `text` and `border` colors of the warning state using t
 
 # Behind the scenes
 
-Behind the scenes, `countdown` is a little R wrapper around  
+Behind the scenes, `countdown` is a little R wrapper around
 a very small amount of HTML and CSS and bit more of Javascript.
 
 Each countdown timer element looks something like this:
@@ -439,10 +443,10 @@ Once the timer is activated, `<div class="countdown">` gets an added class:
 
 # Customized CSS
 
-Want to completely customize the CSS of each timer?  
+Want to completely customize the CSS of each timer?
 --
 
-No problem! 
+No problem!
 
 --
 
@@ -519,7 +523,7 @@ or use the version hosted online at [apps.garrickadenbuie.com/countdown](https:/
 
 * Set the `id` of a countdown timer to receive updates in the Shiny app
   (use `input$<id>`)
-  
+
 * Try the demo app to learn more: `countdown_shiny_example()`
 
 
