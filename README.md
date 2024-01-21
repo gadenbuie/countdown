@@ -43,7 +43,7 @@ or from GitHub
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("gadenbuie/countdown")
+remotes::install_github("gadenbuie/countdown", subdir = "R")
 ```
 
 ## Shiny App
