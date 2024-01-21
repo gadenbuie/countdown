@@ -15,11 +15,17 @@
 
 * Implemented emitting of native browser events alongside Shiny communication. (#37)
 
-* Added two new event types: `"finished"` when the timer completes its cycle and `"warning"` when it reaches the warning period. (#37)
-  
+* Added two new event types: `"finished"` when the timer completes its cycle
+  and `"warning"` when it reaches the warning period. (#37)
+
 * Set `class = "inline"` in `countdown()` to create an inline, rather than
   absolute-positioned, countdown timer. (#36)
-  
+
+## Bug fixes
+
+* Fixed an issue where custom URLs for `play_sound` were not used for the timer
+  end sound. (thanks @jannismain, #38)
+
 ## Changes
 
 * Switched to using `{bslib}` to stylize the demo countdown shiny app. (#37)
