@@ -10,7 +10,7 @@ ui <- fluidPage(
     HTML('<pre><code>countdown(id = "countdown")</code></pre>'),
     countdown(
       id = "countdown",
-      style = "position:relative;width: 5em;max-width: 100%;"
+      class = "inline"
     ),
     p(
       "The countdown timer reports the state of the timer whenever key actions",
