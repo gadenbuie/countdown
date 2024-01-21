@@ -78,7 +78,8 @@
 }
 
 /* ------ Controls ------ */
-.countdown:not(.running) .countdown-controls {
+.countdown:not(.running) .countdown-controls,
+.countdown.no-controls .countdown-controls {
   display: none;
 }
 
