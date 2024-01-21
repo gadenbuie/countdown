@@ -1,8 +1,8 @@
 .countdown {
-  --_running-color: var(--countdown-color-running-text);
+  --_running-color: var(--countdown-color-running-text, rgba(0, 0, 0, 0.8));
   --_running-background: var(--countdown-color-running-background, #43AC6A);
   --_running-border-color: var(--countdown-color-running-border, rgba(0, 0, 0, 0.1));
-  --_finished-color: var(--countdown-color-finished-text);
+  --_finished-color: var(--countdown-color-finished-text, rgba(0, 0, 0, 0.7));
   --_finished-background: var(--countdown-color-finished-background, #F04124);
   --_finished-border-color: var(--countdown-color-finished-border, rgba(0, 0, 0, 0.1));
 
@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: var(--countdown-color-background);
+  background: var(--countdown-color-background, inherit);
   font-size: var(--countdown-font-size, 3rem);
   line-height: var(--countdown-line-height, 1);
   border-color: var(--countdown-color-border, #ddd);
@@ -39,6 +39,7 @@
   background: none;
   font-size: 100%;
   padding: 0;
+  color: currentColor;
 }
 
 .countdown-digits {
@@ -69,7 +70,7 @@
 }
 
 .countdown.running.warning .countdown-digits {
-  color: var(--countdown-color-warning-text);
+  color: var(--countdown-color-warning-text, rgba(0, 0, 0, 0.7));
 }
 
 .countdown.running.blink-colon .countdown-digits.colon {
@@ -93,10 +94,10 @@
 }
 
 .countdown-controls>button {
+  position: relative;
   font-size: 1.5rem;
   width: 1rem;
   height: 1rem;
-  display: inline-block;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,6 +116,15 @@
   transform: translate(0, var(--_button-bump));
 }
 
+/* increase hit area of the +/- buttons */
+.countdown .countdown-controls > button::after {
+	content: "";
+	height: 200%;
+	width: 200%;
+	position: absolute;
+	border-radius: 50%;
+}
+
 .countdown .countdown-controls>button:last-child {
   color: var(--_running-color);
   background-color: var(--_running-background);
@@ -127,7 +137,7 @@
   border-color: var(--_finished-border-color);
 }
 
-.countdown.running:hover, countdown.running:focus-within {
+.countdown.running:hover, .countdown.running:focus-within {
   --_opacity: 1;
 }
 
