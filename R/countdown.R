@@ -311,11 +311,11 @@ countdown_fullscreen <- function(
 #' @describeIn countdown Set global default countdown timer styles using CSS.
 #'   Use this function to globally style all countdown timers in a document or
 #'   app. Individual timers can still be customized.
-#' @param .selector In `style_countdown()`: the CSS selector to which the styles
+#' @param .selector In `countdown_style()`: the CSS selector to which the styles
 #'   should be applied. The default is `:root` for global styles, but you can
 #'   also provide a custom class name to create styles for a particular class.
 #' @export
-style_countdown <- function(
+countdown_style <- function(
   font_size = "3rem",
   margin = "0.6em",
   padding = "10px 15px",
@@ -338,7 +338,7 @@ style_countdown <- function(
   .selector = "root"
 ) {
   # get user args and defaults of current call
-  arg_names <- names(formals(style_countdown))
+  arg_names <- names(formals(countdown_style))
   arg_names <- setdiff(arg_names, ".selector")
   dots <- lapply(arg_names, get, envir = environment())
   names(dots) <- arg_names

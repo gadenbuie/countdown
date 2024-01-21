@@ -102,7 +102,7 @@ countdown(
   top = "26%", right = "33%",
   play_sound = TRUE
 )
-style_countdown(
+countdown_style(
   color_border              = "#d33682", #solarized$magenta,
   color_text                = "#d33682", #solarized$magenta,
   color_running_background  = "#2aa198", #solarized$cyan,
@@ -217,7 +217,7 @@ Settings of individual timers
 ]
 
 .pull-right[
-### style_countdown()
+### countdown_style()
 
 Style all timers at once
 
@@ -254,7 +254,7 @@ countdown(
   play_sound = TRUE # Fanfare when it's over
 )
 
-style_countdown(
+countdown_style(
   # Set timer theme to match solarized colors
   color_border              = solarized$magenta,
   color_text                = solarized$magenta,

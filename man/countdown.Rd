@@ -3,7 +3,7 @@
 \name{countdown}
 \alias{countdown}
 \alias{countdown_fullscreen}
-\alias{style_countdown}
+\alias{countdown_style}
 \title{Countdown Timer}
 \usage{
 countdown(
@@ -60,7 +60,7 @@ countdown_fullscreen(
   left = 0
 )
 
-style_countdown(
+countdown_style(
   font_size = "3rem",
   margin = "0.6em",
   padding = "10px 15px",
@@ -201,7 +201,7 @@ warning timer border and text (\code{color_warning_border} and
 \item{color_warning_text}{Color of the timer text when the timer is below
 \code{warn_when} seconds.}
 
-\item{.selector}{In \code{style_countdown()}: the CSS selector to which the styles
+\item{.selector}{In \code{countdown_style()}: the CSS selector to which the styles
 should be applied. The default is \verb{:root} for global styles, but you can
 also provide a custom class name to create styles for a particular class.}
 }
@@ -221,7 +221,7 @@ HTML documents.
 \item \code{countdown_fullscreen()}: A full-screen timer that takes up the entire view port
 and uses the largest reasonable font size.
 
-\item \code{style_countdown()}: Set global default countdown timer styles using CSS.
+\item \code{countdown_style()}: Set global default countdown timer styles using CSS.
 Use this function to globally style all countdown timers in a document or
 app. Individual timers can still be customized.
 

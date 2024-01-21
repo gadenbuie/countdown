@@ -3,7 +3,7 @@
 ## Breaking changes
 
 * The first `countdown()` timer no longer provides global styles for all other
-  countdown timers. Instead, use `style_countdown()` with the same style-related
+  countdown timers. Instead, use `countdown_style()` with the same style-related
   arguments to set global styles for all countdown timers. (#36)
 
 ## New features and improvements
