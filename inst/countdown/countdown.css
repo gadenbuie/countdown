@@ -31,7 +31,7 @@
 
 .countdown.inline {
   position: relative;
-  width: 150px;
+  width: max-content;
   max-width: 100%;
 }
 
