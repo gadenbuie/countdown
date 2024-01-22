@@ -30,16 +30,6 @@ local function getOption(options, key, default)
   return tryOption(options, key) or default
 end
 
--- Utility function to perform whisker-like substitution
-local function substituteInFile(contents, substitutions)
-
-  -- Substitute values in the contents of the file
-  contents = contents:gsub("{{%s*(.-)%s*}}", substitutions)
-
-  -- Return the contents of the file with substitutions
-  return contents
-end
-
 -- Define the infix operator %:?% to handle styling if missing
 function safeStyle(x, y)
   if isVariablePopulated(x) then
@@ -49,38 +39,6 @@ function safeStyle(x, y)
   end
   return ""
 end
-
--- Obtain a template file
-local function readTemplateFile(template)
-  -- Create a hard coded path
-  local path = quarto.utils.resolve_path(template) 
-
-  -- Open the template file
-  local file = io.open(path, "r")
-
-  -- Check if null pointer before grabbing content
-  if not file then
-    quarto.log.error(
-      "\nWe were unable to read the template file `" .. template .. "` from the extension directory.\n\n" ..
-          "Double check that the extension is fully available by comparing the \n" ..
-          "`_extensions/gadenbuie/countdown` directory with the main repository:\n" ..
-          "https://github.com/gadenbuie/countdown/tree/main/quarto/_extensions/countdown\n\n" ..
-          "You may need to modify `.gitignore` to allow the extension files using:\n" ..
-          "!_extensions/*/*/*/*\n")
-
-    return nil
-  end
-
-  -- *a or *all reads the whole file
-  local content = file:read "*a" 
-
-  -- Close the file
-  file:close()
-
-  -- Return contents
-  return content
-end
-
 
 function countdown_style(meta)
 
@@ -174,7 +132,7 @@ local function countdown(args, kwargs, meta)
   -- Retrieve named time arguments and fallback on default values if missing
   local minutes = tonumber(getOption(kwargs, "minutes", 1))
   local seconds = tonumber(getOption(kwargs, "seconds", 0))
-  
+
   -- Calculate total time in seconds
   local time = minutes * 60 + seconds
 
