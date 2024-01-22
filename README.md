@@ -14,7 +14,7 @@ library(countdown)
 countdown(minutes = 0, seconds = 15)
 ```
 
-<img src="man/figures/countdown.gif" width="200px">
+<img src="r/man/figures/countdown.gif" width="200px">
 
 ### Want to know more?
 
@@ -43,7 +43,7 @@ or from GitHub
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("gadenbuie/countdown")
+remotes::install_github("gadenbuie/countdown", subdir = "r")
 ```
 
 ## Shiny App
