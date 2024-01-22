@@ -59,7 +59,7 @@ local function readTemplateFile(template)
   local file = io.open(path, "r")
 
   -- Check if null pointer before grabbing content
-  if not file then        
+  if not file then
     quarto.log.error(
       "\nWe were unable to read the template file `" .. template .. "` from the extension directory.\n\n" ..
           "Double check that the extension is fully available by comparing the \n" ..
@@ -81,94 +81,72 @@ local function readTemplateFile(template)
   return content
 end
 
-local function cssVariablesToTable(meta)
 
-  -- Local table to store the modified variables
-  local cssVariables = {}
+function countdown_style(meta)
 
-  -- Check if 'countdown' exists in meta, if not create an empty cell
-  local countdownMeta = meta['countdown'] or {}
+  -- Retrieve the countdown options from meta
+  local options = meta.countdown
 
-  -- Font size for the countdown digits
-  cssVariables.font_size = countdownMeta['font_size'] or '3rem'
-
-  -- Margin for the countdown element
-  cssVariables.margin = countdownMeta['margin'] or '0.6em'
-
-  -- Padding for the countdown element
-  cssVariables.padding = countdownMeta['padding'] or '10px 15px'
-
-  -- Box shadow for the countdown element (if provided)
-  cssVariables.box_shadow = countdownMeta['box_shadow'] or "0px 4px 10px 0px rgba(50, 50, 50, 0.4)"
-
-  -- Border width for the countdown element
-  cssVariables.border_width = countdownMeta['border_width'] or '3px'
-
-  -- Border radius for the countdown element
-  cssVariables.border_radius = countdownMeta['border_radius'] or '15px'
-
-  -- Line height for the countdown digits
-  cssVariables.line_height = countdownMeta['line_height'] or '1'
-
-  -- Border color for the countdown element
-  cssVariables.color_border = countdownMeta['color_border'] or '#ddd'
-
-  -- Background color for the countdown element
-  cssVariables.color_background = countdownMeta['color_background'] or 'inherit'
-
-  -- Text color for the countdown digits
-  cssVariables.color_text = countdownMeta['color_text'] or 'inherit'
-
-  -- Border color for the running countdown element
-  cssVariables.color_running_border = countdownMeta['color_running_border'] or '#43AC6A'
-
-  -- Background color for the running countdown element
-  cssVariables.color_running_background = countdownMeta['color_running_background'] or '#43AC6A'
-
-  -- Text color for the running countdown digits (if provided)
-  cssVariables.color_running_text = countdownMeta['color_running_text'] or nil
-
-  -- Border color for the finished countdown element
-  cssVariables.color_finished_border = countdownMeta['color_finished_border'] or '#F04124'
-
-  -- Background color for the finished countdown element
-  cssVariables.color_finished_background = countdownMeta['color_finished_background'] or '#F04124'
-
-  -- Text color for the finished countdown digits (if provided)
-  cssVariables.color_finished_text = countdownMeta['color_finished_text'] or nil
-
-  -- Border color for the countdown in a warning state
-  cssVariables.color_warning_border = countdownMeta['color_warning_border'] or '#E6C229'
-
-  -- Background color for the countdown in a warning state
-  cssVariables.color_warning_background = countdownMeta['color_warning_background'] or '#E6C229'
-
-  -- Text color for the countdown digits in a warning state (if provided)
-  cssVariables.color_warning_text = countdownMeta['color_warning_text'] or nil
-
-  return cssVariables
-end
-
-
--- Pass document-level data into the header to initialize the document.
-local function renderCountdownCSSAsset(meta)
-
-  -- Setup different WebR specific initialization variables
-  local substitutions = cssVariablesToTable(meta)
+  -- Check if countdown exist; if it doesn't, just exit.
+  if isVariableEmpty(options) then
+    return nil
+  end
   
-  -- Make sure we perform a copy
-  local cssInitializationTemplate = readTemplateFile("assets/countdown.css.in")
+  local defaults = {
+    -- Font size for the countdown element
+    font_size = "3rem",
+    -- Margin around the countdown element
+    margin = "0.6em",
+    -- Padding within the countdown element
+    padding = "10px 15px",
+    -- Shadow applied to the countdown element
+    box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
+    -- Border width of the countdown element
+    border_width = "0.1875rem",
+    -- Border radius of the countdown element
+    border_radius = "0.9rem",
+    -- Line height of the countdown element
+    line_height = "1",
+    -- Border color of the countdown element
+    color_border = "#ddd",
+    -- Background color of the countdown element
+    color_background = "inherit",
+    -- Text color of the countdown element
+    color_text = "inherit",
+    -- Background color when the countdown is running
+    color_running_background = "#43AC6A",
+    -- Border color when the countdown is running
+    color_running_border = "#43AC6A", -- Needs color_darken()
+    -- Text color when the countdown is running
+    color_running_text = 'inherit',
+    -- Background color when the countdown is finished
+    color_finished_background = "#F04124",
+    -- Border color when the countdown is finished
+    color_finished_border = "#F04124",  -- Needs color_darken()
+    -- Text color when the countdown is finished
+    color_finished_text = 'inherit',
+    -- Background color when the countdown has a warning
+    color_warning_background = "#E6C229",
+    -- Border color when the countdown has a warning
+    color_warning_border = "#E6C229", -- Needs color_darken()
+    -- Text color when the countdown has a warning
+    color_warning_text = 'inherit',
+    -- Selector for the countdown element
+    selector = "root"
+  }
+  
 
-  -- Make the necessary substitutions
-  local configuredCSS = substituteInFile(cssInitializationTemplate, substitutions)
+  -- Pass defaults into make_countdown_css
+  for key, default_value in pairs(defaults) do
+    options[key] = getOption(options, key, default_value)
+  end
+
 
   -- Embed into the document to avoid rendering to disk and, then, embedding a URL.
-  quarto.doc.include_text('in-header', "<style>" .. configuredCSS .. "</style>")	
+  -- quarto.doc.include_text('in-header', "<style>" .. configuredCSS .. "</style>")	
   -- Note: This feature or using `add_supporting` requires Quarto v1.4 or above
 
-  return true
 end
-
 
 -- Handle embedding/creation of assets once
 local function ensureHTMLDependency(meta)
@@ -178,7 +156,14 @@ local function ensureHTMLDependency(meta)
     scripts = { "assets/countdown.js"}
   })
 
-  renderCountdownCSSAsset(meta)
+  quarto.doc.addHtmlDependency({
+    name = "countdowncss",
+    version = countdownEmbeddedVersion,
+    scripts = { "assets/countdown.css"}
+  })
+
+  -- Embed custom settings into the document based on document-level settings
+  countdown_style(meta)
 
   -- Disable re-exporting if no-longer needed
   needsToExportDependencies = false
@@ -208,6 +193,8 @@ local function countdown(args, kwargs, meta)
   if needsToExportDependencies then
     ensureHTMLDependency(meta)
   end
+
+
 
   -- Determine if a warning should be given
   local warn_when = tonumber(pandoc.utils.stringify(kwargs["data-warn-when"])) or 0
