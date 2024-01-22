@@ -1,0 +1,11 @@
+^inst/countdown-fullscreen/www/\.empty$
+^inst/countdown-fullscreen/www/tmp/\.empty$
+^LICENSE\.md$
+^docs$
+^countdown\.Rproj$
+^\.Rproj\.user$
+^\.Rhistory$
+^_dev$
+^\.github$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
