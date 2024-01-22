@@ -14,7 +14,7 @@ library(countdown)
 countdown(minutes = 0, seconds = 15)
 ```
 
-<img src="man/figures/countdown.gif" width="200px">
+<img src="R/man/figures/countdown.gif" width="200px">
 
 ### Want to know more?
 
