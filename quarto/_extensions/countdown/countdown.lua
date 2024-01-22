@@ -14,6 +14,22 @@ local function isVariablePopulated(s)
   return not isVariableEmpty(s)
 end
 
+-- Check whether an argument is present in kwargs
+-- If it is, return the value
+local function tryOption(options, key)
+  option_value = pandoc.utils.stringify(options[key])
+  if isVariablePopulated(option_value) then
+    return option_value
+  else
+    return nil
+  end
+end
+
+-- Retrieve the option value or use the default value
+local function getOption(options, key, default)
+  return tryOption(options, key) or default
+end
+
 -- Utility function to perform whisker-like substitution
 local function substituteInFile(contents, substitutions)
 
@@ -168,10 +184,6 @@ local function ensureHTMLDependency(meta)
   needsToExportDependencies = false
 end
 
-local function getOption(values, key, default)
-  return pandoc.utils.stringify(values[key]) or default
-end
-
 local function countdown(args, kwargs, meta)
   
   -- Retrieve named time arguments and fallback on default values if missing
@@ -199,9 +211,7 @@ local function countdown(args, kwargs, meta)
 
   -- Determine if a warning should be given
   local warn_when = tonumber(pandoc.utils.stringify(kwargs["data-warn-when"])) or 0
-  
-  quarto.log.output(kwargs["data-warn-when"])
-  
+    
   -- Retrieve the ID given by the user or attempt to create a unique ID by timestamp (possible switch over to running counter)
   local id = pandoc.utils.stringify(kwargs["id"]) or ("timer_" .. pandoc.utils.sha1(tostring(os.time())))
 
