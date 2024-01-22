@@ -172,9 +172,9 @@ end
 local function countdown(args, kwargs, meta)
   
   -- Retrieve named time arguments and fallback on default values if missing
-  local minutes = tonumber(pandoc.utils.stringify(kwargs["minutes"])) or 1
-  local seconds = tonumber(pandoc.utils.stringify(kwargs["seconds"])) or 0
-
+  local minutes = tonumber(getOption(kwargs, "minutes", 1))
+  local seconds = tonumber(getOption(kwargs, "seconds", 0))
+  
   -- Calculate total time in seconds
   local time = minutes * 60 + seconds
 
@@ -194,32 +194,29 @@ local function countdown(args, kwargs, meta)
     ensureHTMLDependency(meta)
   end
 
-
-
   -- Determine if a warning should be given
-  local warn_when = tonumber(pandoc.utils.stringify(kwargs["data-warn-when"])) or 0
-    
-  -- Retrieve the ID given by the user or attempt to create a unique ID by timestamp (possible switch over to running counter)
-  local id = pandoc.utils.stringify(kwargs["id"]) or ("timer_" .. pandoc.utils.sha1(tostring(os.time())))
+  local warn_when = tonumber(getOption(kwargs, "data-warn-when", 0))
+
+  -- Retrieve the ID given by the user or attempt to create a unique ID by timestamp
+  local id = getOption(kwargs, "id", "timer_" .. pandoc.utils.sha1(tostring(os.time())))
 
   -- Construct the 'class' attribute by appending "countdown" to the existing class (if any)
-  local class = "countdown " .. (pandoc.utils.stringify(kwargs["class"]) or "")
+  local class = "countdown " .. getOption(kwargs, "class", "")
 
   -- Retrieve and convert "data-update-every" attribute to a number, default to 1 if not present or invalid
-  local update_every = tonumber(pandoc.utils.stringify(kwargs["data-update-every"])) or 1
-  
+  local update_every = tonumber(getOption(kwargs, "data-update-every", 1))
+
   -- Retrieve "data-play-sound" attribute as a string, default to "false" if not present
-  local play_sound = pandoc.utils.stringify(kwargs["data-play-sound"]) or "false"
-  
+  local play_sound = getOption(kwargs, "data-play-sound", "false")
+
   -- Retrieve "data-blink-colon" attribute and set 'blink_colon' to true if it equals "true", otherwise false
-  local blink_colon = pandoc.utils.stringify(kwargs["data-blink-colon"]) or "false"
+  local blink_colon = getOption(kwargs, "data-blink-colon", "false")
 
   -- Retrieve "data-start-immediately" attribute and set 'start_immediately' to true if it equals "true", otherwise false
-  local start_immediately = pandoc.utils.stringify(kwargs["data-start-immediately"]) or "true"
+  local start_immediately = getOption(kwargs, "data-start-immediately", "true")
+
 
   -- Construct the style attribute based on element attributes
-  local style = pandoc.utils.stringify(kwargs["style"]) or ""
-
   -- Concatenate style properties with their values using %:?% from kwargs
   local styleKeys = {"top", "right", "bottom", "left", "margin", "padding", "font_size", "line_height"}
   local style = ""
