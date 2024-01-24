@@ -43,13 +43,30 @@ local function tryPlaySound(play_sound)
 end
 
 -- Define the infix operator %:?% to handle styling if missing
-local function safeStyle(x, y)
-  if isVariablePopulated(x) then
-    -- quarto.log.output("Hi!")
-    -- quarto.log.output(x)
-    return y .. ":" .. pandoc.utils.stringify(x) .. ";"
+local function safeStyle(options, key)
+  -- Attempt to retrieve the style option
+  local style_option = tryOption(options, key)
+  -- If it is present, format it as a CSS value
+  if isVariablePopulated(style_option) then
+    return key .. ":" .. pandoc.utils.stringify(style_option) .. ";"
   end
+  -- Otherwise, return an empty string that when concatenated does nothing.
   return ""
+end
+
+-- Construct the inline CSS style attributes
+local function cssInline(options) 
+  -- Concatenate style properties with their values using %:?% from kwargs
+  local styleKeys = {"top", "right", "bottom", "left", "margin", "padding", "font_size", "line_height"}
+  local styleTable = {}
+  
+  -- Build the style
+  for i, key in ipairs(styleKeys) do
+    styleTable[i] = safeStyle(options, key)
+  end
+
+  -- Concatenate entries together
+  return table.concat(styleTable)
 end
 
 local function countdown_style(meta)
@@ -184,14 +201,11 @@ local function countdown(args, kwargs, meta)
   -- Retrieve "play_sound" attribute as a string, default to "false" if not present
   local play_sound = tryPlaySound(getOption(kwargs, "play_sound", "false"))
 
-  -- Construct the style attribute based on element attributes
-  -- Concatenate style properties with their values using %:?% from kwargs
-  local styleKeys = {"top", "right", "bottom", "left", "margin", "padding", "font_size", "line_height"}
-  local style = ""
-  
-  for _, key in ipairs(styleKeys) do
-      style = style .. safeStyle(kwargs[key], key)
-  end
+  -- Retrieve positional outcome and handle custom value substitution to ensure appropriate positioning
+  kwargs["bottom"] = tryOption(kwargs, "bottom") or getOption(kwargs, "top", "0")
+  kwargs["right"]  = tryOption(kwargs, "right") or getOption(kwargs, "left", "0")
+
+  local style = cssInline(kwargs) 
 
   local rawHtml = [[<div id="]] .. id .. [[" class="]] .. class .. [[" 
       data-warn-when="]] .. warn_when .. [["
