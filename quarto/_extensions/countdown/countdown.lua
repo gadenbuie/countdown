@@ -74,19 +74,19 @@ local function countdown_style(meta)
     -- Background color when the countdown is running
     color_running_background = "#43AC6A",
     -- Border color when the countdown is running
-    color_running_border = "#43AC6A", -- Needs color_darken()
+    color_running_border = "#2A9B59FF", -- Needs color_darken()
     -- Text color when the countdown is running
     color_running_text = 'inherit',
     -- Background color when the countdown is finished
     color_finished_background = "#F04124",
     -- Border color when the countdown is finished
-    color_finished_border = "#F04124",  -- Needs color_darken()
+    color_finished_border = "#DE3000FF",  -- Needs color_darken()
     -- Text color when the countdown is finished
     color_finished_text = 'inherit',
     -- Background color when the countdown has a warning
     color_warning_background = "#E6C229",
     -- Border color when the countdown has a warning
-    color_warning_border = "#E6C229", -- Needs color_darken()
+    color_warning_border = "#CEAC04FF", -- Needs color_darken()
     -- Text color when the countdown has a warning
     color_warning_text = 'inherit',
     -- Selector for the countdown element
@@ -164,7 +164,7 @@ local function countdown(args, kwargs, meta)
   local update_every = tonumber(getOption(kwargs, "update_every", 1))
 
   -- Retrieve "blink_colon" attribute and set 'blink_colon' to true if it equals "true", otherwise false
-  local blink_colon = getOption(kwargs, "blink_colon", update_every > 1)
+  local blink_colon = getOption(kwargs, "blink_colon", update_every > 1) == "true"
 
   -- Retrieve "start_immediately" attribute and set 'start_immediately' to true if it equals "true", otherwise false
   local start_immediately = getOption(kwargs, "start_immediately", "false") == "true"
