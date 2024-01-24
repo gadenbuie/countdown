@@ -30,6 +30,18 @@ local function getOption(options, key, default)
   return tryOption(options, key) or default
 end
 
+-- Check whether the play_sound parameter contains `"true"`/`"false"` or
+-- if it is a custom path
+local function tryPlaySound(play_sound)
+  if play_sound == "true" then
+      return "true"
+  elseif type(play_sound) == "string" and string.len(play_sound) > 0 then
+      return play_sound
+  else
+      return "false"
+  end
+end
+
 -- Define the infix operator %:?% to handle styling if missing
 local function safeStyle(x, y)
   if isVariablePopulated(x) then
@@ -170,7 +182,7 @@ local function countdown(args, kwargs, meta)
   local start_immediately = getOption(kwargs, "start_immediately", "false") == "true"
 
   -- Retrieve "play_sound" attribute as a string, default to "false" if not present
-  local play_sound = getOption(kwargs, "play_sound", "false")
+  local play_sound = tryPlaySound(getOption(kwargs, "play_sound", "false"))
 
   -- Construct the style attribute based on element attributes
   -- Concatenate style properties with their values using %:?% from kwargs
