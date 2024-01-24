@@ -31,7 +31,7 @@ local function getOption(options, key, default)
 end
 
 -- Define the infix operator %:?% to handle styling if missing
-function safeStyle(x, y)
+local function safeStyle(x, y)
   if isVariablePopulated(x) then
     -- quarto.log.output("Hi!")
     -- quarto.log.output(x)
@@ -40,7 +40,7 @@ function safeStyle(x, y)
   return ""
 end
 
-function countdown_style(meta)
+local function countdown_style(meta)
 
   -- Retrieve the countdown options from meta
   local options = meta.countdown
@@ -108,16 +108,14 @@ end
 
 -- Handle embedding/creation of assets once
 local function ensureHTMLDependency(meta)
-  quarto.doc.addHtmlDependency({
-    name = "countdownjs",
-    version = countdownEmbeddedVersion,
-    scripts = { "assets/countdown.js"}
-  })
 
+  -- Register _all_ assets together.
   quarto.doc.addHtmlDependency({
-    name = "countdowncss",
+    name = "countdown",
     version = countdownEmbeddedVersion,
-    scripts = { "assets/countdown.css"}
+    scripts = { "assets/countdown.js"},
+    stylesheets = { "assets/countdown.css"},
+    resources = {"assets/smb_stage_clear.mp3"}
   })
 
   -- Embed custom settings into the document based on document-level settings
@@ -152,27 +150,27 @@ local function countdown(args, kwargs, meta)
     ensureHTMLDependency(meta)
   end
 
-  -- Determine if a warning should be given
-  local warn_when = tonumber(getOption(kwargs, "data-warn-when", 0))
-
   -- Retrieve the ID given by the user or attempt to create a unique ID by timestamp
   local id = getOption(kwargs, "id", "timer_" .. pandoc.utils.sha1(tostring(os.time())))
 
   -- Construct the 'class' attribute by appending "countdown" to the existing class (if any)
-  local class = "countdown " .. getOption(kwargs, "class", "")
+  local class = getOption(kwargs, "class", "")
+  class = class ~= "" and "countdown " .. class or "countdown"
 
-  -- Retrieve and convert "data-update-every" attribute to a number, default to 1 if not present or invalid
-  local update_every = tonumber(getOption(kwargs, "data-update-every", 1))
+  -- Determine if a warning should be given
+  local warn_when = tonumber(getOption(kwargs, "warn_when", 0))
+    
+  -- Retrieve and convert "update_every" attribute to a number, default to 1 if not present or invalid
+  local update_every = tonumber(getOption(kwargs, "update_every", 1))
 
-  -- Retrieve "data-play-sound" attribute as a string, default to "false" if not present
-  local play_sound = getOption(kwargs, "data-play-sound", "false")
+  -- Retrieve "blink_colon" attribute and set 'blink_colon' to true if it equals "true", otherwise false
+  local blink_colon = getOption(kwargs, "blink_colon", update_every > 1)
 
-  -- Retrieve "data-blink-colon" attribute and set 'blink_colon' to true if it equals "true", otherwise false
-  local blink_colon = getOption(kwargs, "data-blink-colon", "false")
+  -- Retrieve "start_immediately" attribute and set 'start_immediately' to true if it equals "true", otherwise false
+  local start_immediately = getOption(kwargs, "start_immediately", "false") == "true"
 
-  -- Retrieve "data-start-immediately" attribute and set 'start_immediately' to true if it equals "true", otherwise false
-  local start_immediately = getOption(kwargs, "data-start-immediately", "true")
-
+  -- Retrieve "play_sound" attribute as a string, default to "false" if not present
+  local play_sound = getOption(kwargs, "play_sound", "false")
 
   -- Construct the style attribute based on element attributes
   -- Concatenate style properties with their values using %:?% from kwargs
@@ -204,6 +202,9 @@ string.format("%02d", seconds) ..
 [[</span></code>
 </div>
   ]]
+
+  quarto.log.output(rawHtml)
+
   -- Return a new Div element with modified attributes
   return  pandoc.RawBlock("html", rawHtml)
 end
