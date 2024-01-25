@@ -29,11 +29,15 @@
 * Fixed an issue where custom URLs for `play_sound` were not used for the timer
   end sound. (thanks @jannismain, #38)
   
-* Fixed `countdown_fullscreen()` not passing along `class` and `start_immediately` parameters. (#45)
+* Fixed `countdown_fullscreen()` not passing along `class` and `start_immediately` parameters. (#43)
 
 ## Changes
 
 * Switched to using `{bslib}` to stylize the demo countdown shiny app. (#37)
+
+* Clarified `play_sound` documentation to emphasize custom sounds require the
+  `countdown` clock to be embedded in a website, presentation, or Shiny app to
+  be played due to JavaScript limitations on local files. (#44)
 
 # countdown 0.4.0
 

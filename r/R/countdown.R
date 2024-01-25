@@ -70,6 +70,10 @@
 #'   "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 #'   Alternatively, `play_sound` can be a relative or absolute URL to a sound
 #'   file, such as an `mp3`, `wav`, `ogg`, or other audio file type.
+#'   Custom sounds are only played when `countdown` is used on a webpage or
+#'   Shiny app; however, they do not work in an interactive context (creating
+#'   a `countdown` in console) due to JavaScript limitations in accessing
+#'   local files.
 #' @param font_size The font size of the time displayed in the timer.
 #' @param margin The margin applied to the timer container, default is
 #'   `"0.5em"`.
