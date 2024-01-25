@@ -28,6 +28,8 @@
 
 * Fixed an issue where custom URLs for `play_sound` were not used for the timer
   end sound. (thanks @jannismain, #38)
+  
+* Fixed `countdown_fullscreen()` not passing along `class` and `start_immediately` parameters. (#45)
 
 ## Changes
 
