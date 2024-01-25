@@ -119,7 +119,11 @@ absolutely, as in the default), set
 \item{play_sound}{Play a sound at the end of the timer? If \code{TRUE}, plays the
 "stage complete" sound courtesy of \link[beepr:beepr-package]{beepr}.
 Alternatively, \code{play_sound} can be a relative or absolute URL to a sound
-file, such as an \code{mp3}, \code{wav}, \code{ogg}, or other audio file type.}
+file, such as an \code{mp3}, \code{wav}, \code{ogg}, or other audio file type.
+Custom sounds are only played when \code{countdown} is used on a webpage or
+Shiny app; however, they do not work in an interactive context (creating
+a \code{countdown} in console) due to JavaScript limitations in accessing
+local files.}
 
 \item{bottom}{Position of the timer within its container. By default the
 timer is bottom-aligned using \code{bottom = "0"}. If \code{top} is set, \code{bottom}
