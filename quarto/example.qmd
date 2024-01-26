@@ -14,8 +14,24 @@ Please make sure you are on Quarto version 1.4.545 or greater.
 
 {{< countdown >}}
 
+# Less time
 
-# More time
+{{< countdown minutes=0 seconds=20 >}}
 
-{{< countdown minutes=2 seconds=20 >}}
+# Non-standard position
 
+Some content
+
+{{< countdown minutes=2 top=0 right=0 >}}
+
+# Add class
+
+{{< countdown minutes=0 seconds=5 class="testing" >}}
+
+# Sound
+
+{{< countdown minutes=0 seconds=1 play_sound=true >}}
+
+# Custom Sound
+
+{{< countdown minutes=0 seconds=1 play_sound='test-beep.mp3' >}}
