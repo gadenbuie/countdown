@@ -4,6 +4,67 @@ local countdownEmbeddedVersion = "0.0.1"
 -- Only embed resources once if there are multiple timers present 
 local needsToExportDependencies = true
 
+-- List CSS default options
+local default_style = {
+  -- Font size for the countdown element
+  font_size = "3rem",
+  -- Margin around the countdown element
+  margin = "0.6em",
+  -- Padding within the countdown element
+  padding = "10px 15px",
+  -- Shadow applied to the countdown element
+  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
+  -- Border width of the countdown element
+  border_width = "0.1875rem",
+  -- Border radius of the countdown element
+  border_radius = "0.9rem",
+  -- Line height of the countdown element
+  line_height = "1",
+  -- Border color of the countdown element
+  color_border = "#ddd",
+  -- Background color of the countdown element
+  color_background = "inherit",
+  -- Text color of the countdown element
+  color_text = "inherit",
+  -- Background color when the countdown is running
+  color_running_background = "#43AC6A",
+  -- Border color when the countdown is running
+  color_running_border = "#2A9B59FF", -- Needs color_darken()
+  -- Text color when the countdown is running
+  color_running_text = 'inherit',
+  -- Background color when the countdown is finished
+  color_finished_background = "#F04124",
+  -- Border color when the countdown is finished
+  color_finished_border = "#DE3000FF",  -- Needs color_darken()
+  -- Text color when the countdown is finished
+  color_finished_text = 'inherit',
+  -- Background color when the countdown has a warning
+  color_warning_background = "#E6C229",
+  -- Border color when the countdown has a warning
+  color_warning_border = "#CEAC04FF", -- Needs color_darken()
+  -- Text color when the countdown has a warning
+  color_warning_text = 'inherit',
+  -- Selector for the countdown element
+  selector = "root"
+}
+
+-- Extract names from default style table
+local function tableKeyNames(namedTable)
+
+  -- Table to store keys
+  local keysTable = {}
+
+  -- Iterate over keys and store them
+  for key, _ in pairs(namedTable) do
+    table.insert(keysTable, key)
+  end
+
+  return keysTable
+end
+
+-- Store names for default styles
+local default_style_names = tableKeyNames(default_style)
+
 -- Check if variable missing or an empty string
 local function isVariableEmpty(s)
   return s == nil or s == ''
@@ -48,7 +109,7 @@ local function safeStyle(options, key)
   local style_option = tryOption(options, key)
   -- If it is present, format it as a CSS value
   if isVariablePopulated(style_option) then
-    return key .. ":" .. pandoc.utils.stringify(style_option) .. ";"
+    return table.concat({key, ":" , pandoc.utils.stringify(style_option), ";"})
   end
   -- Otherwise, return an empty string that when concatenated does nothing.
   return ""
@@ -78,56 +139,13 @@ local function countdown_style(meta)
   if isVariableEmpty(options) then
     return nil
   end
-  
-  local defaults = {
-    -- Font size for the countdown element
-    font_size = "3rem",
-    -- Margin around the countdown element
-    margin = "0.6em",
-    -- Padding within the countdown element
-    padding = "10px 15px",
-    -- Shadow applied to the countdown element
-    box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-    -- Border width of the countdown element
-    border_width = "0.1875rem",
-    -- Border radius of the countdown element
-    border_radius = "0.9rem",
-    -- Line height of the countdown element
-    line_height = "1",
-    -- Border color of the countdown element
-    color_border = "#ddd",
-    -- Background color of the countdown element
-    color_background = "inherit",
-    -- Text color of the countdown element
-    color_text = "inherit",
-    -- Background color when the countdown is running
-    color_running_background = "#43AC6A",
-    -- Border color when the countdown is running
-    color_running_border = "#2A9B59FF", -- Needs color_darken()
-    -- Text color when the countdown is running
-    color_running_text = 'inherit',
-    -- Background color when the countdown is finished
-    color_finished_background = "#F04124",
-    -- Border color when the countdown is finished
-    color_finished_border = "#DE3000FF",  -- Needs color_darken()
-    -- Text color when the countdown is finished
-    color_finished_text = 'inherit',
-    -- Background color when the countdown has a warning
-    color_warning_background = "#E6C229",
-    -- Border color when the countdown has a warning
-    color_warning_border = "#CEAC04FF", -- Needs color_darken()
-    -- Text color when the countdown has a warning
-    color_warning_text = 'inherit',
-    -- Selector for the countdown element
-    selector = "root"
-  }
-  
 
   -- Pass defaults into make_countdown_css
-  for key, default_value in pairs(defaults) do
+  for key, default_value in pairs(default_style) do
     options[key] = getOption(options, key, default_value)
   end
 
+  quarto.log.output(default_style_names)
 
   -- Embed into the document to avoid rendering to disk and, then, embedding a URL.
   -- quarto.doc.include_text('in-header', "<style>" .. configuredCSS .. "</style>")	
@@ -207,27 +225,27 @@ local function countdown(args, kwargs, meta)
 
   local style = cssInline(kwargs) 
 
-  local rawHtml = [[<div id="]] .. id .. [[" class="]] .. class .. [[" 
-      data-warn-when="]] .. warn_when .. [["
-      data-update-every="]] .. update_every .. [["
-      data-play-sound="]] .. tostring(play_sound) .. [["
-      data-blink-colon="]] .. tostring(blink_colon) .. [["
-      data-start-immediately="]] .. tostring(start_immediately) .. [["
-      tabindex="0"
-      style="]] .. style .. [[">
-<div class="countdown-controls">
-<button class="countdown-bump-down">−</button>
-<button class="countdown-bump-up">+</button>
-</div>
-<code class="countdown-time">]] .. 
-[[<span class="countdown-digits minutes">]] .. 
-string.format("%02d", minutes) .. 
-[[</span><span class="countdown-digits colon">:</span>]] ..
-[[<span class="countdown-digits seconds">]] .. 
-string.format("%02d", seconds) .. 
-[[</span></code>
-</div>
-  ]]
+  local rawHtml = table.concat({
+    '<div ',
+    '\n  id="', id, '"',
+    '\n  class="', class, '"',
+    '\n  data-warn-when="', warn_when,'"',
+    '\n  data-update-every="', update_every,'"',
+    '\n  data-play-sound="', tostring(play_sound),'"',
+    '\n  data-blink-colon="', tostring(blink_colon),'"',
+    '\n  data-start-immediately="', tostring(start_immediately),'"',
+    '\n  tabindex="0"',
+    '\n  style="', style ,'">',
+    '\n  <div class="countdown-controls">',
+    '\n    <button class="countdown-bump-down">−</button>',
+    '\n    <button class="countdown-bump-up">+</button>',
+    '\n </div>',
+    '\n <code class="countdown-time">',
+    '<span class="countdown-digits minutes">', string.format("%02d", minutes),
+    '</span><span class="countdown-digits colon">:</span>',
+    '<span class="countdown-digits seconds">', string.format("%02d", seconds), '</span></code>',
+    '\n </div>'
+  })
 
   quarto.log.output(rawHtml)
 
