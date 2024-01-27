@@ -75,10 +75,26 @@ local function isVariablePopulated(s)
   return not isVariableEmpty(s)
 end
 
+-- Check if a table is empty 
+local function isTableEmpty(tbl)
+  return next(tbl) == nil
+end
+
+-- Check if a table is populated
+local function isTablePopulated(tbl)
+  return not isTableEmpty(tbl)
+end
+
 -- Check whether an argument is present in kwargs
 -- If it is, return the value
 local function tryOption(options, key)
-  option_value = pandoc.utils.stringify(options[key])
+  
+  -- Protect against an empty options
+  if not (options and options[key]) then
+    return nil
+  end
+
+  local option_value = pandoc.utils.stringify(options[key])
   if isVariablePopulated(option_value) then
     return option_value
   else
@@ -94,13 +110,30 @@ end
 -- Check whether the play_sound parameter contains `"true"`/`"false"` or
 -- if it is a custom path
 local function tryPlaySound(play_sound)
-  if play_sound == "true" then
-      return "true"
+  if play_sound == "false" or play_sound == "true" then
+      return play_sound
   elseif type(play_sound) == "string" and string.len(play_sound) > 0 then
       return play_sound
   else
       return "false"
   end
+end
+
+-- Function that deletes entries that contain 'nil'
+function removeEmptyEntries(tableWithNilEntries)
+
+  -- Define a table to keep full entries
+  local cleanedTable = {}
+
+  -- Iterate across the table, retain full entries
+  for key, value in pairs(tableWithNilEntries) do
+      if isVariablePopulated(value) then
+          cleanedTable[key] = value
+      end
+  end
+
+  -- Return cleaned tables
+  return cleanedTable
 end
 
 -- Define the infix operator %:?% to handle styling if missing
@@ -130,25 +163,49 @@ local function cssInline(options)
   return table.concat(styleTable)
 end
 
-local function countdown_style(meta)
+local function structureCountdownCSSVars(options)
+  local dots = {}
 
-  -- Retrieve the countdown options from meta
-  local options = meta.countdown
+  for key, value in pairs(options) do
+      table.insert(dots, string.format("--countdown-%s: %s;", key:gsub("_", "-"), value))
+  end
 
-  -- Check if countdown exist; if it doesn't, just exit.
-  if isVariableEmpty(options) then
+  return dots
+end
+
+local function countdown_style(options, defaults)
+
+  -- Check if options have values; if it is empty, just exit.
+  if isVariableEmpty(options) or isTableEmpty(options) then
     return nil
   end
 
+  -- Determine the selector value
+  local possibleSelector = getOption(options, "selector", defaults.selector)
+
+  -- Begin CSS Variables
+  local cssTable = {}
+
   -- Pass defaults into make_countdown_css
-  for key, default_value in pairs(default_style) do
-    options[key] = getOption(options, key, default_value)
+  for key, defaultValue in pairs(defaults) do
+    -- Assign into the CSS table if key is present
+    cssTable[key] = getOption(options, key, defaultValue)
   end
 
-  quarto.log.output(default_style_names)
+  -- Delete the selector key (after the fact)
+  cssTable["selector"] = nil
+
+  -- Restructure options to ("--countdown-<key>: <value>;)
+  local structuredCSS = structureCountdownCSSVars(cssTable)
 
   -- Embed into the document to avoid rendering to disk and, then, embedding a URL.
-  -- quarto.doc.include_text('in-header', "<style>" .. configuredCSS .. "</style>")	
+  quarto.doc.include_text('in-header', 
+    string.format(
+      "<!-- Countdown Global CSS -->\n<style text='text/css'>:%s {%s}</style>", 
+      possibleSelector,
+      table.concat(structuredCSS)
+    )
+  )
   -- Note: This feature or using `add_supporting` requires Quarto v1.4 or above
 
 end
@@ -166,7 +223,7 @@ local function ensureHTMLDependency(meta)
   })
 
   -- Embed custom settings into the document based on document-level settings
-  countdown_style(meta)
+  countdown_style(meta.countdown, default_style)
 
   -- Disable re-exporting if no-longer needed
   needsToExportDependencies = false
