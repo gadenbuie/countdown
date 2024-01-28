@@ -13,7 +13,7 @@ Please make sure you are on Quarto version 1.4.545 or greater.
 :::
 
 
-# Default timer
+## Default timer
 
 {{< countdown >}}
 

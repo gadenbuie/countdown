@@ -229,11 +229,32 @@ local function ensureHTMLDependency(meta)
   needsToExportDependencies = false
 end
 
+local function parseTimeString(args)
+  if #args == 0 or type(args[1]) ~= "string" then
+    return nil
+  end
+
+  local minutes, seconds = args[1]:match("(%d+):(%d+)")
+  if minutes == nil or seconds == nil then
+    quarto.log.error("The quartodown time string must be in the format 'MM:SS'.")
+  end
+
+  return { minutes = tonumber(minutes), seconds = tonumber(seconds) }
+end
+
 local function countdown(args, kwargs, meta)
-  
+  local minutes, seconds
+
   -- Retrieve named time arguments and fallback on default values if missing
-  local minutes = tonumber(getOption(kwargs, "minutes", 1))
-  local seconds = tonumber(getOption(kwargs, "seconds", 0))
+  arg_time = parseTimeString(args)
+  if arg_time ~= nil then
+    -- TODO: Warn if minutes/seconds were kwargs
+    minutes = arg_time.minutes
+    seconds = arg_time.seconds
+  else
+    minutes = tonumber(getOption(kwargs, "minutes", 1))
+    seconds = tonumber(getOption(kwargs, "seconds", 0))
+  end
 
   -- Calculate total time in seconds
   local time = minutes * 60 + seconds

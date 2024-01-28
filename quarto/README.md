@@ -48,7 +48,7 @@ The functionality options are:
 | ------------------- | ------------------------------- | ------------------------------------------------------------------------- |
 | `minutes`           | `1`                             | Number of minutes with a total cap of 100 minutes                         |
 | `seconds`           | `0`                             | Number of seconds                                                         |
-| `id`                | SHA-1 hash of current timestamp | ID attribute of the HTML element.                                         |
+| `id`                | A generated, unique ID          | ID attribute of the HTML element.                                         |
 | `class`             | "countdown"                     | Class attribute of the HTML element.                                      |
 | `warn_when`         | `0`                             | Number of seconds before the countdown displays a warning.                |
 | `update_every`      | `1`                             | Frequency at which the countdown should be updated, in seconds.           |
