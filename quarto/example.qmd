@@ -6,7 +6,7 @@ countdown:
 format: revealjs
 ---
 
-# A note before we begin...
+## A note before we begin...
 
 :::{.callout-important}
 Please make sure you are on Quarto version 1.4.545 or greater.
@@ -17,24 +17,24 @@ Please make sure you are on Quarto version 1.4.545 or greater.
 
 {{< countdown >}}
 
-# Less time
+## Less time
 
 {{< countdown minutes=0 seconds=20 >}}
 
-# Non-standard position
+## Non-standard position
 
 Some content
 
 {{< countdown minutes=2 top=0 right=0 >}}
 
-# Add class
+## Add class
 
 {{< countdown minutes=0 seconds=5 class="testing" >}}
 
-# Sound
+## Sound
 
 {{< countdown minutes=0 seconds=1 play_sound=true >}}
 
-# Custom Sound
+## Custom Sound
 
 {{< countdown minutes=0 seconds=1 play_sound='test-beep.mp3' >}}
