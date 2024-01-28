@@ -21,9 +21,15 @@ Please make sure you are on Quarto version 1.4.545 or greater.
 
 {{< countdown minutes=0 seconds=20 >}}
 
-## Non-standard position
+## Time string
 
-Some content
+{{< countdown "1:23">}}
+
+## Time string
+
+{{< countdown "1:23" minutes="1" seconds="23">}}
+
+## Non-standard position
 
 {{< countdown minutes=2 top=0 right=0 >}}
 

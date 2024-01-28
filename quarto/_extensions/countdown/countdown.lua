@@ -229,6 +229,7 @@ local function ensureHTMLDependency(meta)
   needsToExportDependencies = false
 end
 
+-- Process unnamed time string format
 local function parseTimeString(args)
   if #args == 0 or type(args[1]) ~= "string" then
     return nil
@@ -247,10 +248,15 @@ local function countdown(args, kwargs, meta)
 
   -- Retrieve named time arguments and fallback on default values if missing
   arg_time = parseTimeString(args)
-  if arg_time ~= nil then
-    -- TODO: Warn if minutes/seconds were kwargs
+  if isVariablePopulated(arg_time) then
     minutes = arg_time.minutes
     seconds = arg_time.seconds
+    if isVariablePopulated(tryOption(kwargs, "minutes")) or 
+       isVariablePopulated(tryOption(kwargs, "seconds")) then
+      quarto.log.warning(
+        "Please do not specify `minutes` or `seconds` parameters" ..
+        "when using the time string format.")
+    end
   else
     minutes = tonumber(getOption(kwargs, "minutes", 1))
     seconds = tonumber(getOption(kwargs, "seconds", 0))
