@@ -237,7 +237,11 @@ local function parseTimeString(args)
 
   local minutes, seconds = args[1]:match("(%d+):(%d+)")
   if minutes == nil or seconds == nil then
-    quarto.log.error("The quartodown time string must be in the format 'MM:SS'.")
+    quarto.log.error(
+      "The quartodown time string must be in the format 'MM:SS'.\n" ..
+      "Please correct countdown timer with time string given as `" .. args[1] .. "`"
+    )
+    assert("true" == "false")
   end
 
   return { minutes = tonumber(minutes), seconds = tonumber(seconds) }
