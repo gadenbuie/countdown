@@ -303,9 +303,14 @@ local function countdown(args, kwargs, meta)
   -- Retrieve "play_sound" attribute as a string, default to "false" if not present
   local play_sound = tryPlaySound(getOption(kwargs, "play_sound", "false"))
 
-  -- Retrieve positional outcome and handle custom value substitution to ensure appropriate positioning
-  kwargs["bottom"] = tryOption(kwargs, "bottom") or getOption(kwargs, "top", "0")
-  kwargs["right"]  = tryOption(kwargs, "right") or getOption(kwargs, "left", "0")
+  -- Check to see if positional outcomes are set; if not, default both bottom and right to 0.
+  if isVariableEmpty(tryOption(kwargs, "top"))   and
+     isVariableEmpty(tryOption(kwargs, "left"))  and
+     isVariableEmpty(tryOption(kwargs, "right")) and
+     isVariableEmpty(tryOption(kwargs, "bottom")) then
+    kwargs["bottom"] = 0 
+    kwargs["right"] = 0 
+  end
 
   local style = cssInline(kwargs) 
 

@@ -17,21 +17,19 @@ Please make sure you are on Quarto version 1.4.545 or greater.
 
 {{< countdown >}}
 
-## Less time
-
-{{< countdown minutes=0 seconds=20 >}}
-
 ## Time string
 
-{{< countdown "1:23">}}
+{{< countdown "1:23" >}}
 
-## Time string
-
-{{< countdown "1:23" minutes="1" seconds="23">}}
+{{< countdown "12:53" minutes="12" seconds="53" left=0 bottom=0 >}}
 
 ## Non-standard position
 
-{{< countdown minutes=2 top=0 right=0 >}}
+{{< countdown minutes=1 top=0 right=0 >}}
+
+{{< countdown minutes=2 bottom=0 left=0 >}}
+
+{{< countdown minutes=3 bottom=0 right=0 >}}
 
 ## Add class
 
