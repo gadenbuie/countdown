@@ -251,7 +251,7 @@ local function countdown(args, kwargs, meta)
   local minutes, seconds
 
   -- Retrieve named time arguments and fallback on default values if missing
-  arg_time = parseTimeString(args)
+  local arg_time = parseTimeString(args)
   if isVariablePopulated(arg_time) then
     minutes = arg_time.minutes
     seconds = arg_time.seconds
@@ -308,11 +308,13 @@ local function countdown(args, kwargs, meta)
   local play_sound = tryPlaySound(getOption(kwargs, "play_sound", "false"))
 
   -- Check to see if positional outcomes are set; if not, default both bottom and right to 0.
-  if isVariableEmpty(tryOption(kwargs, "top"))   and
-     isVariableEmpty(tryOption(kwargs, "left"))  and
-     isVariableEmpty(tryOption(kwargs, "right")) and
+  if isVariableEmpty(tryOption(kwargs, "top")) and
      isVariableEmpty(tryOption(kwargs, "bottom")) then
-    kwargs["bottom"] = 0 
+    kwargs["bottom"] = 0
+  end    
+     
+  if isVariableEmpty(tryOption(kwargs, "left"))  and
+     isVariableEmpty(tryOption(kwargs, "right")) then
     kwargs["right"] = 0 
   end
 
