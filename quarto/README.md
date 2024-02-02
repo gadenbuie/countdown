@@ -1,8 +1,8 @@
-# quarto-countdown: Countdown Timers for Quarto HTML Documents and RevealJS slides
+# quarto-countdown: Countdown Timers for Quarto RevealJS slides
 
-The `countdown` extension for Quarto allows you to incorporate countdown like timers on Quarto HTML Documents and RevealJS slides.
+The `quarto-countdown` extension for [Quarto](https://quarto.org) allows you to incorporate countdown timers on [Quarto RevealJS slides](https://quarto.org/docs/presentations/revealjs/).
 
-This extension doesn't require the installation of R or the {countdown} R Package.
+This extension doesn't require the installation of _R_ or the `{countdown}` _R_ Package.
 
 ## Installation
 
@@ -41,7 +41,8 @@ Or use a time string formatted in `"MM:SS"`
 There are many more customizations to choose from. See the next section for more details. 
 
 ### Customizations
-The extension offers extensive customization options, akin to the features provided by the R package version of `countdown`. These customizations cover both functionality and style. We support a document-level set of style options and individual options. 
+
+The extension offers extensive customization options, akin to the features provided by the R package version of `countdown`. These customizations span both functionality and style. They can be configured either at the document level or for each individual timer.
 
 #### In-line options
 
