@@ -5,65 +5,27 @@ local countdownEmbeddedVersion = "0.0.1"
 local needsToExportDependencies = true
 
 -- List CSS default options
-local default_style = {
-  -- Font size for the countdown element
-  font_size = "3rem",
-  -- Margin around the countdown element
-  margin = "0.6em",
-  -- Padding within the countdown element
-  padding = "10px 15px",
-  -- Shadow applied to the countdown element
-  box_shadow = "0px 4px 10px 0px rgba(50, 50, 50, 0.4)",
-  -- Border width of the countdown element
-  border_width = "0.1875rem",
-  -- Border radius of the countdown element
-  border_radius = "0.9rem",
-  -- Line height of the countdown element
-  line_height = "1",
-  -- Border color of the countdown element
-  color_border = "#ddd",
-  -- Background color of the countdown element
-  color_background = "inherit",
-  -- Text color of the countdown element
-  color_text = "inherit",
-  -- Background color when the countdown is running
-  color_running_background = "#43AC6A",
-  -- Border color when the countdown is running
-  color_running_border = "#2A9B59FF", -- Needs color_darken()
-  -- Text color when the countdown is running
-  color_running_text = 'inherit',
-  -- Background color when the countdown is finished
-  color_finished_background = "#F04124",
-  -- Border color when the countdown is finished
-  color_finished_border = "#DE3000FF",  -- Needs color_darken()
-  -- Text color when the countdown is finished
-  color_finished_text = 'inherit',
-  -- Background color when the countdown has a warning
-  color_warning_background = "#E6C229",
-  -- Border color when the countdown has a warning
-  color_warning_border = "#CEAC04FF", -- Needs color_darken()
-  -- Text color when the countdown has a warning
-  color_warning_text = 'inherit',
-  -- Selector for the countdown element
-  selector = "root"
+local default_style_keys = {
+  "font_size",
+  "margin",
+  "padding",
+  "box_shadow",
+  "border_width",
+  "border_radius",
+  "line_height",
+  "color_border",
+  "color_background",
+  "color_text",
+  "color_running_background",
+  "color_running_border",
+  "color_running_text",
+  "color_finished_background",
+  "color_finished_border",
+  "color_finished_text",
+  "color_warning_background",
+  "color_warning_border",
+  "color_warning_text"
 }
-
--- Extract names from default style table
-local function tableKeyNames(namedTable)
-
-  -- Table to store keys
-  local keysTable = {}
-
-  -- Iterate over keys and store them
-  for key, _ in pairs(namedTable) do
-    table.insert(keysTable, key)
-  end
-
-  return keysTable
-end
-
--- Store names for default styles
-local default_style_names = tableKeyNames(default_style)
 
 -- Check if variable missing or an empty string
 local function isVariableEmpty(s)
@@ -94,7 +56,9 @@ local function tryOption(options, key)
     return nil
   end
 
+  -- Retrieve the option
   local option_value = pandoc.utils.stringify(options[key])
+  -- Verify the option's value exists, return value otherwise nil.
   if isVariablePopulated(option_value) then
     return option_value
   else
@@ -119,61 +83,41 @@ local function tryPlaySound(play_sound)
   end
 end
 
--- Function that deletes entries that contain 'nil'
-function removeEmptyEntries(tableWithNilEntries)
-
-  -- Define a table to keep full entries
-  local cleanedTable = {}
-
-  -- Iterate across the table, retain full entries
-  for key, value in pairs(tableWithNilEntries) do
-      if isVariablePopulated(value) then
-          cleanedTable[key] = value
-      end
-  end
-
-  -- Return cleaned tables
-  return cleanedTable
-end
-
 -- Define the infix operator %:?% to handle styling if missing
-local function safeStyle(options, key)
+local function safeStyle(options, key, fmtString)
   -- Attempt to retrieve the style option
   local style_option = tryOption(options, key)
   -- If it is present, format it as a CSS value
   if isVariablePopulated(style_option) then
-    return table.concat({key, ":" , pandoc.utils.stringify(style_option), ";"})
+    return string.format(fmtString, key:gsub("_", "-"), style_option)
   end
   -- Otherwise, return an empty string that when concatenated does nothing.
   return ""
 end
 
--- Construct the inline CSS style attributes
-local function cssInline(options) 
+-- Construct the CSS style attributes
+local function structureCountdownCSSVars(options) 
   -- Concatenate style properties with their values using %:?% from kwargs
-  local styleKeys = {"top", "right", "bottom", "left", "margin", "padding", "font_size", "line_height"}
-  local styleTable = {}
+  local stylePositional = {"top", "right", "bottom", "left"}
+  local stylePositionalTable = {}
+  local styleDefaultOptionsTable = {}
   
-  -- Build the style
-  for i, key in ipairs(styleKeys) do
-    styleTable[i] = safeStyle(options, key)
+  -- Build the positional style without prefixing countdown variables
+  for i, key in ipairs(stylePositional) do
+    stylePositionalTable[i] = safeStyle(options, key, "%s: %s;")
+  end
+
+  -- Build the countdown variables for styling
+  for i, key in ipairs(default_style_keys) do
+    styleDefaultOptionsTable[i] = safeStyle(options, key, "--countdown-%s: %s;")
   end
 
   -- Concatenate entries together
-  return table.concat(styleTable)
+  return table.concat(stylePositionalTable) .. table.concat(styleDefaultOptionsTable)
 end
 
-local function structureCountdownCSSVars(options)
-  local dots = {}
-
-  for key, value in pairs(options) do
-      table.insert(dots, string.format("--countdown-%s: %s;", key:gsub("_", "-"), value))
-  end
-
-  return dots
-end
-
-local function countdown_style(options, defaults)
+-- Handle global styling options by reading options set in the meta key
+local function countdown_style(options)
 
   -- Check if options have values; if it is empty, just exit.
   if isVariableEmpty(options) or isTableEmpty(options) then
@@ -181,29 +125,17 @@ local function countdown_style(options, defaults)
   end
 
   -- Determine the selector value
-  local possibleSelector = getOption(options, "selector", defaults.selector)
+  local possibleSelector = getOption(options, "selector", "root")
 
-  -- Begin CSS Variables
-  local cssTable = {}
-
-  -- Pass defaults into make_countdown_css
-  for key, defaultValue in pairs(defaults) do
-    -- Assign into the CSS table if key is present
-    cssTable[key] = getOption(options, key, defaultValue)
-  end
-
-  -- Delete the selector key (after the fact)
-  cssTable["selector"] = nil
-
-  -- Restructure options to ("--countdown-<key>: <value>;)
-  local structuredCSS = structureCountdownCSSVars(cssTable)
+  -- Restructure options to ("key:value;--countdown-<key>: <value>;) string
+  local structuredCSS = structureCountdownCSSVars(options)
 
   -- Embed into the document to avoid rendering to disk and, then, embedding a URL.
   quarto.doc.include_text('in-header', 
     string.format(
       "<!-- Countdown Global CSS -->\n<style text='text/css'>:%s {%s}</style>", 
       possibleSelector,
-      table.concat(structuredCSS)
+      structuredCSS
     )
   )
   -- Note: This feature or using `add_supporting` requires Quarto v1.4 or above
@@ -223,27 +155,35 @@ local function ensureHTMLDependency(meta)
   })
 
   -- Embed custom settings into the document based on document-level settings
-  countdown_style(meta.countdown, default_style)
+  countdown_style(meta.countdown)
 
   -- Disable re-exporting if no-longer needed
   needsToExportDependencies = false
 end
 
--- Process unnamed time string format
+-- Function to parse an unnamed time string argument supplied
+-- in the format of 'MM:SS'
 local function parseTimeString(args)
+  -- Check if the input argument is provided and is of type string
   if #args == 0 or type(args[1]) ~= "string" then
     return nil
   end
 
+  -- Attempt to extract minutes and seconds from the time string
   local minutes, seconds = args[1]:match("(%d+):(%d+)")
-  if minutes == nil or seconds == nil then
+  
+  -- Check if the pattern matching was successful
+  if isVariableEmpty(minutes) or isVariableEmpty(seconds) then
+    -- Log an error message if the format is incorrect
     quarto.log.error(
       "The quartodown time string must be in the format 'MM:SS'.\n" ..
       "Please correct countdown timer with time string given as `" .. args[1] .. "`"
     )
+    -- Raise an assertion error to stop further execution (optional, depending on your requirements)
     assert("true" == "false")
   end
 
+  -- Return a table containing minutes and seconds as numbers
   return { minutes = tonumber(minutes), seconds = tonumber(seconds) }
 end
 
@@ -318,7 +258,7 @@ local function countdown(args, kwargs, meta)
     kwargs["right"] = 0 
   end
 
-  local style = cssInline(kwargs) 
+  local style = structureCountdownCSSVars(kwargs) 
 
   local rawHtml = table.concat({
     '<div ',
