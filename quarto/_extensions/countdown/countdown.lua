@@ -282,8 +282,6 @@ local function countdown(args, kwargs, meta)
     '\n </div>'
   })
 
-  quarto.log.output(rawHtml)
-
   -- Return a new Div element with modified attributes
   return  pandoc.RawBlock("html", rawHtml)
 end
