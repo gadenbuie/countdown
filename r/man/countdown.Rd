@@ -80,7 +80,7 @@ countdown_style(
   color_warning_background = "#E6C229",
   color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
   color_warning_text = NULL,
-  .selector = "root"
+  .selector = ":root"
 )
 }
 \arguments{
