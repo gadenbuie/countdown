@@ -125,7 +125,7 @@ local function countdown_style(options)
   end
 
   -- Determine the selector value
-  local possibleSelector = getOption(options, "selector", "root")
+  local possibleSelector = getOption(options, "selector", ":root")
 
   -- Restructure options to ("key:value;--countdown-<key>: <value>;) string
   local structuredCSS = structureCountdownCSSVars(options)
