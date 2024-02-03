@@ -133,7 +133,7 @@ local function countdown_style(options)
   -- Embed into the document to avoid rendering to disk and, then, embedding a URL.
   quarto.doc.include_text('in-header', 
     string.format(
-      "<!-- Countdown Global CSS -->\n<style text='text/css'>:%s {%s}</style>", 
+      "<!-- Countdown Global CSS -->\n<style text='text/css'>%s {%s}</style>", 
       possibleSelector,
       structuredCSS
     )
