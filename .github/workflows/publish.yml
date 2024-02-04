@@ -1,7 +1,10 @@
 name: Publish Python Package
 
-on:
+# Restrict the job to run only if files inside the `python/*` directory change
+on: 
   release:
+    paths:
+      - python/**
     types: [created]
 
 permissions:

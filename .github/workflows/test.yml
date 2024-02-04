@@ -1,6 +1,15 @@
 name: Test
 
-on: [push, pull_request]
+# Restrict the job to run only if files inside the `python/*` directory change
+on: 
+  push:
+    branches: [main, master]
+    paths:
+      - python/**
+  pull_request:
+    branches: [main, master]
+    paths:
+      - python/**
 
 permissions:
   contents: read
