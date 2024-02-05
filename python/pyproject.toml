@@ -1,6 +1,6 @@
 [project]
 name = "countdown"
-version = "0.1"
+dynamic = ["version"]
 description = "A simple countdown timer for slides and HTML documents written in 'Jupyter' or 'Quarto'. Integrates fully into 'Shiny for Python' apps. Countdown to something amazing."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -26,3 +26,6 @@ CI = "https://github.com/gadenbuie/countdown/actions"
 
 [project.optional-dependencies]
 test = ["pytest"]
+
+[tool.setuptools.dynamic]
+version = {attr = "countdown.__version__"}
