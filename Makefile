@@ -1,31 +1,23 @@
 # Define the source directory for assets
 SRC_DIR := lib
 
-# Define the destination directories for different languages
-PYTHON_DEST := python/countdown/assets
-R_DEST := r/inst/countdown
-QUARTO_DEST := quarto/_extensions/countdown/assets
+# Define the languages being used:
+LANG_VARIANTS := python r quarto
+
+# Define the corresponding destination directories for each language
+LANG_DEST := python/countdown/assets r/inst/countdown quarto/_extensions/countdown/assets
+
+# Convert LANG_VARIANTS to a list of sync targets, e.g. make sync-r, sync-python
+SYNC_TARGETS := $(addprefix sync-, $(LANG_VARIANTS))
 
 # Set the default target to sync
 .DEFAULT_GOAL := sync
 
 # Define the sync target
-sync: sync-python sync-r sync-quarto
+sync: $(SYNC_TARGETS)
 
-# Rule to copy assets to Python directory
-sync-python:
-	@echo "Syncing assets to Python directory..."
-	mkdir -p $(PYTHON_DEST)
-	cp -r $(SRC_DIR)/* $(PYTHON_DEST)
-
-# Rule to copy assets to R directory
-sync-r:
-	@echo "Syncing assets to R directory..."
-	mkdir -p $(R_DEST)
-	cp -r $(SRC_DIR)/* $(R_DEST)
-
-# Rule to copy assets to Quarto directory
-sync-quarto:
-	@echo "Syncing assets to Quarto directory..."
-	mkdir -p $(QUARTO_DEST)
-	cp -r $(SRC_DIR)/* $(QUARTO_DEST)
+# Rule to create directories and copy assets based on LANG_DEST
+sync-%:
+	@echo "Syncing assets to $(filter $*%, $(LANG_DEST)) directory..."
+	mkdir -p $(filter $*%, $(LANG_DEST))
+	cp -r $(SRC_DIR)/*.js $(SRC_DIR)/*.css $(SRC_DIR)/*.mp3 $(filter $*%, $(LANG_DEST))
