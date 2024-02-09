@@ -1,44 +1,59 @@
 ---
-title: "Countdown Example"
-countdown:
-  font_size: 4rem
-  color_background: "lightblue"
+title: "{quarto-countdown}"
+author: "Garrick Aden-Buie and James Joseph Balamuta"
+date: today
 format: revealjs
+countdown: 
+    color_border             : "#d33682"
+    color_text               : "#d33682"
+    color_running_background : "#2aa198"
+    color_running_text       : "#073642"
+    color_finished_background: "#dc322f"
+    color_finished_text      : "#fdf6e3"
 ---
 
-## A note before we begin...
 
-:::{.callout-important}
-Please make sure you are on Quarto version 1.4.545 or greater.
+[quarto]: https://quarto.org/
+[revealjs]: https://quarto.org/docs/presentations/revealjs/
+[html]: https://quarto.org/docs/output-formats/html-basics.html
+[countdown]: https://github.com/gadenbuie/countdown
+
+## Hey look, it's a timer!
+
+:::{=html}
+<p style="margin: 11em 0;"></p>
 :::
 
+{{< countdown minutes = 0 seconds = 42 top = "26%" right = "40%" play_sound="true" >}}
 
-## Default timer
 
-{{< countdown >}}
+### How to use your new countdown timer
 
-## Time string
+Click or <kbd>Space</kbd> on the timer to **start** or **stop** it.
 
-{{< countdown "1:23" >}}
+Double click or <kbd>Esc</kbd> anytime to **reset** it.
 
-{{< countdown "12:53" minutes="12" seconds="53" left=0 bottom=0 >}}
+Use the **&plus;** and **&minus;** buttons or <kbd>&uarr;</kbd> <kbd>&darr;</kbd> to **bump** the timer **up** or **down**.
 
-## Non-standard position
 
-{{< countdown minutes=1 top=0 right=0 >}}
+## Easily add a timer to your slides!
 
-{{< countdown minutes=2 bottom=0 left=0 >}}
+First, install `countdown` from [GitHub][countdown]
 
-{{< countdown minutes=3 bottom=0 right=0 >}}
+```sh
+quarto add gadenbuie/countdown/quarto
+```
 
-## Add class
+:::{.fragment}
+Then in your [HTML][html] Document or [RevealJS][revealjs] slides made with [Quarto][quarto] add
 
-{{< countdown minutes=0 seconds=5 class="testing" >}}
+```markdown
+{{{< countdown minutes = 0 seconds = 42 >}}}
+```
 
-## Sound
+or
 
-{{< countdown minutes=0 seconds=1 play_sound=true >}}
-
-## Custom Sound
-
-{{< countdown minutes=0 seconds=1 play_sound='test-beep.mp3' >}}
+```markdown
+{{{< countdown 0:42 >}}}
+```
+:::
