@@ -267,7 +267,7 @@ countdown <- function(
 html_dependency_countdown <- function() {
   htmlDependency(
     "countdown",
-    version = utils::packageVersion("countdown"),
+    version = countdown_embedded,
     package = "countdown",
     src = "countdown",
     script = "countdown.js",
