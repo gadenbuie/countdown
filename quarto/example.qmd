@@ -21,20 +21,21 @@ countdown:
 ## Hey look, it's a timer!
 
 :::{=html}
-<p style="margin: 11em 0;"></p>
+<p style="margin: 7em 0;"></p>
 :::
 
 {{< countdown minutes = 0 seconds = 42 top = "26%" right = "40%" play_sound="true" >}}
 
 
-### How to use your new countdown timer
+### How to use your new countdown timer 
 
+:::{.r-fit-text}
 Click or <kbd>Space</kbd> on the timer to **start** or **stop** it.
 
 Double click or <kbd>Esc</kbd> anytime to **reset** it.
 
 Use the **&plus;** and **&minus;** buttons or <kbd>&uarr;</kbd> <kbd>&darr;</kbd> to **bump** the timer **up** or **down**.
-
+:::
 
 ## Easily add a timer to your slides!
 
@@ -48,7 +49,7 @@ quarto add gadenbuie/countdown/quarto
 Then in your [HTML][html] Document or [RevealJS][revealjs] slides made with [Quarto][quarto] add
 
 ```markdown
-{{{< countdown minutes = 0 seconds = 42 >}}}
+{{{< countdown minutes=0 seconds=42 >}}}
 ```
 
 or
@@ -57,3 +58,301 @@ or
 {{{< countdown 0:42 >}}}
 ```
 :::
+
+## What's so cool about a timer?
+
+:::: {.columns .r-fit-text}
+
+::: {.column width="40%"}
+If your slides support your teaching materials, on-screen timers are a great way to bracket group activities.
+
+Put your prompt on the screen and ask the group:
+
+> _Take 4 minutes to discuss with your partner_
+
+Then click on your timer to keep everyone on track!
+:::
+
+::: {.column .fragment .center width="60%"}
+I learned this from [&commat;StatGarrett](https://twitter.com/StatGarrett)'s
+rad `rstudio::conf` workshop!
+
+![](../docs/img/teach-tidyverse-timer.png){style="border:3px solid #002b36;border-radius:10px;"}
+
+Here's an example from his
+[Master the Tidyverse materials](https://github.com/rstudio-education/master-the-tidyverse/).
+
+:::
+
+::::
+
+## `countdown` has style {.countdown-has-style}
+
+::: {.center}
+{{{< countdown >}}}
+:::
+
+:::: {.columns .r-fit-text}
+
+::: {.column width="40%"}
+### Each Timer
+
+Settings of individual timers
+
+- _`minutes`_
+- _`seconds`_
+- `play_sound`
+- `top`
+- `right`
+- `bottom`
+- `left`
+- `update_every`
+- `warn_when`
+- [`font_size`]{.subtle}
+- [`margin`]{.subtle}
+- [`padding`]{.subtle}
+
+:::{.footnote}
+Faded arguments inherit from global styles &#x27A1;
+:::
+
+:::
+
+::: {.column width="60%"}
+### countdown_style()
+
+Style all timers at once
+
+- `font_size`
+- `margin`
+- `padding`
+- `box_shadow`
+- `border_width`
+- `border_radius`
+- `line_height`
+- `color` options for
+  - `_background`, `_border`, `_text`
+  - and for `running`, `finished`, `warning`
+:::
+
+::::
+
+## The first-time timer
+
+Here's how I created the first timer and set this presentation's timer styles.
+
+````markdown
+---
+title: My presentation
+countdown: # Set timer theme to match solarized colors
+    color_border             : "#d33682"
+    color_text               : "#d33682"
+    color_running_background : "#2aa198"
+    color_running_text       : "#073642"
+    color_finished_background: "#dc322f"
+    color_finished_text      : "#fdf6e3"
+---
+
+{{{< countdown minutes=0 seconds=42 play_sound="true" >}}}
+````
+
+## 
+
+If you customize your timer's styles,<br>
+**you only have to do it once with `countdown` document key**.
+
+:::: {.fragment}
+After that, you only ever _need_ to specify `minutes` and `seconds`<sup>&#x2731;</sup>.
+
+::: {.footnote}
+<sup>&#x2731;</sup> Feeling lazy? Just set `minutes`. No need for pesky `seconds`.
+:::
+::::
+
+:::: {.fragment}
+
+The default timer looks pretty good in most cases, so try it first!
+
+```markdown
+{{{< countdown minutes=0 seconds=15 >}}}
+```
+::::
+
+## Moar timers!
+
+
+You can have as many timers as you want, even on the same screen.
+
+:::{.fragment}
+
+Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
+:::
+
+::::{.fragment}
+
+```{=html}
+<p style="margin-bottom: -10px">The default is <strong>bottom</strong>, <strong>right</strong>.</p>
+```
+{{< countdown minutes=0 seconds=7 bottom=0 >}}
+
+```{=html}
+<p style="margin-bottom: -10px">This timer is <strong>top</strong>, <strong>right</strong>.</p>
+```
+
+{{< countdown minutes=0 seconds=13 top=0 >}}
+
+```{=html}
+<p style="margin-bottom: -10px">This timer is <strong>bottom</strong>, <strong>left</strong>.</p>
+```
+
+{{< countdown minutes=0 seconds=21 left=0 >}}
+
+::: {.center.big}
+&#x1F446;&#x1F3FC;
+&#x1F448;&#x1F3FC; Go ahead, click them! &#x1F449;&#x1F3FC;
+:::
+::::
+
+## Start Immediately
+
+{{< countdown start_immediately="true" >}}
+
+Inside **revealjs** slides, when `start_immediately="true"`,
+the timer will start when you land on the slide.
+
+When used with other web pages,
+the timer starts as soon as it's visible.
+
+## Customize your timers
+
+`top`/`bottom` and `left`/`right` cancel each other out unless you specify both.
+
+You can also override the global timer `font_size`, `padding`, and `margin`.
+
+{{< countdown minutes=1 seconds=30 left=0 right=0 padding="50px" margin="5%" font_size="6em" >}}
+
+## Keep Calm {.center .top}
+
+```{=html}
+<div style = "padding-top: 3em"></div>
+```
+
+### and
+
+### Countdown
+
+TODO: Figure out how to fix countdown as heading 1. 
+
+Avoid countdown panic with a timer<br>that only **update**s once **every** *n* seconds
+
+{{< countdown minutes=1 update_every=15 right="10%" >}}
+
+## Be Warned Before Time Runs Out
+
+Warn your audience that time is about to run out. The warning style is applied to the timer for the last _N_ seconds by setting `warn_when=N`.
+
+{{< countdown 0:10 warn_when=5 right="33%" bottom="33%" blink_colon="true" >}}
+
+```{=html}
+<p style="padding-top: 10em"><p>
+```
+
+Modify the `background`, `text` and `border` colors of the warning state using the `color_warning_...` arguments.
+
+## Behind the scenes 
+
+:::: {.r-fit-text}
+
+Behind the scenes, `countdown` is a little wrapper around
+a very small amount of HTML and CSS and bit more of Javascript.
+
+Each countdown timer element looks something like this:
+
+````html
+{{< countdown 3:30 >}}
+````
+
+TODO: Figure out how to ensure HTML is retained from shortcode injection.
+
+:::{.fragment}
+
+Once the timer is activated, `<div class="countdown">` gets an added class:
+
+- `running` when the timer is _running_, or
+- `finished` when the timer is _finished_.
+:::
+
+::::
+
+## Customized CSS 
+
+:::: {.r-fit-text}
+
+Want to completely customize the CSS of each timer?
+
+:::{.fragment}
+
+No problem!
+
+:::
+
+:::{.fragment}
+Just give each timer a unique `id` that you can use in your CSS.
+
+```{.css}
+#special_timer.running {
+  background-color: black;
+  background-image: url(img/bg-stars.gif);
+}
+#special_timer.finished {
+  background-color: black;
+  background-image: url(img/bg-sqfw.gif);
+  background-size: cover;
+}
+#special_timer.running .countdown-digits {
+  color: #fdf6e3;
+}
+```
+
+```{=html}
+<style>
+#special_timer.running {
+  background-color: black;
+  background-image: url(img/bg-stars.gif);
+}
+#special_timer.finished {
+  background-color: black;
+  background-image: url(img/bg-sqfw.gif);
+  background-size: cover;
+}
+#special_timer.running .countdown-digits {
+  color: #fdf6e3;
+}
+</style>
+```
+
+```markdown
+{{{< countdown 0:09 id="special_timer" >}}}
+```
+
+{{< countdown minutes=0 seconds=9 id="special_timer" >}}
+
+```{=html}
+<div style="position: absolute; bottom: 2%; right: 27%; font-size: 80%">Try this one, it's cool!<span style="display: inline-block; transform: rotate(236deg);font-size: 125%;">⤹</span></div>
+```
+:::
+
+::::
+
+## Make a joyful noise!
+
+`countdown` timers are quiet by default, but it can be nice to have a noisy timer that gets everyone's attention.
+
+Set `play_sound="true"` to be alerted to the end of the timer with fanfare!
+
+```markdown
+{{{< countdown 0:10 play_sound="true" >}}}
+```
+
+{{< countdown 0:10 play_sound="true" >}}
+
