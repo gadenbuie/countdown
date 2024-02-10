@@ -77,7 +77,7 @@ Then click on your timer to keep everyone on track!
 I learned this from [&commat;StatGarrett](https://twitter.com/StatGarrett)'s
 rad `rstudio::conf` workshop!
 
-![](../docs/img/teach-tidyverse-timer.png){style="border:3px solid #002b36;border-radius:10px;"}
+![](img/teach-tidyverse-timer.png){style="border:3px solid #002b36;border-radius:10px;"}
 
 Here's an example from his
 [Master the Tidyverse materials](https://github.com/rstudio-education/master-the-tidyverse/).
