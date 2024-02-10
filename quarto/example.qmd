@@ -164,7 +164,7 @@ If you customize your timer's styles,<br>
 :::: {.fragment}
 After that, you only ever _need_ to specify `minutes` and `seconds`<sup>&#x2731;</sup>.
 
-::: {.footnote}
+::: aside
 <sup>&#x2731;</sup> Feeling lazy? Just set `minutes`. No need for pesky `seconds`.
 :::
 ::::
@@ -207,7 +207,7 @@ Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
 
 {{< countdown minutes=0 seconds=21 left=0 >}}
 
-::: {.center.big}
+::: {.center .big}
 &#x1F446;&#x1F3FC;
 &#x1F448;&#x1F3FC; Go ahead, click them! &#x1F449;&#x1F3FC;
 :::
@@ -247,14 +247,14 @@ Avoid countdown panic with a timer<br>that only **update**s once **every** *n* s
 
 {{< countdown minutes=1 update_every=15 right="10%" >}}
 
-## Be Warned Before Time Runs Out
+## Be Warned Before Time Runs Out {.r-fit-text}
 
 Warn your audience that time is about to run out. The warning style is applied to the timer for the last _N_ seconds by setting `warn_when=N`.
 
-{{< countdown 0:10 warn_when=5 right="33%" bottom="33%" blink_colon="true" >}}
+{{< countdown 0:10 warn_when=5 right="40%" bottom="40%" blink_colon="true" >}}
 
 ```{=html}
-<p style="padding-top: 10em"><p>
+<p style="padding-top: 5em"><p>
 ```
 
 Modify the `background`, `text` and `border` colors of the warning state using the `color_warning_...` arguments.
