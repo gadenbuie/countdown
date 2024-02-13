@@ -25,20 +25,20 @@ sync-python: ## Sync web assets to Python package
 	@echo "Syncing web assets to the Python package..."
 	@test -d $(SYNC_DEST_PYTHON) || mkdir -p $(SYNC_DEST_PYTHON)
 	cp -r $(SRC_FILES) $(SYNC_DEST_PYTHON)
-	echo "countdown_embedded = '$(VERSION)'" > python/countdown/config.py
+	echo "countdown_version = '$(VERSION)'" > python/countdown/config.py
 
 sync-r: ## Sync web assets to R package
 	@echo "Syncing web assets to R directory..."
 	@test -d $(SYNC_DEST_R) || mkdir -p $(SYNC_DEST_R)
 	cp -r $(SRC_FILES) $(SYNC_DEST_R)
-	echo "countdown_embedded <- '$(VERSION)'" > r/R/config.R
+	echo "countdown_version <- '$(VERSION)'" > r/R/config.R
 
 
 sync-quarto:  ## Sync web assets to Quarto extension
 	@echo "Syncing web assets to Quarto directory..."
 	@test -d $(SYNC_DEST_QUARTO) || mkdir -p $(SYNC_DEST_QUARTO)
 	cp -r $(SRC_FILES) $(SYNC_DEST_QUARTO)
-	echo "local countdown_embedded = '$(VERSION)'\n\nreturn { countdownEmbedded = countdown_embedded }" > quarto/_extensions/countdown/config.lua
+	echo "local countdown_version = '$(VERSION)'\n\nreturn { countdownVersion = countdown_version }" > quarto/_extensions/countdown/config.lua
 
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"

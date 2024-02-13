@@ -1,1 +1,1 @@
-countdown_embedded <- '0.5.0'
+countdown_version <- '0.5.0'

@@ -1,7 +1,7 @@
 -- Retrieve countdown configuration data
 local configData = require("config")
 -- Specify the embedded version
-local countdownEmbedded = configData.countdownEmbedded
+local countdownVersion = configData.countdownVersion
 
 -- Only embed resources once if there are multiple timers present 
 local needsToExportDependencies = true
@@ -149,7 +149,7 @@ local function ensureHTMLDependency(meta)
   -- Register _all_ assets together.
   quarto.doc.addHtmlDependency({
     name = "countdown",
-    version = countdownEmbedded,
+    version = countdownVersion,
     scripts = { "assets/countdown.js"},
     stylesheets = { "assets/countdown.css"},
     resources = {"assets/smb_stage_clear.mp3"}
