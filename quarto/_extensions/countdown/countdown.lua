@@ -1,7 +1,9 @@
--- Specify embedded version 
-local countdownEmbeddedVersion = "0.0.1"
+-- Retrieve countdown configuration data
+local configData = require("config")
+-- Specify the embedded version
+local countdownVersion = configData.countdownVersion
 
--- Only embed resources once if there are multiple timers present 
+-- Only embed resources once if there are multiple timers present
 local needsToExportDependencies = true
 
 -- List CSS default options
@@ -37,7 +39,7 @@ local function isVariablePopulated(s)
   return not isVariableEmpty(s)
 end
 
--- Check if a table is empty 
+-- Check if a table is empty
 local function isTableEmpty(tbl)
   return next(tbl) == nil
 end
@@ -50,7 +52,7 @@ end
 -- Check whether an argument is present in kwargs
 -- If it is, return the value
 local function tryOption(options, key)
-  
+
   -- Protect against an empty options
   if not (options and options[key]) then
     return nil
@@ -96,12 +98,12 @@ local function safeStyle(options, key, fmtString)
 end
 
 -- Construct the CSS style attributes
-local function structureCountdownCSSVars(options) 
+local function structureCountdownCSSVars(options)
   -- Concatenate style properties with their values using %:?% from kwargs
   local stylePositional = {"top", "right", "bottom", "left"}
   local stylePositionalTable = {}
   local styleDefaultOptionsTable = {}
-  
+
   -- Build the positional style without prefixing countdown variables
   for i, key in ipairs(stylePositional) do
     stylePositionalTable[i] = safeStyle(options, key, "%s: %s;")
@@ -131,9 +133,9 @@ local function countdown_style(options)
   local structuredCSS = structureCountdownCSSVars(options)
 
   -- Embed into the document to avoid rendering to disk and, then, embedding a URL.
-  quarto.doc.include_text('in-header', 
+  quarto.doc.include_text('in-header',
     string.format(
-      "<!-- Countdown Global CSS -->\n<style text='text/css'>%s {%s}</style>", 
+      "<!-- Countdown Global CSS -->\n<style text='text/css'>%s {%s}</style>",
       possibleSelector,
       structuredCSS
     )
@@ -144,11 +146,10 @@ end
 
 -- Handle embedding/creation of assets once
 local function ensureHTMLDependency(meta)
-
   -- Register _all_ assets together.
   quarto.doc.addHtmlDependency({
     name = "countdown",
-    version = countdownEmbeddedVersion,
+    version = countdownVersion,
     scripts = { "assets/countdown.js"},
     stylesheets = { "assets/countdown.css"},
     resources = {"assets/smb_stage_clear.mp3"}
@@ -171,7 +172,7 @@ local function parseTimeString(args)
 
   -- Attempt to extract minutes and seconds from the time string
   local minutes, seconds = args[1]:match("(%d+):(%d+)")
-  
+
   -- Check if the pattern matching was successful
   if isVariableEmpty(minutes) or isVariableEmpty(seconds) then
     -- Log an error message if the format is incorrect
@@ -195,7 +196,7 @@ local function countdown(args, kwargs, meta)
   if isVariablePopulated(arg_time) then
     minutes = arg_time.minutes
     seconds = arg_time.seconds
-    if isVariablePopulated(tryOption(kwargs, "minutes")) or 
+    if isVariablePopulated(tryOption(kwargs, "minutes")) or
        isVariablePopulated(tryOption(kwargs, "seconds")) then
       quarto.log.warning(
         "Please do not specify `minutes` or `seconds` parameters" ..
@@ -214,7 +215,7 @@ local function countdown(args, kwargs, meta)
 
   -- Calculate remaining seconds after extracting minutes
   seconds = time - minutes * 60
-  
+
   -- Check if minutes is greater than or equal to 100 (the maximum possible for display)
   if minutes >= 100 then
     quarto.log.error("The number of minutes must be less than 100.")
@@ -234,7 +235,7 @@ local function countdown(args, kwargs, meta)
 
   -- Determine if a warning should be given
   local warn_when = tonumber(getOption(kwargs, "warn_when", 0))
-    
+
   -- Retrieve and convert "update_every" attribute to a number, default to 1 if not present or invalid
   local update_every = tonumber(getOption(kwargs, "update_every", 1))
 
@@ -251,14 +252,14 @@ local function countdown(args, kwargs, meta)
   if isVariableEmpty(tryOption(kwargs, "top")) and
      isVariableEmpty(tryOption(kwargs, "bottom")) then
     kwargs["bottom"] = 0
-  end    
-     
-  if isVariableEmpty(tryOption(kwargs, "left"))  and
-     isVariableEmpty(tryOption(kwargs, "right")) then
-    kwargs["right"] = 0 
   end
 
-  local style = structureCountdownCSSVars(kwargs) 
+  if isVariableEmpty(tryOption(kwargs, "left"))  and
+     isVariableEmpty(tryOption(kwargs, "right")) then
+    kwargs["right"] = 0
+  end
+
+  local style = structureCountdownCSSVars(kwargs)
 
   local rawHtml = table.concat({
     '<div ',
