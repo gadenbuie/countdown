@@ -1,4 +1,5 @@
 .countdown {
+  --_margin: 0.6em;
   --_running-color: var(--countdown-color-running-text, rgba(0, 0, 0, 0.8));
   --_running-background: var(--countdown-color-running-background, #43AC6A);
   --_running-border-color: var(--countdown-color-running-border, rgba(0, 0, 0, 0.1));
@@ -19,7 +20,7 @@
   border-style: solid;
   border-radius: var(--countdown-border-radius, 0.9rem);
   box-shadow: var(--countdown-box-shadow, 0px 4px 10px 0px rgba(50, 50, 50, 0.4));
-  margin: var(--countdown-margin, 0.6em);
+  margin: var(--countdown-margin, var(--_margin, 0.6em));
   padding: var(--countdown-padding, 0.625rem 0.9rem);
   text-align: center;
   z-index: 10;
@@ -150,6 +151,11 @@
 .countdown.running:hover .countdown-controls>button:active,
 .countdown.running:focus-within .countdown-controls>button:active {
   --_button-bump: 0;
+}
+
+/* ---- Quarto Reveal.js ---- */
+.reveal .countdown {
+  --_margin: 0;
 }
 
 /* ----- Fullscreen ----- */
