@@ -267,7 +267,7 @@ countdown <- function(
 html_dependency_countdown <- function() {
   htmlDependency(
     "countdown",
-    version = utils::packageVersion("countdown"),
+    version = countdown_version,
     package = "countdown",
     src = "countdown",
     script = "countdown.js",
@@ -345,7 +345,7 @@ countdown_style <- function(
   color_warning_background = "#E6C229",
   color_warning_border = prismatic::clr_darken(color_warning_background, 0.1),
   color_warning_text = NULL,
-  .selector = "root"
+  .selector = ":root"
 ) {
   # get user args and defaults of current call
   arg_names <- names(formals(countdown_style))
@@ -356,7 +356,7 @@ countdown_style <- function(
   css_vars <- make_countdown_css_vars(.list = dots)
   declarations <- css(!!!css_vars)
 
-  tags$style(HTML(sprintf(":%s {%s}", .selector, declarations)))
+  tags$style(HTML(sprintf("%s {%s}", .selector, declarations)))
 }
 
 make_countdown_css_vars <- function(..., .list = list()) {

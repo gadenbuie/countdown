@@ -5,8 +5,7 @@
 .DS_Store
 
 # Directories that start with _
-_*/
-!_snaps/
+_dev/
 
 ## https://github.com/github/gitignore/blob/master/R.gitignore
 # History files

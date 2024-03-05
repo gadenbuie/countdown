@@ -11,6 +11,7 @@ on:
     branches: [main, master]
     paths:
       - r/**
+  workflow_dispatch: {}
 
 name: R-CMD-check
 
@@ -50,6 +51,7 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
           working-directory: r
+
 
       - uses: r-lib/actions/check-r-package@v2
         with:

@@ -1,0 +1,44 @@
+---
+title: "Countdown Example"
+countdown:
+  font_size: 4rem
+  color_background: "lightblue"
+format: revealjs
+---
+
+## A note before we begin...
+
+:::{.callout-important}
+Please make sure you are on Quarto version 1.4.545 or greater.
+:::
+
+
+## Default timer
+
+{{< countdown >}}
+
+## Time string
+
+{{< countdown "1:23" >}}
+
+{{< countdown "12:53" minutes="12" seconds="53" left=0 bottom=0 >}}
+
+## Non-standard position
+
+{{< countdown minutes=1 top=0 right=0 >}}
+
+{{< countdown minutes=2 bottom=0 left=0 >}}
+
+{{< countdown minutes=3 bottom=0 right=0 >}}
+
+## Add class
+
+{{< countdown minutes=0 seconds=5 class="testing" >}}
+
+## Sound
+
+{{< countdown minutes=0 seconds=1 play_sound=true >}}
+
+## Custom Sound
+
+{{< countdown minutes=0 seconds=1 play_sound='test-beep.mp3' >}}
