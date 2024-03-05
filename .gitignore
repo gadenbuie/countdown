@@ -74,5 +74,15 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-/.luarc.json
-*.luarc.json
+# Pyhton specific blocks
+.venv
+__pycache__/
+*.py[cod]
+*$py.class
+venv
+.eggs
+.pytest_cache
+*.egg-info
+.DS_Store
+dist
+build

@@ -1,0 +1,31 @@
+[project]
+name = "countdown"
+dynamic = ["version"]
+description = "A simple countdown timer for slides and HTML documents written in 'Jupyter' or 'Quarto'. Integrates fully into 'Shiny for Python' apps. Countdown to something amazing."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{name = "Garrick Aden-Buie and James Joseph Balamuta"}]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+  "htmltools"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/gadenbuie/countdown"
+Changelog = "https://github.com/gadenbuie/countdown/releases"
+Issues = "https://github.com/gadenbuie/countdown/issues"
+CI = "https://github.com/gadenbuie/countdown/actions"
+
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.dynamic]
+version = {attr = "countdown.__version__"}
