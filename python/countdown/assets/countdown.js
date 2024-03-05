@@ -377,7 +377,7 @@ class CountdownTimer {
 
   playSound () {
     let url = this.play_sound
-    if (!url) return
+    if (!url || url === "false") return
     if (typeof url === 'boolean') {
       const src = this.src_location
         ? this.src_location.replace('/countdown.js', '')
