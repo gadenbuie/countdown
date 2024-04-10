@@ -128,7 +128,7 @@ Use the **&plus;** and **&minus;** buttons or <kbd>&uarr;</kbd> <kbd>&darr;</kbd
 First, install `countdown` from [GitHub][countdown]
 
 ```r
-devtools::install_github("gadenbuie/countdown")
+remotes::install_github("gadenbuie/countdown", subdir = "r"))
 ```
 
 --
