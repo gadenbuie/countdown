@@ -14,6 +14,7 @@ class CountdownTimer {
     const duration = minutes * 60 + seconds
 
     function attrIsTrue (x) {
+      if (typeof x === 'undefined') return false
       if (x === true) return true
       return !!(x === 'true' || x === '' || x === '1')
     }
@@ -24,7 +25,7 @@ class CountdownTimer {
     this.is_running = false
     this.warn_when = parseInt(el.dataset.warnWhen) || -1
     this.update_every = parseInt(el.dataset.updateEvery) || 1
-    this.play_sound = attrIsTrue(el.dataset.playSound)
+    this.play_sound = attrIsTrue(el.dataset.playSound) || el.dataset.playSound
     this.blink_colon = attrIsTrue(el.dataset.blinkColon)
     this.startImmediately = attrIsTrue(el.dataset.startImmediately)
     this.timeout = null
@@ -376,7 +377,7 @@ class CountdownTimer {
 
   playSound () {
     let url = this.play_sound
-    if (!url) return
+    if (!url || url === "false") return
     if (typeof url === 'boolean') {
       const src = this.src_location
         ? this.src_location.replace('/countdown.js', '')
