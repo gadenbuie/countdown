@@ -55,7 +55,7 @@ The functionality options are:
 | `minutes`           | `1`                             | Number of minutes with a total cap of 100 minutes                         |
 | `seconds`           | `0`                             | Number of seconds                                                         |
 | `id`                | A generated, unique ID          | ID attribute of the HTML element.                                         |
-| `class`             | "countdown"                     | Class attribute of the HTML element.                                      |
+| `class`             | `"countdown"`                   | Class attribute of the HTML element.                                      |
 | `warn_when`         | `0`                             | Number of seconds before the countdown displays a warning.                |
 | `update_every`      | `1`                             | Frequency at which the countdown should be updated, in seconds.           |
 | `play_sound`        | `"false"`                       | Boolean indicating whether to play a sound during the countdown.          |
@@ -116,5 +116,5 @@ The following options are implemented:
 
 ## Example
 
-You can see a minimal example of the extension in action here: [example.qmd](example.qmd).
+You can see a minimal example of the extension in action here: [quarto-example.qmd](../docs/quarto-example.qmd).
 
