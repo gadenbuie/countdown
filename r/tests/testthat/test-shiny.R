@@ -4,9 +4,8 @@ describe("countdown_app()", {
   local_edition(2)
 
   it("errors if shiny not available", {
-    with_mock(
-      requireNamespace = function(...) FALSE,
-      expect_error(countdown_app())
+    local_mocked_bindings(
+      has_shiny = function(...) FALSE
     )
   })
 
