@@ -177,7 +177,11 @@ parse_mmss <- function(x = "") {
 }
 
 require_shiny <- function(reason) {
-  if (!requireNamespace("shiny", quietly = TRUE)) {
+  if (!has_shiny()) {
     stop(reason, " requires shiny: install.packages('shiny')", call. = FALSE)
   }
+}
+
+has_shiny <- function() {
+  requireNamespace("shiny", quietly = TRUE)
 }
