@@ -14,32 +14,13 @@ library(countdown)
 countdown(minutes = 0, seconds = 15)
 ```
 
-<img src="r/man/figures/countdown.gif" width="200px">
+<img src="man/figures/countdown.gif" width="200px">
 
 ### Want to know more?
 
 Check out countdown in its native environment in the [countdown presentation](https://pkg.garrickadenbuie.com/countdown/).
 
 ## Installation
-
-### Quarto Extension
-
-``` bash
-quarto add gadenbuie/countdown/quarto
-```
-
-This will install the extension under the `_extensions` subdirectory. If
-you’re using version control, you will want to check in this directory.
-
-To use the extension, use the `{{< countdown >}}` shortcode. For example, a countdown clock can be created by writing anywhere:
-
-``` default
-{{< countdown "5:30" >}}
-```
-
-Learn more in the [Quarto countdown README](quarto/README.md).
-
-### R Package
 
 You can install countdown from CRAN
 
@@ -65,4 +46,18 @@ or from GitHub
 remotes::install_github("gadenbuie/countdown", subdir = "r")
 ```
 
-Learn more in the [R countdown README](r/README.md).
+## Shiny App
+
+**countdown** ships with a [Shiny app](https://shiny.rstudio.com) for an interactive _full-screen countdown timer_!
+
+To launch the app, run
+
+```r
+countdown_app()
+```
+
+or use the version hosted online at [apps.garrickadenbuie.com/countdown](https://apps.garrickadenbuie.com/countdown/).
+
+<a href="https://apps.garrickadenbuie.com/countdown/">
+<img src="docs/img/countdown-app.png" width="75%" />
+</a>
