@@ -10,101 +10,186 @@
  */
 
 /* globals Shiny,Audio */
-class CountdownTimer {
-  constructor (el, opts) {
-    if (typeof el === 'string' || el instanceof String) {
-      el = document.querySelector(el)
-    }
+class CountdownTimer extends window.HTMLElement {
+  constructor () {
+    super()
 
-    if (el.counter) {
-      return el.counter
-    }
-
-    const minutes = parseInt(el.querySelector('.minutes').innerText || '0')
-    const seconds = parseInt(el.querySelector('.seconds').innerText || '0')
-    const duration = minutes * 60 + seconds
-
-    function attrIsTrue (x) {
-      if (typeof x === 'undefined') return false
-      if (x === true) return true
-      return !!(x === 'true' || x === '' || x === '1')
-    }
-
-    this.element = el
-    this.duration = duration
+    // Initialize properties without DOM access
     this.end = null
     this.is_running = false
-    this.warn_when = parseInt(el.dataset.warnWhen) || -1
-    this.update_every = parseInt(el.dataset.updateEvery) || 1
-    this.play_sound = attrIsTrue(el.dataset.playSound) || el.dataset.playSound
-    this.blink_colon = attrIsTrue(el.dataset.blinkColon)
-    this.startImmediately = attrIsTrue(el.dataset.startImmediately)
     this.timeout = null
-    this.display = { minutes, seconds }
+    this.remaining = null
+    this.display = { minutes: 0, seconds: 0 }
+    this.src_location = null
 
-    if (opts.src_location) {
-      this.src_location = opts.src_location
+    // For backward compatibility
+    this.countdown = this
+  }
+
+  static get observedAttributes () {
+    return [
+      'warn-when',
+      'update-every',
+      'play-sound',
+      'blink-colon',
+      'start-immediately',
+      'minutes',
+      'seconds'
+    ]
+  }
+
+  connectedCallback () {
+    // Ensure countdown class is present for backward compatibility
+    if (!this.classList.contains('countdown')) {
+      this.classList.add('countdown')
     }
 
+    // Initialize from DOM structure and attributes
+    this.initializeFromDOM()
+
+    // Set up event listeners
     this.addEventListeners()
+
+    // Handle start immediately behavior
+    if (this.startImmediately) {
+      this.handleStartImmediately()
+    }
+
+    // For backward compatibility - attach to element
+    this.element = this
+  }
+
+  disconnectedCallback () {
+    this.cleanup()
+  }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (oldValue === newValue) return
+
+    switch (name) {
+      case 'warn-when':
+        this.warn_when = parseInt(newValue) || -1
+        break
+      case 'update-every':
+        this.update_every = parseInt(newValue) || 1
+        break
+      case 'play-sound':
+        this.play_sound = this.attrIsTrue(newValue) || newValue
+        break
+      case 'blink-colon':
+        this.blink_colon = this.attrIsTrue(newValue)
+        if (!this.blink_colon) {
+          this.classList.remove('blink-colon')
+        }
+        break
+      case 'start-immediately':
+        this.startImmediately = this.attrIsTrue(newValue)
+        break
+      case 'minutes':
+      case 'seconds':
+        // Re-initialize when minutes or seconds change
+        const minutes = parseInt(this.getAttribute('minutes') || '0')
+        const seconds = parseInt(this.getAttribute('seconds') || '0')
+        this.duration = minutes * 60 + seconds
+        this.display = { minutes, seconds }
+
+        // Update the display if DOM exists
+        if (this.querySelector('.minutes') && this.querySelector('.seconds')) {
+          this.update(true)
+        }
+        break
+    }
+  }
+
+  createInnerDOM () {
+    // Clear existing content
+    this.innerHTML = ''
+
+    // Create controls
+    const controls = document.createElement('div')
+    controls.className = 'countdown-controls'
+
+    const bumpDown = document.createElement('button')
+    bumpDown.className = 'countdown-bump-down'
+    bumpDown.innerHTML = '&minus;'
+
+    const bumpUp = document.createElement('button')
+    bumpUp.className = 'countdown-bump-up'
+    bumpUp.innerHTML = '&plus;'
+
+    controls.appendChild(bumpDown)
+    controls.appendChild(bumpUp)
+
+    // Create time display
+    const timeCode = document.createElement('code')
+    timeCode.className = 'countdown-time'
+
+    const minutesSpan = document.createElement('span')
+    minutesSpan.className = 'countdown-digits minutes'
+    minutesSpan.innerText = String(this.display.minutes).padStart(2, '0')
+
+    const colonSpan = document.createElement('span')
+    colonSpan.className = 'countdown-digits colon'
+    colonSpan.innerText = ':'
+
+    const secondsSpan = document.createElement('span')
+    secondsSpan.className = 'countdown-digits seconds'
+    secondsSpan.innerText = String(this.display.seconds).padStart(2, '0')
+
+    timeCode.appendChild(minutesSpan)
+    timeCode.appendChild(colonSpan)
+    timeCode.appendChild(secondsSpan)
+
+    // Append to element
+    this.appendChild(controls)
+    this.appendChild(timeCode)
+  }
+
+  initializeFromDOM () {
+    // Get minutes and seconds from attributes, defaulting to 0
+    const minutes = parseInt(this.getAttribute('minutes') || '0')
+    const seconds = parseInt(this.getAttribute('seconds') || '0')
+
+    this.duration = minutes * 60 + seconds
+    this.display = { minutes, seconds }
+
+    // Create the inner DOM structure
+    this.createInnerDOM()
+
+    // Initialize properties from attributes (changed from dataset)
+    this.warn_when = parseInt(this.getAttribute('warn-when')) || -1
+    this.update_every = parseInt(this.getAttribute('update-every')) || 1
+    this.play_sound =
+      this.attrIsTrue(this.getAttribute('play-sound')) ||
+      this.getAttribute('play-sound')
+    this.blink_colon = this.attrIsTrue(this.getAttribute('blink-colon'))
+    this.startImmediately = this.attrIsTrue(
+      this.getAttribute('start-immediately')
+    )
+
+    // Get source location from script tag if available
+    const currentScript = document.querySelector('script[src*="countdown.js"]')
+    if (currentScript) {
+      this.src_location = currentScript.getAttribute('src')
+    }
+  }
+
+  cleanup () {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+      this.timeout = null
+    }
+    this.is_running = false
+  }
+
+  attrIsTrue (x) {
+    if (typeof x === 'undefined') return false
+    if (x === true) return true
+    return !!(x === 'true' || x === '' || x === '1')
   }
 
   addEventListeners () {
     const self = this
-
-    if (this.startImmediately) {
-      if (window.remark && window.slideshow) {
-        // Remark (xaringan) support
-        const isOnVisibleSlide = () => {
-          return document.querySelector('.remark-visible').contains(self.element)
-        }
-        if (isOnVisibleSlide()) {
-          self.start()
-        } else {
-          let started_once = 0
-          window.slideshow.on('afterShowSlide', function () {
-            if (started_once > 0) return
-            if (isOnVisibleSlide()) {
-              self.start()
-              started_once = 1
-            }
-          })
-        }
-      } else if (window.Reveal) {
-        // Revealjs (quarto) support
-        const isOnVisibleSlide = () => {
-          const currentSlide = document.querySelector('.reveal .slide.present')
-          return currentSlide ? currentSlide.contains(self.element) : false
-        }
-        if (isOnVisibleSlide()) {
-          self.start()
-        } else {
-          const revealStartTimer = () => {
-            if (isOnVisibleSlide()) {
-              self.start()
-              window.Reveal.off('slidechanged', revealStartTimer)
-            }
-          }
-          window.Reveal.on('slidechanged', revealStartTimer)
-        }
-      } else if (window.IntersectionObserver) {
-        // All other situations use IntersectionObserver
-        const onVisible = (element, callback) => {
-          new window.IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-              if (entry.intersectionRatio > 0) {
-                callback(element)
-                observer.disconnect()
-              }
-            })
-          }).observe(element)
-        }
-        onVisible(this.element, el => el.countdown.start())
-      } else {
-        // or just start the timer as soon as it's initialized
-        this.start()
-      }
-    }
 
     function haltEvent (ev) {
       ev.preventDefault()
@@ -117,21 +202,22 @@ class CountdownTimer {
       return ev.code === 'ArrowUp' || ev.code === 'ArrowDown'
     }
 
-    ;['click', 'touchend'].forEach(function (eventType) {
-      self.element.addEventListener(eventType, function (ev) {
+    ['click', 'touchend'].forEach(function (eventType) {
+      self.addEventListener(eventType, function (ev) {
         haltEvent(ev)
-        self.is_running ? self.stop({manual: true}) : self.start()
+        self.is_running ? self.stop({ manual: true }) : self.start()
       })
     })
-    this.element.addEventListener('keydown', function (ev) {
-      if (ev.code === "Escape") {
+
+    this.addEventListener('keydown', function (ev) {
+      if (ev.code === 'Escape') {
         self.reset()
         haltEvent(ev)
       }
       if (!isSpaceOrEnter(ev) && !isArrowUpOrDown(ev)) return
       haltEvent(ev)
       if (isSpaceOrEnter(ev)) {
-        self.is_running ? self.stop({manual: true}) : self.start()
+        self.is_running ? self.stop({ manual: true }) : self.start()
         return
       }
 
@@ -143,40 +229,106 @@ class CountdownTimer {
         self.bumpDown()
       }
     })
-    this.element.addEventListener('dblclick', function (ev) {
+
+    this.addEventListener('dblclick', function (ev) {
       haltEvent(ev)
       if (self.is_running) self.reset()
     })
-    this.element.addEventListener('touchmove', haltEvent)
 
-    const btnBumpDown = this.element.querySelector('.countdown-bump-down')
-    ;['click', 'touchend'].forEach(function (eventType) {
-      btnBumpDown.addEventListener(eventType, function (ev) {
-        haltEvent(ev)
-        if (self.is_running) self.bumpDown()
-      })
-    })
-    btnBumpDown.addEventListener('keydown', function (ev) {
-      if (!isSpaceOrEnter(ev) || !self.is_running) return
-      haltEvent(ev)
-      self.bumpDown()
-    })
+    this.addEventListener('touchmove', haltEvent)
 
-    const btnBumpUp = this.element.querySelector('.countdown-bump-up')
-    ;['click', 'touchend'].forEach(function (eventType) {
-      btnBumpUp.addEventListener(eventType, function (ev) {
-        haltEvent(ev)
-        if (self.is_running) self.bumpUp()
+    const btnBumpDown = this.querySelector('.countdown-bump-down')
+    if (btnBumpDown) {
+      ['click', 'touchend'].forEach(function (eventType) {
+        btnBumpDown.addEventListener(eventType, function (ev) {
+          haltEvent(ev)
+          if (self.is_running) self.bumpDown()
+        })
       })
-    })
-    btnBumpUp.addEventListener('keydown', function (ev) {
-      if (!isSpaceOrEnter(ev) || !self.is_running) return
-      haltEvent(ev)
-      self.bumpUp()
-    })
-    this.element.querySelector('.countdown-controls').addEventListener('dblclick', function (ev) {
-      haltEvent(ev)
-    })
+      btnBumpDown.addEventListener('keydown', function (ev) {
+        if (!isSpaceOrEnter(ev) || !self.is_running) return
+        haltEvent(ev)
+        self.bumpDown()
+      })
+    }
+
+    const btnBumpUp = this.querySelector('.countdown-bump-up')
+    if (btnBumpUp) {
+      ['click', 'touchend'].forEach(function (eventType) {
+        btnBumpUp.addEventListener(eventType, function (ev) {
+          haltEvent(ev)
+          if (self.is_running) self.bumpUp()
+        })
+      })
+      btnBumpUp.addEventListener('keydown', function (ev) {
+        if (!isSpaceOrEnter(ev) || !self.is_running) return
+        haltEvent(ev)
+        self.bumpUp()
+      })
+    }
+
+    const controlsEl = this.querySelector('.countdown-controls')
+    if (controlsEl) {
+      controlsEl.addEventListener('dblclick', function (ev) {
+        haltEvent(ev)
+      })
+    }
+  }
+
+  handleStartImmediately () {
+    const self = this
+
+    if (window.remark && window.slideshow) {
+      // Remark (xaringan) support
+      const isOnVisibleSlide = () => {
+        return document.querySelector('.remark-visible').contains(self)
+      }
+      if (isOnVisibleSlide()) {
+        self.start()
+      } else {
+        let started_once = 0
+        window.slideshow.on('afterShowSlide', function () {
+          if (started_once > 0) return
+          if (isOnVisibleSlide()) {
+            self.start()
+            started_once = 1
+          }
+        })
+      }
+    } else if (window.Reveal) {
+      // Revealjs (quarto) support
+      const isOnVisibleSlide = () => {
+        const currentSlide = document.querySelector('.reveal .slide.present')
+        return currentSlide ? currentSlide.contains(self) : false
+      }
+      if (isOnVisibleSlide()) {
+        self.start()
+      } else {
+        const revealStartTimer = () => {
+          if (isOnVisibleSlide()) {
+            self.start()
+            window.Reveal.off('slidechanged', revealStartTimer)
+          }
+        }
+        window.Reveal.on('slidechanged', revealStartTimer)
+      }
+    } else if (window.IntersectionObserver) {
+      // All other situations use IntersectionObserver
+      const onVisible = (element, callback) => {
+        new window.IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio > 0) {
+              callback(element)
+              observer.disconnect()
+            }
+          })
+        }).observe(element)
+      }
+      onVisible(this, (el) => el.countdown.start())
+    } else {
+      // or just start the timer as soon as it's initialized
+      this.start()
+    }
   }
 
   remainingTime () {
@@ -210,8 +362,8 @@ class CountdownTimer {
 
     this.emitStateEvent('start')
 
-    this.element.classList.remove('finished')
-    this.element.classList.add('running')
+    this.classList.remove('finished')
+    this.classList.add('running')
     this.update(true)
     this.tick()
   }
@@ -227,7 +379,7 @@ class CountdownTimer {
     this.update()
 
     if (run_again) {
-      const delay = (this.end - Date.now() > 10000) ? 1000 : 250
+      const delay = this.end - Date.now() > 10000 ? 1000 : 250
       this.blinkColon(secondsWas)
       this.timeout = setTimeout(this.tick.bind(this), delay)
     }
@@ -238,12 +390,12 @@ class CountdownTimer {
     if (!this.blink_colon) return
     // warn_when always updates the seconds
     if (this.warn_when > 0 && Date.now() + this.warn_when > this.end) {
-      this.element.classList.remove('blink-colon')
+      this.classList.remove('blink-colon')
       return
     }
     const { seconds: secondsIs } = this.display
     if (secondsIs > 10 || secondsWas !== secondsIs) {
-      this.element.classList.toggle('blink-colon')
+      this.classList.toggle('blink-colon')
     }
   }
 
@@ -255,7 +407,7 @@ class CountdownTimer {
     const { remaining, minutes, seconds } = this.remainingTime()
 
     const setRemainingTime = (selector, time) => {
-      const timeContainer = this.element.querySelector(selector)
+      const timeContainer = this.querySelector(selector)
       if (!timeContainer) return
       time = Math.max(time, 0)
       timeContainer.innerText = String(time).padStart(2, 0)
@@ -269,31 +421,32 @@ class CountdownTimer {
       return
     }
 
-    const should_update = force ||
+    const should_update =
+      force ||
       Math.round(remaining) < this.warn_when ||
       Math.round(remaining) % this.update_every === 0
 
     if (should_update) {
       const is_warning = remaining <= this.warn_when
-      if (is_warning && !this.element.classList.contains('warning')) {
+      if (is_warning && !this.classList.contains('warning')) {
         this.emitStateEvent('warning')
       }
-      this.element.classList.toggle('warning', is_warning)
+      this.classList.toggle('warning', is_warning)
       this.display = { minutes, seconds }
       setRemainingTime('.minutes', minutes)
       setRemainingTime('.seconds', seconds)
     }
   }
 
-  stop ({manual = false} = {}) {
+  stop ({ manual = false } = {}) {
     const { remaining } = this.remainingTime()
     if (remaining > 1) {
       this.remaining = remaining
     }
-    this.element.classList.remove('running')
-    this.element.classList.remove('warning')
-    this.element.classList.remove('blink-colon')
-    this.element.classList.add('finished')
+    this.classList.remove('running')
+    this.classList.remove('warning')
+    this.classList.remove('blink-colon')
+    this.classList.add('finished')
     this.is_running = false
     this.end = null
     this.emitStateEvent(manual ? 'stop' : 'finished')
@@ -301,12 +454,12 @@ class CountdownTimer {
   }
 
   reset () {
-    this.stop({manual: true})
+    this.stop({ manual: true })
     this.remaining = null
     this.update(true)
 
-    this.element.classList.remove('finished')
-    this.element.classList.remove('warning')
+    this.classList.remove('finished')
+    this.classList.remove('warning')
     this.emitEvents = true
     this.emitStateEvent('reset')
   }
@@ -321,7 +474,7 @@ class CountdownTimer {
     if (typeof opts.blink_colon !== 'undefined') {
       this.blink_colon = opts.blink_colon
       if (!opts.blink_colon) {
-        this.element.classList.remove('blink-colon')
+        this.classList.remove('blink-colon')
       }
     }
     if (typeof opts.play_sound !== 'undefined') {
@@ -388,7 +541,7 @@ class CountdownTimer {
 
   playSound () {
     let url = this.play_sound
-    if (!url || url === "false") return
+    if (!url || url === 'false') return
     if (typeof url === 'boolean') {
       const src = this.src_location
         ? this.src_location.replace('/countdown.js', '')
@@ -424,7 +577,9 @@ class CountdownTimer {
     }
 
     this.reportStateToShiny(data)
-    this.element.dispatchEvent(new CustomEvent('countdown', { detail: data, bubbles: true }))
+    this.dispatchEvent(
+      new CustomEvent('countdown', { detail: data, bubbles: true })
+    )
   }
 
   reportStateToShiny (data) {
@@ -440,61 +595,66 @@ class CountdownTimer {
 
     const shinyData = { event: { action, time }, timer }
 
-    window.Shiny.setInputValue(this.element.id, shinyData)
+    window.Shiny.setInputValue(this.id, shinyData)
   }
 }
 
-(function () {
-  const CURRENT_SCRIPT = document.currentScript.getAttribute('src')
+if (!customElements.get('countdown-timer')) {
+  customElements.define('countdown-timer', CountdownTimer)
+}
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const els = document.querySelectorAll('.countdown')
-    if (!els || !els.length) {
+(function () {
+  if (!window.Shiny) {
+    return
+  }
+  Shiny.addCustomMessageHandler('countdown:update', function (x) {
+    if (!x.id) {
+      console.error('No `id` provided, cannot update countdown')
       return
     }
-    els.forEach(function (el) {
-      el.countdown = new CountdownTimer(el, { src_location: CURRENT_SCRIPT })
-    })
+    const el = document.getElementById(x.id)
+    if (el && el.setValues) {
+      el.setValues(x)
+    }
+  })
 
-    if (window.Shiny) {
-      Shiny.addCustomMessageHandler('countdown:update', function (x) {
-        if (!x.id) {
-          console.error('No `id` provided, cannot update countdown')
-          return
-        }
-        const el = document.getElementById(x.id)
-        el.countdown.setValues(x)
-      })
+  Shiny.addCustomMessageHandler('countdown:start', function (id) {
+    const el = document.getElementById(id)
+    if (!el) return
+    if (el.start) {
+      el.start()
+    }
+  })
 
-      Shiny.addCustomMessageHandler('countdown:start', function (id) {
-        const el = document.getElementById(id)
-        if (!el) return
-        el.countdown.start()
-      })
+  Shiny.addCustomMessageHandler('countdown:stop', function (id) {
+    const el = document.getElementById(id)
+    if (!el) return
+    if (el.stop) {
+      el.stop({ manual: true })
+    }
+  })
 
-      Shiny.addCustomMessageHandler('countdown:stop', function (id) {
-        const el = document.getElementById(id)
-        if (!el) return
-        el.countdown.stop({manual: true})
-      })
+  Shiny.addCustomMessageHandler('countdown:reset', function (id) {
+    const el = document.getElementById(id)
+    if (!el) return
+    if (el.reset) {
+      el.reset()
+    }
+  })
 
-      Shiny.addCustomMessageHandler('countdown:reset', function (id) {
-        const el = document.getElementById(id)
-        if (!el) return
-        el.countdown.reset()
-      })
+  Shiny.addCustomMessageHandler('countdown:bumpUp', function (id) {
+    const el = document.getElementById(id)
+    if (!el) return
+    if (el.bumpUp) {
+      el.bumpUp()
+    }
+  })
 
-      Shiny.addCustomMessageHandler('countdown:bumpUp', function (id) {
-        const el = document.getElementById(id)
-        if (!el) return
-        el.countdown.bumpUp()
-      })
-
-      Shiny.addCustomMessageHandler('countdown:bumpDown', function (id) {
-        const el = document.getElementById(id)
-        if (!el) return
-        el.countdown.bumpDown()
-      })
+  Shiny.addCustomMessageHandler('countdown:bumpDown', function (id) {
+    const el = document.getElementById(id)
+    if (!el) return
+    if (el.bumpDown) {
+      el.bumpDown()
     }
   })
 })()
