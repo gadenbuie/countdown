@@ -142,7 +142,9 @@ countdown_action <- function(
 #'
 #' @family Shiny functions
 #' @export
-countdown_shiny_example <- function(display.mode = c("showcase", "normal", "auto")) {
+countdown_shiny_example <- function(
+  display.mode = c("showcase", "normal", "auto")
+) {
   shiny::runApp(
     system.file("examples", "shiny-app", package = "countdown"),
     display.mode = match.arg(display.mode)
@@ -155,23 +157,33 @@ countdown_app_file <- function(...) {
 
 parse_mmss <- function(x = "") {
   error_msg <- list(error = "Please enter a time as MM or MM:SS")
-  if (is.null(x) || x == "") return(list(minutes = 0L, seconds = 0L))
+  if (is.null(x) || x == "") {
+    return(list(minutes = 0L, seconds = 0L))
+  }
 
   invalid <- !grepl("\\d", x) || grepl("[^:0-9]", x) || grepl(":$", x)
-  if (invalid) return(error_msg)
+  if (invalid) {
+    return(error_msg)
+  }
 
   m <- if (grepl(":", x)) {
-    if (!grepl("^\\d{1,2}:\\d{1,2}$", x)) return(error_msg)
+    if (!grepl("^\\d{1,2}:\\d{1,2}$", x)) {
+      return(error_msg)
+    }
     regexec("^(\\d{1,2}):(\\d{1,2})$", x)
   } else {
-    if (!grepl("^\\d{1,2}$", x)) return(error_msg)
+    if (!grepl("^\\d{1,2}$", x)) {
+      return(error_msg)
+    }
     regexec("(\\d{1,2})", x)
   }
 
   x <- regmatches(x, m)[[1]]
   time <- list(minutes = as.integer(x[2]), seconds = as.integer(x[3]))
 
-  if (is.na(time$seconds)) time$seconds <- 0
+  if (is.na(time$seconds)) {
+    time$seconds <- 0
+  }
 
   time
 }

@@ -28,7 +28,13 @@ test_that("countdown() structure snapshot", {
 })
 
 test_that("countdown()", {
-  x <- countdown(1, 30, id = "timer_1", class = "extra-class", play_sound = TRUE)
+  x <- countdown(
+    1,
+    30,
+    id = "timer_1",
+    class = "extra-class",
+    play_sound = TRUE
+  )
 
   expect_true(attr(x, "browsable_html"))
   expect_true(inherits(x, "shiny.tag"))
@@ -43,20 +49,26 @@ test_that("countdown()", {
     expect_equal(counter_inner, paste0(...))
   }
 
-  test_inner_html(x,
-                  "<span class=\"countdown-digits minutes\">01</span>",
-                  "<span class=\"countdown-digits colon\">:</span>",
-                  "<span class=\"countdown-digits seconds\">30</span>")
+  test_inner_html(
+    x,
+    "<span class=\"countdown-digits minutes\">01</span>",
+    "<span class=\"countdown-digits colon\">:</span>",
+    "<span class=\"countdown-digits seconds\">30</span>"
+  )
 
   # seconds and minutes get added
-  test_inner_html(countdown(10.05, 65),
-                  "<span class=\"countdown-digits minutes\">11</span>",
-                  "<span class=\"countdown-digits colon\">:</span>",
-                  "<span class=\"countdown-digits seconds\">08</span>")
+  test_inner_html(
+    countdown(10.05, 65),
+    "<span class=\"countdown-digits minutes\">11</span>",
+    "<span class=\"countdown-digits colon\">:</span>",
+    "<span class=\"countdown-digits seconds\">08</span>"
+  )
 
   expect_equal(countdown(class = "countdown")$attribs$class, "countdown")
-  expect_equal(countdown(class = c("test", "countdown", "test"))$attribs$class, "countdown test")
-
+  expect_equal(
+    countdown(class = c("test", "countdown", "test"))$attribs$class,
+    "countdown test"
+  )
 
   expect_error(countdown(100), "minutes")
 })
@@ -100,16 +112,22 @@ test_that("countdown dependencies are included", {
   tmp_html <- sub("Rmd$", "html", tmp_rmd)
 
   cat(html_doc, file = tmp_rmd, sep = "\n")
-  rmarkdown::render(tmp_rmd, output_options = list(self_contained = FALSE), quiet = TRUE)
+  rmarkdown::render(
+    tmp_rmd,
+    output_options = list(self_contained = FALSE),
+    quiet = TRUE
+  )
 
-  countdown_lib_dir <- dir(file.path(tmpdir, "countdown_test_files"), full.names = TRUE)
+  countdown_lib_dir <- dir(
+    file.path(tmpdir, "countdown_test_files"),
+    full.names = TRUE
+  )
   countdown_lib_dir <- countdown_lib_dir[grepl("countdown-", countdown_lib_dir)]
 
   expect_true(dir.exists(countdown_lib_dir))
   expect_true(file.exists(file.path(countdown_lib_dir, "countdown.css")))
   expect_true(file.exists(file.path(countdown_lib_dir, "countdown.js")))
   expect_true(file.exists(file.path(countdown_lib_dir, "smb_stage_clear.mp3")))
-
 })
 
 test_that("make_unique_id is always unique", {

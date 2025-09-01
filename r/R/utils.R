@@ -8,7 +8,7 @@ make_unique_id <- function() {
   with_private_seed <- utils::getFromNamespace("withPrivateSeed", "htmltools")
   with_private_seed({
     rand_id <- as.hexmode(sample(256, 4, replace = TRUE) - 1)
-    paste(format(rand_id, width=2), collapse = "")
+    paste(format(rand_id, width = 2), collapse = "")
   })
 }
 
