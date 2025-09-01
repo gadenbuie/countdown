@@ -22,7 +22,7 @@ server <- function(input, output, session) {
     div(
       class = "btn-group",
       actionButton("start", "Start", icon = icon("play")),
-      actionButton("stop",  "Stop",  icon = icon("pause")),
+      actionButton("stop", "Stop", icon = icon("pause")),
       actionButton("reset", "Reset", icon = icon("sync")),
       if (is_running) {
         actionButton("bumpUp", "Bump Up", icon = icon("arrow-up"))
@@ -33,9 +33,9 @@ server <- function(input, output, session) {
     )
   })
 
-  observeEvent(input$start,    countdown_action("countdown", "start"))
-  observeEvent(input$stop,     countdown_action("countdown", "stop"))
-  observeEvent(input$reset,    countdown_action("countdown", "reset"))
-  observeEvent(input$bumpUp,   countdown_action("countdown", "bumpUp"))
+  observeEvent(input$start, countdown_action("countdown", "start"))
+  observeEvent(input$stop, countdown_action("countdown", "stop"))
+  observeEvent(input$reset, countdown_action("countdown", "reset"))
+  observeEvent(input$bumpUp, countdown_action("countdown", "bumpUp"))
   observeEvent(input$bumpDown, countdown_action("countdown", "bumpDown"))
 }

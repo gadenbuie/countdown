@@ -378,7 +378,6 @@ make_countdown_css_vars <- function(..., .list = list()) {
     }
   }
 
-
   names(dots) <- paste0(
     "--countdown-",
     gsub("_", "-", names(dots))

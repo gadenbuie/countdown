@@ -17,7 +17,7 @@ update_every_choices <- setNames(
 )
 
 ui <- function(req) {
-    basicPage(
+  basicPage(
     tags$head(
       tags$title("{countdown} timer"),
       tags$style(
@@ -39,7 +39,10 @@ ui <- function(req) {
       column(
         class = "text-center col-md-3",
         width = 4,
-        h1(actionLink("about", "countdown", class = "text-info"), style = "line-height: 35px")
+        h1(
+          actionLink("about", "countdown", class = "text-info"),
+          style = "line-height: 35px"
+        )
       ),
       column(
         class = "text-left col-md-9",
@@ -54,14 +57,20 @@ ui <- function(req) {
           column(
             width = 12,
             class = inputs_col_class,
-            textInput("warn_time", "Warn Time Remaining", value = "1:00", placeholder = "MM:SS"),
+            textInput(
+              "warn_time",
+              "Warn Time Remaining",
+              value = "1:00",
+              placeholder = "MM:SS"
+            ),
             uiOutput("warn_time_error_ui")
           ),
           column(
             width = 12,
             class = inputs_col_class,
             selectInput(
-              "update_every", "Update Every",
+              "update_every",
+              "Update Every",
               choices = update_every_choices,
               selected = "1 sec",
               selectize = FALSE
@@ -128,7 +137,6 @@ server <- function(input, output, session) {
     x$seconds <- x$minutes * 60 + x$seconds
     x
   })
-
 
   observe({
     # update bookmark when these inputs change
@@ -221,9 +229,13 @@ server <- function(input, output, session) {
     }
     # make sure warn_time is at least twice the update_every interval
     s <- max(s, as.integer(input$update_every) * 2)
-    min <- floor(s/ 60)
-    sec <- s - min*60
-    updateTextInput(session, "warn_time", value = sprintf("%02d:%02d", min, sec))
+    min <- floor(s / 60)
+    sec <- s - min * 60
+    updateTextInput(
+      session,
+      "warn_time",
+      value = sprintf("%02d:%02d", min, sec)
+    )
   })
 
   observeEvent(input$about, {
@@ -233,12 +245,20 @@ server <- function(input, output, session) {
         p(
           a("countdown", href = "https://pkg.garrickadenbuie.com/countdown"),
           "is a small R package for creating HTML-based timers.",
-          "Learn", em("why"), "and", em("how"), "at",
-          a("pkg.garrickadenbuie.com/countdown.", href = "https://pkg.garrickadenbuie.com/countdown")
+          "Learn",
+          em("why"),
+          "and",
+          em("how"),
+          "at",
+          a(
+            "pkg.garrickadenbuie.com/countdown.",
+            href = "https://pkg.garrickadenbuie.com/countdown"
+          )
         ),
         p(
           style = "padding-top: 3em",
-          "By Garrick Aden-Buie", br(),
+          "By Garrick Aden-Buie",
+          br(),
           a("garrickadenbuie.com", href = "https://www.garrickadenbuie.com")
         )
       )
