@@ -40,6 +40,10 @@ sync-quarto:  ## Sync web assets to Quarto extension
 	cp -r $(SRC_FILES) $(SYNC_DEST_QUARTO)
 	echo "local countdown_version = '$(VERSION)'\n\nreturn { countdownVersion = countdown_version }" > quarto/_extensions/countdown/config.lua
 
+.PHONY: js-format
+js-format: ## Format JavaScript files using prettier
+	npx standard --fix $(wildcard $(SRC_DIR)/*.js)
+
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"
 	@printf "\033[32m%-18s\033[0m %s\n" "SRC_DIR" "$(SRC_DIR)"
