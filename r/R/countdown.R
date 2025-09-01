@@ -224,9 +224,11 @@ countdown <- function(
     color_warning_text = color_warning_text
   )
 
-  x <- div(
+  attrs <- list(
     class = class,
     id = id,
+    minutes = sprintf("%d", minutes),
+    seconds = sprintf("%d", seconds),
     `data-warn-when` = warn_when,
     `data-update-every` = update_every,
     `data-play-sound` = play_sound,
@@ -241,25 +243,10 @@ countdown <- function(
       !!!css_vars,
     ),
     style = style,
-    # This looks weird but it keeps pandoc from adding paragraph tags
-    HTML(paste0(
-      '<div class="countdown-controls">',
-      '<button class="countdown-bump-down">&minus;</button>',
-      '<button class="countdown-bump-up">&plus;</button>',
-      '</div>'
-    )),
-    code(
-      class = "countdown-time",
-      HTML(
-        paste0(
-          span(class = "countdown-digits minutes", sprintf("%02d", minutes)),
-          span(class = "countdown-digits colon", ":"),
-          span(class = "countdown-digits seconds", sprintf("%02d", seconds))
-        )
-      )
-    ),
     html_dependency_countdown()
   )
+
+  x <- htmltools::tag("countdown-timer", attrs)
 
   htmltools::browsable(x)
 }

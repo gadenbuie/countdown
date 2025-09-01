@@ -262,8 +262,10 @@ local function countdown(args, kwargs, meta)
   local style = structureCountdownCSSVars(kwargs)
 
   local rawHtml = table.concat({
-    '<div ',
+    '<countdown-timer ',
     '\n  id="', id, '"',
+    '\n  minutes="', string.format("%02d", minutes), '"',
+    '\n  seconds="', string.format("%02d", seconds), '"',
     '\n  class="', class, '"',
     '\n  data-warn-when="', warn_when,'"',
     '\n  data-update-every="', update_every,'"',
@@ -272,15 +274,7 @@ local function countdown(args, kwargs, meta)
     '\n  data-start-immediately="', tostring(start_immediately),'"',
     '\n  tabindex="0"',
     '\n  style="', style ,'">',
-    '\n  <div class="countdown-controls">',
-    '\n    <button class="countdown-bump-down">−</button>',
-    '\n    <button class="countdown-bump-up">+</button>',
-    '\n </div>',
-    '\n <code class="countdown-time">',
-    '<span class="countdown-digits minutes">', string.format("%02d", minutes),
-    '</span><span class="countdown-digits colon">:</span>',
-    '<span class="countdown-digits seconds">', string.format("%02d", seconds), '</span></code>',
-    '\n </div>'
+    '\n </countdown-timer>'
   })
 
   -- Return a new Div element with modified attributes
