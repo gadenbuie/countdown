@@ -61,7 +61,7 @@ docs-preview: docs ## Preview documentation site locally
 	npx http-server docs
 
 .PHONY: js-test
-js-test-all: ## Run all Playwright tests
+js-test: ## Run all Playwright tests
 	@echo "Running all Playwright tests..."
 	@cd $(SRC_DIR) && npm run test:all
 
