@@ -55,19 +55,12 @@ class CountdownTimer extends window.HTMLElement {
       this.classList.add('countdown')
     }
 
-    // Initialize from DOM structure and attributes
     this.initializeFromDOM()
-
-    // Set up event listeners
     this.addEventListeners()
 
-    // Handle start immediately behavior
     if (this.startImmediately) {
       document.addEventListener('DOMContentLoaded', () => this.handleStartImmediately())
     }
-
-    // For backward compatibility - attach to element
-    this.element = this
   }
 
   disconnectedCallback () {
@@ -118,7 +111,7 @@ class CountdownTimer extends window.HTMLElement {
     // Clear existing content
     this.innerHTML = ''
 
-    // Create controls
+    // Controls ----
     this.elements.controls = document.createElement('div')
     this.elements.controls.className = 'countdown-controls'
 
@@ -133,7 +126,7 @@ class CountdownTimer extends window.HTMLElement {
     this.elements.controls.appendChild(this.elements.bumpDown)
     this.elements.controls.appendChild(this.elements.bumpUp)
 
-    // Create time display
+    // Time ----
     this.elements.timeCode = document.createElement('code')
     this.elements.timeCode.className = 'countdown-time'
 
@@ -153,7 +146,7 @@ class CountdownTimer extends window.HTMLElement {
     this.elements.timeCode.appendChild(this.elements.colon)
     this.elements.timeCode.appendChild(this.elements.seconds)
 
-    // Append to element
+    // Assemble ----
     this.appendChild(this.elements.controls)
     this.appendChild(this.elements.timeCode)
   }
@@ -169,7 +162,7 @@ class CountdownTimer extends window.HTMLElement {
     // Create the inner DOM structure
     this.createInnerDOM()
 
-    // Initialize properties from attributes (changed from dataset)
+    // Initialize properties from attributes
     this.warn_when = parseInt(this.getAttribute('warn-when')) || -1
     this.update_every = parseInt(this.getAttribute('update-every')) || 1
     this.play_sound =
@@ -251,7 +244,6 @@ class CountdownTimer extends window.HTMLElement {
 
     this.addEventListener('touchmove', haltEvent)
 
-    // Use stored element references instead of querySelector
     if (this.elements.bumpDown) {
       ['click', 'touchend'].forEach(function (eventType) {
         self.elements.bumpDown.addEventListener(eventType, function (ev) {
