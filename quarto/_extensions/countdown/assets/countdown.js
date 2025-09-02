@@ -22,6 +22,17 @@ class CountdownTimer extends window.HTMLElement {
     this.display = { minutes: 0, seconds: 0 }
     this.src_location = null
 
+    // Element references (will be set when DOM is created)
+    this.elements = {
+      controls: null,
+      bumpDown: null,
+      bumpUp: null,
+      timeCode: null,
+      minutes: null,
+      colon: null,
+      seconds: null
+    }
+
     // For backward compatibility
     this.countdown = this
   }
@@ -96,7 +107,7 @@ class CountdownTimer extends window.HTMLElement {
         this.display = { minutes, seconds }
 
         // Update the display if DOM exists
-        if (this.querySelector('.minutes') && this.querySelector('.seconds')) {
+        if (this.elements.minutes && this.elements.seconds) {
           this.update(true)
         }
         break
@@ -108,43 +119,43 @@ class CountdownTimer extends window.HTMLElement {
     this.innerHTML = ''
 
     // Create controls
-    const controls = document.createElement('div')
-    controls.className = 'countdown-controls'
+    this.elements.controls = document.createElement('div')
+    this.elements.controls.className = 'countdown-controls'
 
-    const bumpDown = document.createElement('button')
-    bumpDown.className = 'countdown-bump-down'
-    bumpDown.innerHTML = '&minus;'
+    this.elements.bumpDown = document.createElement('button')
+    this.elements.bumpDown.className = 'countdown-bump-down'
+    this.elements.bumpDown.innerHTML = '&minus;'
 
-    const bumpUp = document.createElement('button')
-    bumpUp.className = 'countdown-bump-up'
-    bumpUp.innerHTML = '&plus;'
+    this.elements.bumpUp = document.createElement('button')
+    this.elements.bumpUp.className = 'countdown-bump-up'
+    this.elements.bumpUp.innerHTML = '&plus;'
 
-    controls.appendChild(bumpDown)
-    controls.appendChild(bumpUp)
+    this.elements.controls.appendChild(this.elements.bumpDown)
+    this.elements.controls.appendChild(this.elements.bumpUp)
 
     // Create time display
-    const timeCode = document.createElement('code')
-    timeCode.className = 'countdown-time'
+    this.elements.timeCode = document.createElement('code')
+    this.elements.timeCode.className = 'countdown-time'
 
-    const minutesSpan = document.createElement('span')
-    minutesSpan.className = 'countdown-digits minutes'
-    minutesSpan.innerText = String(this.display.minutes).padStart(2, '0')
+    this.elements.minutes = document.createElement('span')
+    this.elements.minutes.className = 'countdown-digits minutes'
+    this.elements.minutes.innerText = String(this.display.minutes).padStart(2, '0')
 
-    const colonSpan = document.createElement('span')
-    colonSpan.className = 'countdown-digits colon'
-    colonSpan.innerText = ':'
+    this.elements.colon = document.createElement('span')
+    this.elements.colon.className = 'countdown-digits colon'
+    this.elements.colon.innerText = ':'
 
-    const secondsSpan = document.createElement('span')
-    secondsSpan.className = 'countdown-digits seconds'
-    secondsSpan.innerText = String(this.display.seconds).padStart(2, '0')
+    this.elements.seconds = document.createElement('span')
+    this.elements.seconds.className = 'countdown-digits seconds'
+    this.elements.seconds.innerText = String(this.display.seconds).padStart(2, '0')
 
-    timeCode.appendChild(minutesSpan)
-    timeCode.appendChild(colonSpan)
-    timeCode.appendChild(secondsSpan)
+    this.elements.timeCode.appendChild(this.elements.minutes)
+    this.elements.timeCode.appendChild(this.elements.colon)
+    this.elements.timeCode.appendChild(this.elements.seconds)
 
     // Append to element
-    this.appendChild(controls)
-    this.appendChild(timeCode)
+    this.appendChild(this.elements.controls)
+    this.appendChild(this.elements.timeCode)
   }
 
   initializeFromDOM () {
@@ -239,39 +250,37 @@ class CountdownTimer extends window.HTMLElement {
 
     this.addEventListener('touchmove', haltEvent)
 
-    const btnBumpDown = this.querySelector('.countdown-bump-down')
-    if (btnBumpDown) {
+    // Use stored element references instead of querySelector
+    if (this.elements.bumpDown) {
       ['click', 'touchend'].forEach(function (eventType) {
-        btnBumpDown.addEventListener(eventType, function (ev) {
+        self.elements.bumpDown.addEventListener(eventType, function (ev) {
           haltEvent(ev)
           if (self.is_running) self.bumpDown()
         })
       })
-      btnBumpDown.addEventListener('keydown', function (ev) {
+      this.elements.bumpDown.addEventListener('keydown', function (ev) {
         if (!isSpaceOrEnter(ev) || !self.is_running) return
         haltEvent(ev)
         self.bumpDown()
       })
     }
 
-    const btnBumpUp = this.querySelector('.countdown-bump-up')
-    if (btnBumpUp) {
+    if (this.elements.bumpUp) {
       ['click', 'touchend'].forEach(function (eventType) {
-        btnBumpUp.addEventListener(eventType, function (ev) {
+        self.elements.bumpUp.addEventListener(eventType, function (ev) {
           haltEvent(ev)
           if (self.is_running) self.bumpUp()
         })
       })
-      btnBumpUp.addEventListener('keydown', function (ev) {
+      this.elements.bumpUp.addEventListener('keydown', function (ev) {
         if (!isSpaceOrEnter(ev) || !self.is_running) return
         haltEvent(ev)
         self.bumpUp()
       })
     }
 
-    const controlsEl = this.querySelector('.countdown-controls')
-    if (controlsEl) {
-      controlsEl.addEventListener('dblclick', function (ev) {
+    if (this.elements.controls) {
+      this.elements.controls.addEventListener('dblclick', function (ev) {
         haltEvent(ev)
       })
     }
@@ -408,17 +417,16 @@ class CountdownTimer extends window.HTMLElement {
 
     const { remaining, minutes, seconds } = this.remainingTime()
 
-    const setRemainingTime = (selector, time) => {
-      const timeContainer = this.querySelector(selector)
-      if (!timeContainer) return
+    const setRemainingTime = (element, time) => {
+      if (!element) return
       time = Math.max(time, 0)
-      timeContainer.innerText = String(time).padStart(2, 0)
+      element.innerText = String(time).padStart(2, 0)
     }
 
     if (this.is_running && remaining < 0.25) {
       this.stop()
-      setRemainingTime('.minutes', 0)
-      setRemainingTime('.seconds', 0)
+      setRemainingTime(this.elements.minutes, 0)
+      setRemainingTime(this.elements.seconds, 0)
       this.playSound()
       return
     }
@@ -435,8 +443,8 @@ class CountdownTimer extends window.HTMLElement {
       }
       this.classList.toggle('warning', isWarning)
       this.display = { minutes, seconds }
-      setRemainingTime('.minutes', minutes)
-      setRemainingTime('.seconds', seconds)
+      setRemainingTime(this.elements.minutes, minutes)
+      setRemainingTime(this.elements.seconds, seconds)
     }
   }
 
