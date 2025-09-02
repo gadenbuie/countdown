@@ -181,7 +181,8 @@ class CountdownTimer extends window.HTMLElement {
     )
 
     // Get source location from script tag if available
-    const currentScript = document.querySelector('script[src*="countdown.js"]')
+    const currentScript = document.currentScript?.src ||
+      (document.querySelector('script[src*="countdown"]')?.src ?? '')
     if (currentScript) {
       this.src_location = currentScript.getAttribute('src')
     }
