@@ -44,6 +44,22 @@ sync-quarto:  ## Sync web assets to Quarto extension
 js-format: ## Format JavaScript files using prettier
 	npx standard --fix $(wildcard $(SRC_DIR)/*.js)
 
+.PHONY: r-format
+r-format: ## Format R files using air
+	air format r/
+
+.PHONY: r-install
+r-install: ## Install R package
+	cd r && R CMD INSTALL .
+
+.PHONY: docs
+docs: r-install ## Build documentation site
+	cd docs && Rscript -e "rmarkdown::render('index.Rmd')"
+
+.PHONY: docs-preview
+docs-preview: docs ## Preview documentation site locally
+	npx http-server docs
+
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"
 	@printf "\033[32m%-18s\033[0m %s\n" "SRC_DIR" "$(SRC_DIR)"
