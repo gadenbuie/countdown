@@ -4,7 +4,7 @@
     <title>{countdown}</title>
     <meta charset="utf-8" />
     <meta name="author" content="Garrick Aden-Buie" />
-    <meta name="date" content="2024-04-10" />
+    <meta name="date" content="2025-09-02" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
@@ -22,7 +22,7 @@ class: middle left inverse
 
 Version: &lt;span style="color: #b58900;"&gt;0.4.0.9000&lt;/span&gt;
 
-Updated: &lt;span style="color: #2aa198;"&gt;2024-04-10&lt;/span&gt;
+Updated: &lt;span style="color: #2aa198;"&gt;2025-09-02&lt;/span&gt;
 
 .footnote[
 [![CRAN status](https://www.r-pkg.org/badges/version/countdown)](https://CRAN.R-project.org/package=countdown)
@@ -49,10 +49,7 @@ class: center middle
 
 &lt;p style="margin: 11em 0;"&gt;&lt;/p&gt;
 
-<div class="countdown" id="timer_e8cd08a3" data-update-every="1" data-play-sound="true" tabindex="0" style="top:26%;right:33%;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">42</span></code>
-</div><style>:root {--countdown-font-size:3rem;--countdown-margin:0.6em;--countdown-padding:10px 15px;--countdown-box-shadow:0px 4px 10px 0px rgba(50, 50, 50, 0.4);--countdown-border-width:0.1875 rem;--countdown-border-radius:0.9rem;--countdown-line-height:1;--countdown-color-border:#d33682;--countdown-color-background:inherit;--countdown-color-text:#d33682;--countdown-color-running-background:#2aa198;--countdown-color-running-border:#0D9188FF;--countdown-color-running-text:#073642;--countdown-color-finished-background:#dc322f;--countdown-color-finished-border:#CD1F1BFF;--countdown-color-finished-text:#fdf6e3;--countdown-color-warning-background:#E6C229;--countdown-color-warning-border:#CEAC04FF;--countdown-color-warning-text:#3A2F02FF;}</style>
+<countdown-timer class="countdown" id="timer_818ad168" minutes="0" seconds="42" update-every="1" play-sound="true" tabindex="0" style="top:26%;right:33%;"></countdown-timer><style>:root {--countdown-font-size:3rem;--countdown-margin:0.6em;--countdown-padding:10px 15px;--countdown-box-shadow:0px 4px 10px 0px rgba(50, 50, 50, 0.4);--countdown-border-width:0.1875 rem;--countdown-border-radius:0.9rem;--countdown-line-height:1;--countdown-color-border:#d33682;--countdown-color-background:inherit;--countdown-color-text:#d33682;--countdown-color-running-background:#2aa198;--countdown-color-running-border:#0D9188FF;--countdown-color-running-text:#073642;--countdown-color-finished-background:#dc322f;--countdown-color-finished-border:#CD1F1BFF;--countdown-color-finished-text:#fdf6e3;--countdown-color-warning-background:#E6C229;--countdown-color-warning-border:#CEAC04FF;--countdown-color-warning-text:#3A2F02FF;}</style>
 
 
 ### How to use your new countdown timer
@@ -247,36 +244,27 @@ Use the `top`, `bottom`, `left` and `right` arguments to position the timers.
 
 &lt;p style="margin-bottom: -10px"&gt;The default is &lt;strong&gt;bottom&lt;/strong&gt;, &lt;strong&gt;right&lt;/strong&gt;.&lt;/p&gt;
 
-```r
+``` r
 countdown(minutes = 0, seconds = 7, bottom = 0)
 ```
 
-<div class="countdown" id="timer_67dcd8b9" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">07</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_285805fc" minutes="0" seconds="7" update-every="1" tabindex="0" style="right:0;bottom:0;"></countdown-timer>
 
 &lt;p style="margin-bottom: -10px"&gt;This timer is &lt;strong&gt;top&lt;/strong&gt;, &lt;strong&gt;right&lt;/strong&gt;.&lt;/p&gt;
 
-```r
+``` r
 countdown(minutes = 0, seconds = 13, top = 0)
 ```
 
-<div class="countdown" id="timer_8ba5905d" data-update-every="1" tabindex="0" style="top:0;right:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">13</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_326dfd6e" minutes="0" seconds="13" update-every="1" tabindex="0" style="top:0;right:0;"></countdown-timer>
 
 &lt;p style="margin-bottom: -10px"&gt;This timer is &lt;strong&gt;bottom&lt;/strong&gt;, &lt;strong&gt;left&lt;/strong&gt;.&lt;/p&gt;
 
-```r
+``` r
 countdown::countdown(minutes = 0, seconds = 21, left = 0)
 ```
 
-<div class="countdown" id="timer_5d7a8604" data-update-every="1" tabindex="0" style="bottom:0;left:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">21</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_980bc56c" minutes="0" seconds="21" update-every="1" tabindex="0" style="bottom:0;left:0;"></countdown-timer>
 
 .center.big[
 &amp;#x1F446;&amp;#x1F3FC;
@@ -288,14 +276,11 @@ countdown::countdown(minutes = 0, seconds = 21, left = 0)
 # Start Immediately
 
 
-```r
+``` r
 countdown(start_immediately = TRUE)
 ```
 
-<div class="countdown" id="timer_9a08f2d3" data-update-every="1" data-start-immediately="true" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_942410e4" minutes="1" seconds="0" update-every="1" start-immediately="true" tabindex="0" style="right:0;bottom:0;"></countdown-timer>
 
 Inside **xaringan** slides, when `start_immediately = TRUE`,
 the timer will start when you land on the slide.
@@ -312,7 +297,7 @@ the timer starts as soon as it's visible.
 You can also override the global timer `font_size`, `padding`, and `margin`.
 
 
-```r
+``` r
 countdown(minutes = 1, seconds = 30,
           left = 0, right = 0,
           padding = "50px",
@@ -320,10 +305,7 @@ countdown(minutes = 1, seconds = 30,
           font_size = "6em")
 ```
 
-<div class="countdown" id="timer_035797f8" data-update-every="1" tabindex="0" style="right:0;bottom:0;left:0;--countdown-margin:5%;--countdown-padding:50px;--countdown-font-size:6em;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_095c9914" minutes="1" seconds="30" update-every="1" tabindex="0" style="right:0;bottom:0;left:0;--countdown-margin:5%;--countdown-padding:50px;--countdown-font-size:6em;"></countdown-timer>
 
 ---
 
@@ -342,20 +324,17 @@ Here's the code. I made the the `font_size` bigger and adjusted the `margin`
 around the timer so it takes up the whole screen.
 
 
-```r
+``` r
 countdown(minutes = 0, seconds = 90,
           top = 0, bottom = 0,
           left = 0, right = 0,
-          margin = "5%",
-          font_size = "8em")
+          margin = "5%", font_size = "8em",
+          color_background = "#FDF6E3")
 ```
 
 --
 
-<div class="countdown" id="timer_6ccda530" data-update-every="1" tabindex="0" style="top:0;right:0;bottom:0;left:0;--countdown-margin:5%;--countdown-font-size:8em;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_51422f30" minutes="1" seconds="30" update-every="1" tabindex="0" style="top:0;right:0;bottom:0;left:0;--countdown-margin:5%;--countdown-font-size:8em;--countdown-color-background:#FDF6E3;"></countdown-timer>
 
 ---
 class: center top
@@ -371,14 +350,11 @@ class: center top
 Avoid countdown panic with a timer&lt;br&gt;that only **update**s once **every** *n* seconds
 
 
-```r
+``` r
 countdown(minutes = 1, update_every = 15, right = "33%")
 ```
 
-<div class="countdown" id="timer_4c51b837" data-update-every="15" data-blink-colon="true" tabindex="0" style="right:33%;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_e2033363" minutes="1" seconds="0" update-every="15" blink-colon="true" tabindex="0" style="right:33%;bottom:0;"></countdown-timer>
 
 ---
 
@@ -387,14 +363,11 @@ countdown(minutes = 1, update_every = 15, right = "33%")
 Warn your audience that time is about to run out. The warning style is applied to the timer for the last _N_ seconds by setting `warn_when = N`.
 
 
-```r
+``` r
 countdown(0, 10, warn_when = 5, right = "33%", bottom = "33%", blink_colon = TRUE)
 ```
 
-<div class="countdown" id="timer_cafea713" data-warn-when="5" data-update-every="1" data-blink-colon="true" tabindex="0" style="right:33%;bottom:33%;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">10</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_1fc0f2f1" minutes="0" seconds="10" warn-when="5" update-every="1" blink-colon="true" tabindex="0" style="right:33%;bottom:33%;"></countdown-timer>
 
 &lt;p style="padding-top: 10em"&gt;&lt;p&gt;
 
@@ -410,14 +383,7 @@ a very small amount of HTML and CSS and bit more of Javascript.
 Each countdown timer element looks something like this:
 
 ````html
-&lt;div class="countdown" id="timer_ff97b84d" data-update-every="1" tabindex="0" style="right:0;bottom:0;"&gt;
-  &lt;div class="countdown-controls"&gt;&lt;button class="countdown-bump-down"&gt;&amp;minus;&lt;/button&gt;&lt;button class="countdown-bump-up"&gt;&amp;plus;&lt;/button&gt;&lt;/div&gt;
-  &lt;code class="countdown-time"&gt;
-    &lt;span class="countdown-digits minutes"&gt;03&lt;/span&gt;
-    &lt;span class="countdown-digits colon"&gt;:&lt;/span&gt;
-    &lt;span class="countdown-digits seconds"&gt;30&lt;/span&gt;
-  &lt;/code&gt;
-&lt;/div&gt;
+&lt;countdown-timer class="countdown" id="timer_37ebc935" minutes="3" seconds="30" update-every="1" tabindex="0" style="right:0;bottom:0;"&gt;&lt;/countdown-timer&gt;
 ````
 
 --
@@ -441,7 +407,7 @@ No problem!
 Just give each timer a unique `id` that you can use in your CSS.
 
 
-```css
+``` css
 #special_timer.running {
   background-color: black;
   background-image: url(img/bg-stars.gif);
@@ -473,14 +439,11 @@ Just give each timer a unique `id` that you can use in your CSS.
 &lt;/style&gt;
 
 
-```r
+``` r
 countdown::countdown(0, 9, id = "special_timer")
 ```
 
-<div class="countdown" id="special_timer" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">09</span></code>
-</div>
+<countdown-timer class="countdown" id="special_timer" minutes="0" seconds="9" update-every="1" tabindex="0" style="right:0;bottom:0;"></countdown-timer>
 
 &lt;div style="position: absolute; bottom: 2%; right: 27%; font-size: 80%"&gt;Try this one, it's cool!&lt;span style="display: inline-block; transform: rotate(236deg);font-size: 125%;"&gt;⤹&lt;/span&gt;&lt;/div&gt;
 
@@ -493,14 +456,11 @@ countdown::countdown(0, 9, id = "special_timer")
 Set `play_sound = TRUE` to be alerted to the end of the timer with fanfare!
 
 
-```r
+``` r
 countdown(0, 10, play_sound = TRUE)
 ```
 
-<div class="countdown" id="timer_a10ba088" data-update-every="1" data-play-sound="true" tabindex="0" style="right:0;bottom:0;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">00</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">10</span></code>
-</div>
+<countdown-timer class="countdown" id="timer_f39e0406" minutes="0" seconds="10" update-every="1" play-sound="true" tabindex="0" style="right:0;bottom:0;"></countdown-timer>
 
 Check out [beepr](https://github.com/rasmusab/beepr) if you want awesome sound alerts in your R session!
 
@@ -553,10 +513,10 @@ background-size: cover
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "solarized-dark",
-"highlightLines": true,
-"slideNumberFormat": "%current%",
-"countIncrementalSlides": true
+  "highlightStyle": "solarized-dark",
+  "highlightLines": true,
+  "slideNumberFormat": "%current%",
+  "countIncrementalSlides": true
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
