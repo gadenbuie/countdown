@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer Test Fixture</title>
+    <link rel="stylesheet" href="../countdown.css">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .test-controls {
+            margin-top: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Countdown Timer Test Fixture</h1>
+
+    <div class="test-section">
+        <h2>Basic Timer (2 minutes)</h2>
+        <countdown-timer id="timer-basic" minutes="2" seconds="0" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer with Seconds (1 minute 30 seconds)</h2>
+        <countdown-timer id="timer-seconds" minutes="1" seconds="30" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer with Warning (warns at 30 seconds)</h2>
+        <countdown-timer id="timer-warning" minutes="0" seconds="10" warn-when="5" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer with Blink Colon</h2>
+        <countdown-timer id="timer-blink" minutes="1" seconds="0" blink-colon="true" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer with Sound</h2>
+        <countdown-timer id="timer-sound" minutes="0" seconds="5" play-sound="true" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer with Update Every 5 Seconds</h2>
+        <countdown-timer id="timer-update" minutes="1" seconds="0" update-every="5" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer with Start Immediately</h2>
+        <countdown-timer id="timer-auto" minutes="0" seconds="30" start-immediately="true" position="static"></countdown-timer>
+    </div>
+
+    <div class="test-section">
+        <h2>Timer for Dynamic Updates</h2>
+        <countdown-timer id="timer-dynamic" minutes="5" seconds="0" position="static"></countdown-timer>
+        <div class="test-controls">
+            <button onclick="updateTimer()">Update to 3:30</button>
+            <button onclick="startTimer()">Start</button>
+            <button onclick="stopTimer()">Stop</button>
+            <button onclick="resetTimer()">Reset</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Event Listener Test</h2>
+        <countdown-timer id="timer-events" minutes="0" seconds="10" position="static"></countdown-timer>
+        <div id="event-log"></div>
+    </div>
+
+    <script src="../countdown.js"></script>
+    <script>
+        // Dynamic timer controls
+        function updateTimer() {
+            const timer = document.getElementById('timer-dynamic');
+            timer.setAttribute('minutes', '3');
+            timer.setAttribute('seconds', '30');
+        }
+
+        function startTimer() {
+            document.getElementById('timer-dynamic').start();
+        }
+
+        function stopTimer() {
+            document.getElementById('timer-dynamic').stop({ manual: true });
+        }
+
+        function resetTimer() {
+            document.getElementById('timer-dynamic').reset();
+        }
+
+        // Event listener test
+        const eventTimer = document.getElementById('timer-events');
+        const eventLog = document.getElementById('event-log');
+
+        eventTimer.addEventListener('countdown', (e) => {
+            const entry = document.createElement('div');
+            entry.textContent = `Event: ${e.detail.action} at ${new Date(e.detail.time).toLocaleTimeString()}`;
+            eventLog.appendChild(entry);
+
+            // Keep only last 5 events
+            while (eventLog.children.length > 5) {
+                eventLog.removeChild(eventLog.firstChild);
+            }
+        });
+    </script>
+</body>
+</html>

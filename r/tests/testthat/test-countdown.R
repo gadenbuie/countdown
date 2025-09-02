@@ -38,31 +38,17 @@ test_that("countdown()", {
 
   expect_true(attr(x, "browsable_html"))
   expect_true(inherits(x, "shiny.tag"))
-  expect_equal(x$name, "div")
+  expect_equal(x$name, "countdown-timer")
   expect_equal(x$attribs$class, "countdown extra-class")
   expect_equal(x$attribs$id, "timer_1")
-  expect_equal(x$attribs$`data-play-sound`, "true")
-  expect_equal(x$children[[2]]$name, "code")
-
-  test_inner_html <- function(counter, ...) {
-    counter_inner <- as.character(counter$children[[2]]$children[[1]])
-    expect_equal(counter_inner, paste0(...))
-  }
-
-  test_inner_html(
-    x,
-    "<span class=\"countdown-digits minutes\">01</span>",
-    "<span class=\"countdown-digits colon\">:</span>",
-    "<span class=\"countdown-digits seconds\">30</span>"
-  )
+  expect_equal(x$attribs$`play-sound`, "true")
+  expect_equal(x$attribs$minutes, "1")
+  expect_equal(x$attribs$seconds, "30")
 
   # seconds and minutes get added
-  test_inner_html(
-    countdown(10.05, 65),
-    "<span class=\"countdown-digits minutes\">11</span>",
-    "<span class=\"countdown-digits colon\">:</span>",
-    "<span class=\"countdown-digits seconds\">08</span>"
-  )
+  x_min_sec <- countdown(10.05, 65)
+  expect_equal(x_min_sec$attribs$minutes, "11")
+  expect_equal(x_min_sec$attribs$seconds, "8")
 
   expect_equal(countdown(class = "countdown")$attribs$class, "countdown")
   expect_equal(
@@ -81,16 +67,16 @@ test_that("countdown() with user `style`", {
 test_that("countdown() with update_every", {
   x <- countdown(1, 30, id = "timer_1", update_every = 15)
 
-  expect_equal(x$attribs[["data-blink-colon"]], "true")
-  expect_equal(x$attribs[["data-update-every"]], 15)
+  expect_equal(x$attribs[["blink-colon"]], "true")
+  expect_equal(x$attribs[["update-every"]], 15)
 })
 
 test_that("countdown() sets up timer correctly with warn_when", {
   x <- countdown(1, 30, warn_when = 15)
-  expect_equal(x$attribs$`data-warn-when`, 15L)
+  expect_equal(x$attribs$`warn-when`, 15L)
 
   x <- countdown(1, 30, warn_when = 15.25)
-  expect_equal(x$attribs$`data-warn-when`, 15L)
+  expect_equal(x$attribs$`warn-when`, 15L)
 
   expect_error(countdown(warn_when = 'after'))
 })
