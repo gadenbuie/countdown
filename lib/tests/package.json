@@ -4,7 +4,6 @@
   "description": "Front-end tests for countdown timer component",
   "private": true,
   "scripts": {
-    "test": "playwright test tests/countdown-core.spec.js",
     "test:all": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",

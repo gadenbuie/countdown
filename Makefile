@@ -63,18 +63,18 @@ docs-preview: docs ## Preview documentation site locally
 .PHONY: js-test
 js-test: ## Run all Playwright tests
 	@echo "Running all Playwright tests..."
-	@cd $(SRC_DIR) && npm run test:all
+	@cd $(SRC_DIR)/tests && npm run test:all
 
 .PHONY: js-test-ui
 js-test-ui: ## Run Playwright tests in UI mode (interactive)
 	@echo "Opening Playwright test UI..."
-	@cd $(SRC_DIR) && npm run test:ui
+	@cd $(SRC_DIR)/tests && npm run test:ui
 
 .PHONY: js-test-install
 js-test-install: ## Install test dependencies
 	@echo "Installing test dependencies..."
-	@cd $(SRC_DIR) && npm install
-	@cd $(SRC_DIR) && npx playwright install --with-deps
+	@cd $(SRC_DIR)/tests && npm install
+	@cd $(SRC_DIR)/tests && npx playwright install --with-deps
 
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"
