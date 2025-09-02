@@ -373,8 +373,8 @@ around the timer so it takes up the whole screen.
 countdown(minutes = 0, seconds = 90,
           top = 0, bottom = 0,
           left = 0, right = 0,
-          margin = "5%",
-          font_size = "8em")
+          margin = "5%", font_size = "8em",
+          color_background = "#FDF6E3")
 ```
 
 --
