@@ -60,6 +60,22 @@ docs: r-install ## Build documentation site
 docs-preview: docs ## Preview documentation site locally
 	npx http-server docs
 
+.PHONY: js-test
+js-test-all: ## Run all Playwright tests
+	@echo "Running all Playwright tests..."
+	@cd $(SRC_DIR) && npm run test:all
+
+.PHONY: js-test-ui
+js-test-ui: ## Run Playwright tests in UI mode (interactive)
+	@echo "Opening Playwright test UI..."
+	@cd $(SRC_DIR) && npm run test:ui
+
+.PHONY: js-test-install
+js-test-install: ## Install test dependencies
+	@echo "Installing test dependencies..."
+	@cd $(SRC_DIR) && npm install
+	@cd $(SRC_DIR) && npx playwright install
+
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"
 	@printf "\033[32m%-18s\033[0m %s\n" "SRC_DIR" "$(SRC_DIR)"
