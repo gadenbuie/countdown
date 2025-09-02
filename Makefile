@@ -74,7 +74,7 @@ js-test-ui: ## Run Playwright tests in UI mode (interactive)
 js-test-install: ## Install test dependencies
 	@echo "Installing test dependencies..."
 	@cd $(SRC_DIR) && npm install
-	@cd $(SRC_DIR) && npx playwright install
+	@cd $(SRC_DIR) && npx playwright install --with-deps
 
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"
