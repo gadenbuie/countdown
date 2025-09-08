@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd lib
+          cd lib/tests
           npm ci
 
       - name: Install Playwright Browsers
