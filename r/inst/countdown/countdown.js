@@ -157,23 +157,26 @@ class CountdownTimer extends window.HTMLElement {
   }
 
   #normalizeTime (minutes, seconds) {
-    minutes = parseInt(minutes || 0)
-    seconds = parseInt(seconds || 0)
+    minutes = Math.floor(Number(minutes) || 0)
+    seconds = Math.floor(Number(seconds) || 0)
+
     const totalSeconds = minutes * 60 + seconds
+
     return {
       minutes: Math.floor(totalSeconds / 60),
-      seconds: totalSeconds % 60
+      seconds: totalSeconds % 60,
+      totalSeconds
     }
   }
 
   initializeFromDOM () {
     // Get minutes and seconds from attributes, defaulting to 0
-    const { minutes, seconds } = this.#normalizeTime(
+    const { minutes, seconds, totalSeconds } = this.#normalizeTime(
       this.getAttribute('minutes'),
       this.getAttribute('seconds')
     )
 
-    this.duration = minutes * 60 + seconds
+    this.duration = totalSeconds
     this.display = { minutes, seconds }
 
     // Create the inner DOM structure

@@ -55,6 +55,11 @@ class CountdownTimer extends window.HTMLElement {
       this.classList.add('countdown')
     }
 
+    // Make the element focusable
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0')
+    }
+
     this.initializeFromDOM()
     this.addEventListeners()
 
@@ -151,12 +156,27 @@ class CountdownTimer extends window.HTMLElement {
     this.appendChild(this.elements.timeCode)
   }
 
+  #normalizeTime (minutes, seconds) {
+    minutes = Math.floor(Number(minutes) || 0)
+    seconds = Math.floor(Number(seconds) || 0)
+
+    const totalSeconds = minutes * 60 + seconds
+
+    return {
+      minutes: Math.floor(totalSeconds / 60),
+      seconds: totalSeconds % 60,
+      totalSeconds
+    }
+  }
+
   initializeFromDOM () {
     // Get minutes and seconds from attributes, defaulting to 0
-    const minutes = parseInt(this.getAttribute('minutes') || '0')
-    const seconds = parseInt(this.getAttribute('seconds') || '0')
+    const { minutes, seconds, totalSeconds } = this.#normalizeTime(
+      this.getAttribute('minutes'),
+      this.getAttribute('seconds')
+    )
 
-    this.duration = minutes * 60 + seconds
+    this.duration = totalSeconds
     this.display = { minutes, seconds }
 
     // Create the inner DOM structure
@@ -174,8 +194,8 @@ class CountdownTimer extends window.HTMLElement {
     )
 
     // Get source location from script tag if available
-    const currentScript = document.currentScript?.src ||
-      (document.querySelector('script[src*="countdown"]')?.src ?? '')
+    const currentScript = document.currentScript ||
+      (document.querySelector('script[src*="countdown"]') ?? '')
     if (currentScript) {
       this.src_location = currentScript.getAttribute('src')
     }
