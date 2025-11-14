@@ -289,7 +289,7 @@ class CountdownTimer extends window.HTMLElement {
 
     if (this._elements.bumpDown) {
       ['click', 'touchend'].forEach(function (eventType) {
-        self.elements.bumpDown.addEventListener(eventType, function (ev) {
+        self._elements.bumpDown.addEventListener(eventType, function (ev) {
           haltEvent(ev)
           if (self._isRunning) self.bumpDown()
         })
@@ -303,7 +303,7 @@ class CountdownTimer extends window.HTMLElement {
 
     if (this._elements.bumpUp) {
       ['click', 'touchend'].forEach(function (eventType) {
-        self.elements.bumpUp.addEventListener(eventType, function (ev) {
+        self._elements.bumpUp.addEventListener(eventType, function (ev) {
           haltEvent(ev)
           if (self._isRunning) self.bumpUp()
         })
@@ -451,7 +451,7 @@ class CountdownTimer extends window.HTMLElement {
       force = false
     }
 
-    const { remaining, minutes, seconds } = this._remainingTime()
+    const { remaining, minutes, seconds } = this.remainingTime()
 
     const setRemainingTime = (element, time) => {
       if (!element) return
@@ -485,7 +485,7 @@ class CountdownTimer extends window.HTMLElement {
   }
 
   stop ({ manual = false } = {}) {
-    const { remaining } = this._remainingTime()
+    const { remaining } = this.remainingTime()
     if (remaining > 1) {
       this._remaining = remaining
     }
@@ -539,7 +539,7 @@ class CountdownTimer extends window.HTMLElement {
 
   bumpTimer (val, round) {
     round = typeof round === 'boolean' ? round : true
-    const { remaining } = this._remainingTime()
+    const { remaining } = this.remainingTime()
     let newRemaining = remaining + val
     if (newRemaining <= 0) {
       this.setRemaining(0)
@@ -599,7 +599,7 @@ class CountdownTimer extends window.HTMLElement {
   }
 
   bumpIncrementValue (val) {
-    val = val || this._remainingTime().remaining
+    val = val || this.remainingTime().remaining
     if (val <= 30) {
       return 5
     } else if (val <= 300) {
@@ -616,9 +616,9 @@ class CountdownTimer extends window.HTMLElement {
       action,
       time: new Date().toISOString(),
       timer: {
-        _isRunning: this._isRunning,
+        is_running: this._isRunning,
         end: this._end ? new Date(this._end).toISOString() : null,
-        remaining: this._remainingTime()
+        remaining: this.remainingTime()
       }
     }
 
