@@ -21,7 +21,8 @@ Please make sure you are on Quarto version 1.4.545 or greater.
 
 {{< countdown "1:23" >}}
 
-{{< countdown "12:53" minutes="12" seconds="53" left=0 bottom=0 >}}
+<!-- minutes/seconds attributes are ignored when time string is provided -->
+{{< countdown "12:53" minutes="1" seconds="23" left=0 bottom=0 >}}
 
 ## Non-standard position
 
