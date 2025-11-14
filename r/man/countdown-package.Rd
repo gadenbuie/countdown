@@ -3,7 +3,6 @@
 \docType{package}
 \name{countdown-package}
 \alias{countdown-package}
-\alias{_PACKAGE}
 \title{countdown: A Countdown Timer for HTML Presentations, Documents, and Web Apps}
 \description{
 A simple countdown timer for slides and HTML documents written in 'R Markdown' or 'Quarto'. Integrates fully into 'Shiny' apps. Countdown to something amazing.
