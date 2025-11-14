@@ -1,3 +1,14 @@
+/* countdown
+ * countdown timer for slides and HTML docs in Quarto, R Markdown, and Shiny
+ *
+ * https://pkg.garrickadenbuie.com/countdown
+ *
+ * Copyright (c) 2025 countdown authors
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/MIT
+ */
+
 .countdown {
   --_margin: 0.6em;
   --_running-color: var(--countdown-color-running-text, rgba(0, 0, 0, 0.8));
@@ -28,6 +39,11 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+countdown-timer[position="static"],
+countdown-timer[position="relative"] {
+  position: relative;
 }
 
 .countdown.inline {

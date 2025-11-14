@@ -40,6 +40,42 @@ sync-quarto:  ## Sync web assets to Quarto extension
 	cp -r $(SRC_FILES) $(SYNC_DEST_QUARTO)
 	echo "local countdown_version = '$(VERSION)'\n\nreturn { countdownVersion = countdown_version }" > quarto/_extensions/countdown/config.lua
 
+.PHONY: js-format
+js-format: ## Format JavaScript files using prettier
+	npx standard --fix $(wildcard $(SRC_DIR)/*.js)
+
+.PHONY: r-format
+r-format: ## Format R files using air
+	air format r/
+
+.PHONY: r-install
+r-install: ## Install R package
+	cd r && R CMD INSTALL .
+
+.PHONY: docs
+docs: r-install ## Build documentation site
+	cd docs && Rscript -e "rmarkdown::render('index.Rmd')"
+
+.PHONY: docs-preview
+docs-preview: docs ## Preview documentation site locally
+	npx http-server docs
+
+.PHONY: js-test
+js-test: ## Run all Playwright tests
+	@echo "Running all Playwright tests..."
+	@cd $(SRC_DIR)/tests && npm run test:all
+
+.PHONY: js-test-ui
+js-test-ui: ## Run Playwright tests in UI mode (interactive)
+	@echo "Opening Playwright test UI..."
+	@cd $(SRC_DIR)/tests && npm run test:ui
+
+.PHONY: js-test-install
+js-test-install: ## Install test dependencies
+	@echo "Installing test dependencies..."
+	@cd $(SRC_DIR)/tests && npm install
+	@cd $(SRC_DIR)/tests && npx playwright install --with-deps
+
 debug: ## Print all variables for debugging
 	@printf "\033[32m%-18s\033[0m %s\n" "VERSION" "$(VERSION)"
 	@printf "\033[32m%-18s\033[0m %s\n" "SRC_DIR" "$(SRC_DIR)"

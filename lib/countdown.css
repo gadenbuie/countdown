@@ -41,6 +41,11 @@
           user-select: none;
 }
 
+countdown-timer[position="static"],
+countdown-timer[position="relative"] {
+  position: relative;
+}
+
 .countdown.inline {
   position: relative;
   width: max-content;
