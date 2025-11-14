@@ -8,6 +8,11 @@
 
 ## New features and improvements
 
+* The countdown JavaScript implementation was entirely re-written as a custom
+  `<countdown-timer>` element. This improves lifecycle management of the timer
+  component, making it possible to use countdown timers with dynamic UI in
+  Shiny apps. (#59)
+
 * Rewritten countdown timer CSS now uses CSS variables rather than a template
   rendered in R. This improves how countdown's dependencies are handled and
   makes it easier to customize and use countdown in other projects and
@@ -28,7 +33,7 @@
 
 * Fixed an issue where custom URLs for `play_sound` were not used for the timer
   end sound. (thanks @jannismain, #38)
-  
+
 * Fixed `countdown_fullscreen()` not passing along `class` and `start_immediately` parameters. (#43)
 
 ## Changes
