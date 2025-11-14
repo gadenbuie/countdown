@@ -146,7 +146,7 @@ countdown_shiny_example <- function(
   display.mode = c("showcase", "normal", "auto")
 ) {
   shiny::runApp(
-    system.file("examples", "shiny-app", package = "countdown"),
+    system.file("examples-shiny", "countdown", package = "countdown"),
     display.mode = match.arg(display.mode)
   )
 }
